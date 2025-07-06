@@ -1,0 +1,54 @@
+import java.time.Instant
+
+plugins {
+    id 'java'
+    id 'org.springframework.boot' version '3.5.3'
+    id 'io.spring.dependency-management' version '1.1.7'
+    id 'com.google.cloud.tools.jib' version '3.4.5'
+}
+
+group = 'com.gearit.api'
+version = '0.1.0'
+
+java {
+    toolchain {
+        languageVersion = JavaLanguageVersion.of(21)
+    }
+}
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+
+    /* Spring starters */
+    implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+    implementation 'org.springframework.boot:spring-boot-starter-oauth2-client'
+    implementation 'org.springframework.boot:spring-boot-starter-web'
+
+    /* Database */
+    runtimeOnly 'org.postgresql:postgresql'
+    implementation 'org.liquibase:liquibase-core'
+
+    /* Testing */
+    testImplementation 'org.springframework.boot:spring-boot-starter-test'
+    testImplementation 'org.springframework.security:spring-security-test'
+    testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
+}
+
+jib {
+    from {
+        image = "eclipse-temurin:21-jre"
+    }
+
+    to {
+        image = "8922gc/gearit-backend:latest"
+    }
+
+    container.creationTime = Instant.now().toString()
+}
+
+tasks.named('test') {
+    useJUnitPlatform()
+}
