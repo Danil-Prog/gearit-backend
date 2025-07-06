@@ -17,9 +17,12 @@ public class UserProvider implements UserDetails {
     @Column(unique = true, name = "username")
     private String username;
 
+    @Column(unique = true, name = "password")
+    private String password;
+
     @Override
     public String getUsername() {
-        return "";
+        return username;
     }
 
     @Override
@@ -29,7 +32,7 @@ public class UserProvider implements UserDetails {
 
     @Override
     public String getPassword() {
-        return "";
+        return password;
     }
 
     @Override
@@ -50,5 +53,21 @@ public class UserProvider implements UserDetails {
     @Override
     public boolean isEnabled() {
         return UserDetails.super.isEnabled();
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
     }
 }
