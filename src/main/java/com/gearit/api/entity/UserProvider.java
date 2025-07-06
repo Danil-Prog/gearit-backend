@@ -20,6 +20,9 @@ public class UserProvider implements UserDetails {
     @Column(unique = true, name = "password")
     private String password;
 
+    @Column(unique = false, name = "provider")
+    private String provider;
+
     @Override
     public String getUsername() {
         return username;
@@ -69,5 +72,13 @@ public class UserProvider implements UserDetails {
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    public String getProvider() {
+        return provider;
+    }
+
+    public void setProvider(String provider) {
+        this.provider = provider;
     }
 }

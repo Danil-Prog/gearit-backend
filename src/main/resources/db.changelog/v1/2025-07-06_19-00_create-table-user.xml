@@ -21,6 +21,10 @@
                 <constraints unique="false" nullable="false"/>
             </column>
 
+            <column name="provider" type="VARCHAR">
+                <constraints unique="false" nullable="false"/>
+            </column>
+
         </createTable>
 
     </changeSet>

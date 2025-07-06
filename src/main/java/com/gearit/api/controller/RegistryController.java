@@ -13,4 +13,9 @@ public class RegistryController {
     public ResponseEntity<RegistryResponse> registry(@RequestBody RegistryRequest registryRequest) {
         return ResponseEntity.ok(new RegistryResponse());
     }
+
+    @PostMapping
+    public ResponseEntity<LoginResponse> login(@RequestBody LoginRequest loginRequest) {
+        return ResponseEntity.ok(new LoginResponse());
+    }
 }
