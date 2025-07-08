@@ -1,4 +1,4 @@
-package com.gearit.api.service;
+package com.gearit.api.service.user;
 
 import com.gearit.api.repository.*;
 import org.hibernate.internal.build.*;
@@ -8,15 +8,15 @@ import org.springframework.stereotype.*;
 @Service
 public class CustomUserDetailsService implements UserDetailsService {
 
-    private final UserRepository userRepository;
+    private final UserProviderRepository userProviderRepository;
 
     @AllowNonPortable
-    public CustomUserDetailsService(UserRepository userRepository) {
-        this.userRepository = userRepository;
+    public CustomUserDetailsService(UserProviderRepository userProviderRepository) {
+        this.userProviderRepository = userProviderRepository;
     }
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        return userRepository.findByUsername(username);
+        return userProviderRepository.findByUsername(username);
     }
 }

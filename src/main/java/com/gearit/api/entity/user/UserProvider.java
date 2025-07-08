@@ -1,4 +1,4 @@
-package com.gearit.api.entity;
+package com.gearit.api.entity.user;
 
 import com.gearit.api.constants.*;
 import jakarta.persistence.*;
@@ -20,17 +20,20 @@ public class UserProvider implements UserDetails {
     @Column(unique = true, name = "password")
     private String password;
 
-    @Column(unique = false, name = "provider")
+    @Column(name = "provider")
     private String provider;
+
+    @Column(name = "default_email")
+    private String email;
 
     @Override
     public String getUsername() {
-        return username;
+        return email;
     }
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return List.of();
+        return List.of(() -> "ROLE_USER");
     }
 
     @Override
@@ -66,10 +69,6 @@ public class UserProvider implements UserDetails {
         this.id = id;
     }
 
-    public void setUsername(String username) {
-        this.username = username;
-    }
-
     public void setPassword(String password) {
         this.password = password;
     }
@@ -80,5 +79,17 @@ public class UserProvider implements UserDetails {
 
     public void setProvider(String provider) {
         this.provider = provider;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
     }
 }

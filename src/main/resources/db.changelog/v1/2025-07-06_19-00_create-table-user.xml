@@ -25,6 +25,10 @@
                 <constraints unique="false" nullable="false"/>
             </column>
 
+            <column name="default_email" type="VARCHAR">
+                <constraints unique="true" nullable="false"/>
+            </column>
+
         </createTable>
 
     </changeSet>

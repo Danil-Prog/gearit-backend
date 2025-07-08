@@ -1,4 +1,4 @@
 package com.gearit.api.controller.response;
 
-public record LoginResponse() {
+public record LoginResponse(String accessToken, String refreshToken) {
 }

@@ -8,7 +8,7 @@ plugins {
 }
 
 group = 'com.gearit.api'
-version = '0.1.0'
+version = '0.1.1'
 
 java {
     toolchain {
@@ -35,6 +35,13 @@ dependencies {
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
     testImplementation 'org.springframework.security:spring-security-test'
     testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
+
+    implementation 'io.jsonwebtoken:jjwt-api:0.11.5'
+    runtimeOnly 'io.jsonwebtoken:jjwt-impl:0.11.5'
+    runtimeOnly 'io.jsonwebtoken:jjwt-jackson:0.11.5' // для Jackson JSON parser
+
+    /* Email sender */
+    implementation 'com.resend:resend-java:3.1.0'
 }
 
 jib {
@@ -43,7 +50,7 @@ jib {
     }
 
     to {
-        image = "8922gc/gearit-backend:latest"
+        image = "8922gc/gearit-backend:$version"
     }
 
     container.creationTime = Instant.now().toString()
