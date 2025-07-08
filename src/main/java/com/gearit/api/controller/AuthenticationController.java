@@ -95,8 +95,9 @@ public class AuthenticationController {
         if (jwtTokenProvider.validateToken(tokenRequest.refreshToken())) {
             String username = jwtTokenProvider.getUsernameFromToken(tokenRequest.refreshToken());
             String newAccessToken = jwtTokenProvider.generateAccessToken(username);
+            String newRefreshToken = jwtTokenProvider.generateRefreshToken(username);
 
-            return ResponseEntity.ok(new TokenResponse(newAccessToken));
+            return ResponseEntity.ok(new TokenResponse(newAccessToken, newRefreshToken));
         }
 
         return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Invalid refresh token");
