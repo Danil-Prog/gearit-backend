@@ -64,8 +64,14 @@ public class AuthenticationController {
         return ResponseEntity.ok(new RegisterResponse());
     }
 
-    @GetMapping("/register")
-    public ResponseEntity<?> test() {
+    @GetMapping("/code")
+    public ResponseEntity<?> test(
+            @RequestParam(value = "state") String state,
+            @RequestParam(value = "code") String code
+    ) {
+        System.out.println("code: " + code);
+        System.out.println("state: " + state);
+
         return ResponseEntity.ok("Your API in work!");
     }
 
