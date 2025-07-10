@@ -8,6 +8,7 @@ import com.gearit.api.controller.response.RegisterResponse;
 import com.gearit.api.controller.response.TokenResponse;
 import com.gearit.api.entity.user.TypeProvider;
 import com.gearit.api.entity.user.UserProvider;
+import com.gearit.api.exception.BadRequestException;
 import com.gearit.api.service.jwt.JwtTokenProvider;
 import com.gearit.api.service.user.UserProviderService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,7 +17,10 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping("/api/v1/auth")
@@ -48,9 +52,7 @@ public class AuthenticationController {
         );
 
         if (user != null) {
-            return ResponseEntity
-                    .status(HttpStatus.BAD_REQUEST)
-                    .body("User with email: '" + registerRequest.email() + "' already exists");
+            throw new BadRequestException("User with such data already exists");
         }
         UserProvider userProvider = new UserProvider();
 
@@ -64,19 +66,18 @@ public class AuthenticationController {
         return ResponseEntity.ok(new RegisterResponse());
     }
 
-    @GetMapping("/code")
-    public ResponseEntity<?> test(
-            @RequestParam(value = "state") String state,
-            @RequestParam(value = "code") String code
-    ) {
-        System.out.println("code: " + code);
-        System.out.println("state: " + state);
-
-        return ResponseEntity.ok("Your API in work!");
-    }
-
     @PostMapping("/login")
     public ResponseEntity<LoginResponse> login(@RequestBody LoginRequest loginRequest) {
+        var user = userProviderService.findUserProviderByEmailOrNull(loginRequest.username());
+
+        if (user == null) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+        }
+
+        if (user.getConfirmed() == false) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+        }
+
         try {
             authenticationManager.authenticate(
                     new UsernamePasswordAuthenticationToken(

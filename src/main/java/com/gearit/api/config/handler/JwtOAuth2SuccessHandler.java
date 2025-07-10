@@ -8,7 +8,6 @@ import com.gearit.api.service.jwt.JwtTokenProvider;
 import com.gearit.api.service.user.UserProviderService;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import java.io.IOException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.MediaType;
@@ -22,6 +21,7 @@ public class JwtOAuth2SuccessHandler implements AuthenticationSuccessHandler {
 
     private final JwtTokenProvider jwtTokenProvider;
     private final UserProviderService userProviderService;
+
     private final Logger logger = LoggerFactory.getLogger(this.getClass());
 
     public JwtOAuth2SuccessHandler(
@@ -39,6 +39,7 @@ public class JwtOAuth2SuccessHandler implements AuthenticationSuccessHandler {
             Authentication authentication
     ) {
         try {
+            logger.info("OAuth authentication success");
             OAuth2User oauthUser = (OAuth2User) authentication.getPrincipal();
 
             String email = oauthUser.getAttributes().get("default_email").toString();
@@ -57,6 +58,8 @@ public class JwtOAuth2SuccessHandler implements AuthenticationSuccessHandler {
                 newUserProvider.setProvider(TypeProvider.OAUTH.name());
 
                 userProviderService.createUserProvider(newUserProvider);
+
+                logger.info("Created new user provider from Yandex oauth2");
             }
 
             TokenResponse tokens = new TokenResponse(

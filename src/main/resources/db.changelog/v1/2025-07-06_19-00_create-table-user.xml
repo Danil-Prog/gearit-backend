@@ -29,6 +29,10 @@
                 <constraints unique="true" nullable="false"/>
             </column>
 
+            <column name="is_confirmed" type="BOOL">
+                <constraints nullable="false"/>
+            </column>
+
         </createTable>
 
     </changeSet>

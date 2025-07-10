@@ -1,21 +1,25 @@
 package com.gearit.api.config;
 
-import com.gearit.api.config.filter.*;
-import com.gearit.api.config.handler.*;
-import jakarta.servlet.http.*;
-import java.util.*;
-import org.springframework.context.annotation.*;
-import org.springframework.http.*;
-import org.springframework.security.authentication.*;
-import org.springframework.security.authentication.dao.*;
-import org.springframework.security.config.annotation.web.builders.*;
-import org.springframework.security.config.annotation.web.configuration.*;
-import org.springframework.security.config.annotation.web.configurers.*;
-import org.springframework.security.core.userdetails.*;
-import org.springframework.security.crypto.bcrypt.*;
-import org.springframework.security.web.*;
-import org.springframework.security.web.authentication.*;
-import org.springframework.web.cors.*;
+import com.gearit.api.config.filter.JwtAuthenticationFilter;
+import com.gearit.api.config.handler.JwtOAuth2SuccessHandler;
+import jakarta.servlet.http.HttpServletResponse;
+import java.util.List;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.http.MediaType;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.ProviderManager;
+import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
+import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.web.cors.CorsConfiguration;
+import org.springframework.web.cors.CorsConfigurationSource;
+import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
 @Configuration
 @EnableWebSecurity
@@ -23,8 +27,8 @@ public class SecurityConfig {
 
     private final String[] PERMIT_ALL_ENDPOINTS = {
             "/api/v1/auth/login",
-            "/api/v1/auth/register",
-            "/css"
+            "/api/v1/auth/refresh",
+            "/api/v1/auth/register"
     };
 
     @Bean

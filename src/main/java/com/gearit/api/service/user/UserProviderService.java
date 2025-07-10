@@ -2,6 +2,7 @@ package com.gearit.api.service.user;
 
 import com.gearit.api.entity.user.UserProvider;
 import com.gearit.api.repository.UserProviderRepository;
+import com.gearit.api.utils.UserProviderValidator;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -28,9 +29,12 @@ public class UserProviderService {
     }
 
     public void createUserProvider(UserProvider userProvider) {
+        UserProviderValidator.validateUserProvider(userProvider);
+
         if (userProvider.getPassword() != null && !userProvider.getPassword().isEmpty()) {
             userProvider.setPassword(bCryptPasswordEncoder.encode(userProvider.getPassword()));
         }
+
         userProviderRepository.save(userProvider);
     }
 

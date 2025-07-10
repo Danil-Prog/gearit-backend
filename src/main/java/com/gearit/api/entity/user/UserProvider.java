@@ -26,6 +26,9 @@ public class UserProvider implements UserDetails {
     @Column(name = "default_email")
     private String email;
 
+    @Column(name = "is_confirmed")
+    private Boolean isConfirmed = false;
+
     @Override
     public String getUsername() {
         return email;
@@ -91,5 +94,13 @@ public class UserProvider implements UserDetails {
 
     public void setEmail(String email) {
         this.email = email;
+    }
+
+    public Boolean getConfirmed() {
+        return isConfirmed;
+    }
+
+    public void setConfirmed(Boolean confirmed) {
+        isConfirmed = confirmed;
     }
 }
