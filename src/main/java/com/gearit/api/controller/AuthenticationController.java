@@ -3,20 +3,17 @@ package com.gearit.api.controller;
 import com.gearit.api.controller.request.LoginRequest;
 import com.gearit.api.controller.request.RegisterRequest;
 import com.gearit.api.controller.request.TokenRequest;
-import com.gearit.api.controller.response.LoginResponse;
 import com.gearit.api.controller.response.RegisterResponse;
 import com.gearit.api.controller.response.TokenResponse;
 import com.gearit.api.entity.user.TypeProvider;
 import com.gearit.api.entity.user.UserProvider;
 import com.gearit.api.exception.BadRequestException;
+import com.gearit.api.service.auth.AuthService;
 import com.gearit.api.service.jwt.JwtTokenProvider;
 import com.gearit.api.service.user.UserProviderService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.authentication.BadCredentialsException;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -26,22 +23,16 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/api/v1/auth")
 public class AuthenticationController {
 
-    private final JwtTokenProvider jwtTokenProvider;
-    private final AuthenticationManager authenticationManager;
-    private final JwtTokenProvider tokenProvider;
     private final UserProviderService userProviderService;
+    private final AuthService authService;
 
     @Autowired
     public AuthenticationController(
-            JwtTokenProvider jwtTokenProvider,
-            AuthenticationManager authenticationManager,
-            JwtTokenProvider tokenProvider,
-            UserProviderService userProviderService
+            UserProviderService userProviderService,
+            AuthService authService
     ) {
-        this.jwtTokenProvider = jwtTokenProvider;
-        this.authenticationManager = authenticationManager;
-        this.tokenProvider = tokenProvider;
         this.userProviderService = userProviderService;
+        this.authService = authService;
     }
 
     @PostMapping("/register")
@@ -67,46 +58,14 @@ public class AuthenticationController {
     }
 
     @PostMapping("/login")
-    public ResponseEntity<LoginResponse> login(@RequestBody LoginRequest loginRequest) {
-        var user = userProviderService.findUserProviderByEmailOrNull(loginRequest.username());
-
-        if (user == null) {
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
-        }
-
-        if (user.getConfirmed() == false) {
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
-        }
-
-        try {
-            authenticationManager.authenticate(
-                    new UsernamePasswordAuthenticationToken(
-                            loginRequest.username(),
-                            loginRequest.password()
-                    )
-            );
-        } catch (BadCredentialsException exception) {
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
-        }
-
-        LoginResponse loginResponse = new LoginResponse(
-                tokenProvider.generateAccessToken(loginRequest.username()),
-                tokenProvider.generateRefreshToken(loginRequest.username())
-        );
-
-        return ResponseEntity.ok(loginResponse);
+    public ResponseEntity<TokenResponse> login(@RequestBody LoginRequest loginRequest) {
+        var response = authService.login(loginRequest.username(), loginRequest.password());
+        return ResponseEntity.ok(response);
     }
 
     @PostMapping("/token/refresh")
     public ResponseEntity<?> refresh(@RequestBody TokenRequest tokenRequest) {
-        if (jwtTokenProvider.validateToken(tokenRequest.refreshToken())) {
-            String username = jwtTokenProvider.getUsernameFromToken(tokenRequest.refreshToken());
-            String newAccessToken = jwtTokenProvider.generateAccessToken(username);
-            String newRefreshToken = jwtTokenProvider.generateRefreshToken(username);
-
-            return ResponseEntity.ok(new TokenResponse(newAccessToken, newRefreshToken));
-        }
-
-        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Invalid refresh token");
+        var response = authService.refreshToken(tokenRequest.refreshToken());
+        return ResponseEntity.ok(response);
     }
 }

@@ -16,12 +16,60 @@ paths:
       tags:
         - Auth
       summary: Регистрация
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RegisterRequest'
+      responses:
+        200:
+          description: Успешная регистрация
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RegisterResponse'
+        400:
+          description: Если были переданы некорректные данные
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ClientException"
+        500:
+          description: Ошибка сервера
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ClientException"
 
   /auth/login:
     post:
       tags:
         - Auth
       summary: Авторизация
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/LoginRequest'
+      responses:
+        200:
+          description: Успешная регистрация
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TokenResponse'
+        400:
+          description: Если были переданы некорректные данные
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ClientException"
+        500:
+          description: Ошибка сервера
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ClientException"
 
   /auth/token/refresh:
     post:
@@ -31,6 +79,15 @@ paths:
 
 components:
   schemas:
+    ClientException:
+      type:
+        - object
+      properties:
+        message:
+          type:
+            - string
+          example: 'Неверный логин'
+
     RegisterRequest:
       type:
         - object
@@ -53,14 +110,14 @@ components:
           type:
             - boolean
 
-    LoginResponse:
+    LoginRequest:
       type:
         - object
       properties:
-        accessToken:
+        username:
           type:
             - string
-        refreshToken:
+        password:
           type:
             - string
 
@@ -69,5 +126,8 @@ components:
         - object
       properties:
         accessToken:
+          type:
+            - string
+        refreshToken:
           type:
             - string

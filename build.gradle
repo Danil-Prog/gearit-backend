@@ -52,7 +52,7 @@ jib {
     }
 
     to {
-        image = "8922gc/gearit-backend:$version"
+        image = "8922gc/gearit-backend:latest"
     }
 
     container.creationTime = Instant.now().toString()
