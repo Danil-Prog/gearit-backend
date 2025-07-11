@@ -1,14 +1,18 @@
 package com.gearit.api.utils;
 
+import com.gearit.api.entity.user.TypeProvider;
 import com.gearit.api.entity.user.UserProvider;
 import com.gearit.api.exception.BadRequestException;
 
 public class UserProviderValidator {
 
     public static void validateUserProvider(UserProvider userProvider) {
-        validateUsername(userProvider.getUsername());
-        validateEmail(userProvider.getEmail());
-        validatePassword(userProvider.getPassword());
+//        validateUsername(userProvider.getUsername());
+//        validateEmail(userProvider.getEmail());
+//
+//        if (userProvider.getPassword() != null && userProvider.getProvider().equals(TypeProvider.INTERNAL.name())) {
+//            validatePassword(userProvider.getPassword());
+//        }
     }
 
     private static void validateUsername(String username) {
@@ -26,7 +30,7 @@ public class UserProviderValidator {
             throw new BadRequestException("Email cannot be null or empty");
         }
 
-        if (!email.matches("^[a-zA-Z0-9_-]{3,16}$")) {
+        if (!email.matches("^[a-zA-Z0-9_+&*-]+(?:\\.[a-zA-Z0-9_+&*-]+)*@(?:[a-zA-Z0-9-]+\\.)+[a-zA-Z]{2,7}$")) {
             throw new BadRequestException("Invalid email format");
         }
     }

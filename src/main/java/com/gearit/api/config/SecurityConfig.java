@@ -28,7 +28,8 @@ public class SecurityConfig {
     private final String[] PERMIT_ALL_ENDPOINTS = {
             "/api/v1/auth/login",
             "/api/v1/auth/refresh",
-            "/api/v1/auth/register"
+            "/api/v1/auth/register",
+            "/api/v1/auth/verify"
     };
 
     @Bean
@@ -82,7 +83,6 @@ public class SecurityConfig {
 
         return corsConfigurationSource;
     }
-
 
     @Bean
     public AuthenticationManager authenticationManager(UserDetailsService userDetailsService) {

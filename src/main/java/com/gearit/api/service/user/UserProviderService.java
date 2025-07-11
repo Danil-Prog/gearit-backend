@@ -20,22 +20,31 @@ public class UserProviderService {
         this.bCryptPasswordEncoder = bCryptPasswordEncoder;
     }
 
-    public UserProvider findUserProviderByEmailOrNull(String email) {
+    public UserProvider getUserProviderByEmailOrNull(String email) {
         return userProviderRepository.findByEmail(email).orElse(null);
     }
 
-    public UserProvider findUserProviderByLoginOrEmailOrNull(String login, String email) {
+    public UserProvider getUserProviderByLoginOrEmailOrNull(String login, String email) {
         return userProviderRepository.findByUsernameOrEmail(login, email).orElse(null);
     }
 
-    public void createUserProvider(UserProvider userProvider) {
+    public UserProvider getUserProviderById(Long id) {
+        return userProviderRepository.findById(id).orElse(null);
+    }
+
+    public UserProvider createUserProvider(UserProvider userProvider) {
         UserProviderValidator.validateUserProvider(userProvider);
 
         if (userProvider.getPassword() != null && !userProvider.getPassword().isEmpty()) {
             userProvider.setPassword(bCryptPasswordEncoder.encode(userProvider.getPassword()));
         }
 
-        userProviderRepository.save(userProvider);
+        return userProviderRepository.save(userProvider);
+    }
+
+    public UserProvider updateUserProvider(UserProvider userProvider) {
+        UserProviderValidator.validateUserProvider(userProvider);
+        return userProviderRepository.save(userProvider);
     }
 
 

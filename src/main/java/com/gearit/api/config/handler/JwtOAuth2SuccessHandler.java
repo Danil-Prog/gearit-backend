@@ -40,13 +40,13 @@ public class JwtOAuth2SuccessHandler implements AuthenticationSuccessHandler {
     ) {
         try {
             logger.info("OAuth authentication success");
+
             OAuth2User oauthUser = (OAuth2User) authentication.getPrincipal();
 
             String email = oauthUser.getAttributes().get("default_email").toString();
             String username = oauthUser.getAttributes().get("login").toString();
 
-            // Создаём или находим пользователя
-            UserProvider userProvider = userProviderService.findUserProviderByEmailOrNull(email);
+            UserProvider userProvider = userProviderService.getUserProviderByEmailOrNull(email);
 
             if (userProvider == null) {
                 UserProvider newUserProvider = new UserProvider();
@@ -56,6 +56,7 @@ public class JwtOAuth2SuccessHandler implements AuthenticationSuccessHandler {
                 newUserProvider.setUsername(username);
                 newUserProvider.setEmail(email);
                 newUserProvider.setProvider(TypeProvider.OAUTH.name());
+                newUserProvider.setConfirmed(true);
 
                 userProviderService.createUserProvider(newUserProvider);
 
