@@ -1,0 +1,41 @@
+name: Build
+on:
+  push:
+    branches: [master]
+    
+jobs:
+  build: 
+    runs-on: [self-hosted]
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4.2.2
+
+      - name: JIB container build and publish
+        uses: MathieuSoysal/jib-container-publish.yml@v2.1.5
+        with:
+          PASSWORD: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Set up SSH keys
+        uses: webfactory/ssh-agent@v0.5.4
+        with:
+          ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
+
+      - name: Generate auth hosts
+        run: |
+          mkdir -p ~/.ssh
+          > ~/.ssh/known_hosts
+          ssh-keyscan -H ${{ secrets.SSH_HOST }} >> ~/.ssh/known_hosts
+          
+      - name: Deploy to server via SSH
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.SSH_HOST }}
+          port: ${{ secrets.SSH_PORT }}
+          username: ${{ secrets.SSH_USER }}
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          script: |
+            cd ~/gearit-deployment/docker/gearit/docker-compose.yml
+            docker pull 8922gc/gearit-backend:latest
+            docker compose --env-file ../.env up -d
+            docker compose rmi -f $(docker images -aq)
