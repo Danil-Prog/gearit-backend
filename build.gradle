@@ -53,6 +53,11 @@ jib {
 
     to {
         image = "8922gc/gearit-backend:latest"
+
+        auth {
+            username = providers.environmentVariable('DOCKER_USERNAME')
+            password = providers.environmentVariable('DOCKER_PASSWORD')
+        }
     }
 
     container.creationTime = Instant.now().toString()
