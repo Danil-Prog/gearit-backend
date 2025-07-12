@@ -13,10 +13,6 @@
                 <constraints primaryKey="true"/>
             </column>
 
-            <column name="username" type="VARCHAR">
-                <constraints unique="true" nullable="false"/>
-            </column>
-
             <column name="password" type="VARCHAR">
                 <constraints unique="false" nullable="false"/>
             </column>

@@ -13,9 +13,9 @@ public class JwtTokenProvider {
     private static final long accessValidity = 5 * 60 * 1000;
     private static final long refreshValidity = 60 * 60 * 1000;
 
-    public String generateAccessToken(String username) {
+    public String generateAccessToken(String email) {
         return Jwts.builder()
-                .setSubject(username)
+                .setSubject(email)
                 .setIssuedAt(new Date())
                 .setExpiration(new Date(System.currentTimeMillis() + accessValidity))
                 .signWith(Keys.hmacShaKeyFor(secret.getBytes()))
@@ -31,7 +31,7 @@ public class JwtTokenProvider {
                 .compact();
     }
 
-    public String getUsernameFromToken(String token) {
+    public String getEmailFromToken(String token) {
         return Jwts.parserBuilder()
                 .setSigningKey(secret.getBytes())
                 .build()

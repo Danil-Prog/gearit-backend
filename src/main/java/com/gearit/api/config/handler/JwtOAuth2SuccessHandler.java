@@ -44,7 +44,6 @@ public class JwtOAuth2SuccessHandler implements AuthenticationSuccessHandler {
             OAuth2User oauthUser = (OAuth2User) authentication.getPrincipal();
 
             String email = oauthUser.getAttributes().get("default_email").toString();
-            String username = oauthUser.getAttributes().get("login").toString();
 
             UserProvider userProvider = userProviderService.getUserProviderByEmailOrNull(email);
 
@@ -53,7 +52,6 @@ public class JwtOAuth2SuccessHandler implements AuthenticationSuccessHandler {
 
                 // пустой пароль задается исключительно при авторизации через oath2
                 newUserProvider.setPassword("");
-                newUserProvider.setUsername(username);
                 newUserProvider.setEmail(email);
                 newUserProvider.setProvider(TypeProvider.OAUTH.name());
                 newUserProvider.setConfirmed(true);

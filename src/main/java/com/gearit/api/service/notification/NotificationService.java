@@ -57,7 +57,7 @@ public class NotificationService {
 
         try {
             CreateEmailResponse response = resend.emails().send(emailOptions);
-            logger.info("Email sent successfully user: {}, response id: {}", to, response.getId());
+            logger.info("Email sent successfully to address: {}, response id: {}", to, response.getId());
         } catch (ResendException e) {
             logger.error("Error sending email, message: {}", e.getMessage());
         }

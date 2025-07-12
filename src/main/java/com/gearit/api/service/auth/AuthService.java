@@ -43,8 +43,8 @@ public class AuthService {
         this.notificationService = notificationService;
     }
 
-    public void register(String username, String password, String email) {
-        var user = userProviderService.getUserProviderByLoginOrEmailOrNull(username, email);
+    public void register(String email, String password) {
+        var user = userProviderService.getUserProviderByEmailOrNull(email);
 
         if (user != null) {
             throw new BadRequestException("User with such data already exists");
@@ -53,7 +53,6 @@ public class AuthService {
 
         userProvider.setEmail(email);
         userProvider.setPassword(password);
-        userProvider.setUsername(username);
         userProvider.setProvider(TypeProvider.INTERNAL.name());
         userProvider.setConfirmed(false);
 
@@ -62,7 +61,7 @@ public class AuthService {
 
         notificationService.sendConfirmEmail(email, code.getCode());
 
-        logger.info("New user created, send confirm code {}, to user with email: {}", code, email);
+        logger.info("New user created, send confirm code {}, to user with email: {}", code.getCode(), email);
     }
 
     public void verifyUserProvider(String code) {
@@ -77,14 +76,14 @@ public class AuthService {
 
         userProviderService.updateUserProvider(userProvider);
 
-        logger.info("Verify user with email: [{}], confirm code {}", userProvider.getEmail(), confirmCode);
+        logger.info("Verify user with email: [{}], confirm code {}", userProvider.getEmail(), confirmCode.getCode());
     }
 
-    public TokenResponse login(String username, String password) {
-        var user = userProviderService.getUserProviderByEmailOrNull(username);
+    public TokenResponse login(String email, String password) {
+        var user = userProviderService.getUserProviderByEmailOrNull(email);
 
         if (user == null) {
-            throw new BadRequestException("Invalid username or password");
+            throw new BadRequestException("Invalid email or password");
         }
 
         if (user.getConfirmed() == false) {
@@ -92,22 +91,23 @@ public class AuthService {
         }
 
         try {
-            authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(username, password));
+            authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(email, password));
         } catch (BadCredentialsException exception) {
-            throw new BadRequestException("Invalid username or password");
+            throw new BadRequestException("Invalid email or password");
         }
 
-        var accessToken = jwtTokenProvider.generateAccessToken(username);
-        var refreshToken = jwtTokenProvider.generateRefreshToken(username);
+        var accessToken = jwtTokenProvider.generateAccessToken(email);
+        var refreshToken = jwtTokenProvider.generateRefreshToken(email);
 
         return new TokenResponse(accessToken, refreshToken);
     }
 
     public TokenResponse refreshToken(String refreshToken) {
         if (jwtTokenProvider.validateToken(refreshToken)) {
-            String username = jwtTokenProvider.getUsernameFromToken(refreshToken);
-            String newAccessToken = jwtTokenProvider.generateAccessToken(username);
-            String newRefreshToken = jwtTokenProvider.generateRefreshToken(username);
+            String email = jwtTokenProvider.getEmailFromToken(refreshToken);
+
+            String newAccessToken = jwtTokenProvider.generateAccessToken(email);
+            String newRefreshToken = jwtTokenProvider.generateRefreshToken(email);
 
             return new TokenResponse(newAccessToken, newRefreshToken);
         } else {

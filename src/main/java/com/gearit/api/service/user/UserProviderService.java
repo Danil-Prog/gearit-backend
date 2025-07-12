@@ -24,10 +24,6 @@ public class UserProviderService {
         return userProviderRepository.findByEmail(email).orElse(null);
     }
 
-    public UserProvider getUserProviderByLoginOrEmailOrNull(String login, String email) {
-        return userProviderRepository.findByUsernameOrEmail(login, email).orElse(null);
-    }
-
     public UserProvider getUserProviderById(Long id) {
         return userProviderRepository.findById(id).orElse(null);
     }

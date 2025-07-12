@@ -24,7 +24,7 @@ public class AuthenticationController {
 
     @PostMapping("/register")
     public ResponseEntity<RegisterResponse> register(@RequestBody RegisterRequest registerRequest) {
-        authService.register(registerRequest.username(), registerRequest.password(), registerRequest.email());
+        authService.register(registerRequest.email(), registerRequest.password());
         return ResponseEntity.ok(new RegisterResponse());
     }
 
@@ -36,7 +36,7 @@ public class AuthenticationController {
 
     @PostMapping("/login")
     public ResponseEntity<TokenResponse> login(@RequestBody LoginRequest loginRequest) {
-        var response = authService.login(loginRequest.username(), loginRequest.password());
+        var response = authService.login(loginRequest.email(), loginRequest.password());
         return ResponseEntity.ok(response);
     }
 

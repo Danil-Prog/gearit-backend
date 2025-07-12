@@ -4,6 +4,8 @@ import com.gearit.api.config.filter.JwtAuthenticationFilter;
 import com.gearit.api.config.handler.JwtOAuth2SuccessHandler;
 import jakarta.servlet.http.HttpServletResponse;
 import java.util.List;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.MediaType;
@@ -24,6 +26,8 @@ import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 @Configuration
 @EnableWebSecurity
 public class SecurityConfig {
+
+    private final Logger logger = LoggerFactory.getLogger(getClass());
 
     private final String[] PERMIT_ALL_ENDPOINTS = {
             "/api/v1/auth/login",
@@ -50,6 +54,8 @@ public class SecurityConfig {
                                 response,
                                 authException
                         ) -> {
+                            logger.error(authException.getMessage(), authException);
+
                             response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
                             response.setContentType(MediaType.APPLICATION_JSON_VALUE);
                         })
@@ -58,6 +64,8 @@ public class SecurityConfig {
                                 response,
                                 accessDeniedException
                         ) -> {
+                            logger.error(accessDeniedException.getMessage(), accessDeniedException);
+
                             response.setStatus(HttpServletResponse.SC_FORBIDDEN);
                             response.setContentType(MediaType.APPLICATION_JSON_VALUE);
                         })

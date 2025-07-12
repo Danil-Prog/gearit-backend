@@ -116,13 +116,10 @@ components:
       type:
         - object
       properties:
-        username:
+        password:
           type:
             - string
         email:
-          type:
-            - string
-        password:
           type:
             - string
 

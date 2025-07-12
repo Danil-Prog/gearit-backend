@@ -14,9 +14,6 @@ public class UserProvider implements UserDetails {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(unique = true, name = "username")
-    private String username;
-
     @Column(unique = true, name = "password")
     private String password;
 
@@ -82,10 +79,6 @@ public class UserProvider implements UserDetails {
 
     public void setProvider(String provider) {
         this.provider = provider;
-    }
-
-    public void setUsername(String username) {
-        this.username = username;
     }
 
     public String getEmail() {
