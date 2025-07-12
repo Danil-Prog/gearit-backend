@@ -24,3 +24,10 @@ jobs:
 
       - name: Build and push with Jib
         run: ./gradlew jib
+
+      - name: Restart backend service
+        run: |
+          cd /root/gearit-deployment/docker/gearit
+          docker pull 8922gc/gearit-backend:latest
+          docker compose --env-file ../.env up -d
+          docker image prune -f
