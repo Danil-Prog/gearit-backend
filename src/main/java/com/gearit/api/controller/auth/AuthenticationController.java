@@ -1,4 +1,4 @@
-package com.gearit.api.controller;
+package com.gearit.api.controller.auth;
 
 import com.gearit.api.controller.request.LoginRequest;
 import com.gearit.api.controller.request.RegisterRequest;
