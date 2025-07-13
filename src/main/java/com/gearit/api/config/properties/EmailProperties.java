@@ -6,6 +6,7 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 public class EmailProperties {
 
     private String resendToken;
+
     private String from;
 
     public String getFrom() {

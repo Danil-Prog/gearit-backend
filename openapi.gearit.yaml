@@ -36,6 +36,7 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/ClientException"
+
   /auth/verify:
     get:
       tags:
@@ -100,6 +101,52 @@ paths:
       tags:
         - Auth
       summary: Обновление токена доступа
+
+  /yandex/login:
+    get:
+      tags:
+        - Auth
+      summary: Авторизация через сервер OAuth Yandex
+      responses:
+        200:
+          description: Успешное получение редиректа
+        400:
+          description: Если были переданы некорректные данные
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ClientException"
+        500:
+          description: Ошибка сервера
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ClientException"
+
+  /yandex/callback:
+    get:
+      tags:
+        - Auth
+      summary: Авторизация через сервер OAuth Yandex
+      responses:
+        200:
+          description: Успешное добавление пользователя в БД и получение токенов доступа
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TokenResponse'
+        400:
+          description: Если были переданы некорректные данные
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ClientException"
+        500:
+          description: Ошибка сервера
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ClientException"
 
 components:
   schemas:
