@@ -1,0 +1,42 @@
+services:
+
+  gearit-data:
+    container_name: gearit-data
+    image: postgres:16.3
+    environment:
+      POSTGRES_DB: "${DB_NAME}"
+      POSTGRES_USER: "${DB_USERNAME}"
+      POSTGRES_PASSWORD: "${DB_PASSWORD}"
+    ports:
+      - "5433:5432"
+    networks:
+      - gearit-network
+
+  gearit-backend:
+    container_name: gearit-backend
+    image: 8922gc/gearit-backend:latest
+    environment:
+      SPRING_PROFILES_ACTIVE: "develop"
+
+      #  Database config
+      SPRING_DATASOURCE_URL: "jdbc:postgresql://gearit-data:5432/${DB_NAME}"
+      SPRING_DATASOURCE_USERNAME: "${DB_USERNAME}"
+      SPRING_DATASOURCE_PASSWORD: "${DB_PASSWORD}"
+
+      # Mail sender
+      EMAIL_PROPERTIES_RESEND_TOKEN: "${RESEND_TOKEN}"
+      EMAIL_PROPERTIES_FROM: "${FROM}"
+
+      # Yandex OAuth2
+      YANDEX_PROPERTIES_CLIENT_ID: "${CLIENT_ID}"
+      YANDEX_PROPERTIES_CLIENT_SECRET: "${CLIENT_SECRET}"
+      YANDEX_PROPERTIES_REDIRECT_URI: "${REDIRECT_URI}"
+    ports:
+      - "4040:8080"
+    restart: unless-stopped
+    networks:
+      - gearit-network
+
+
+networks:
+  gearit-network:
