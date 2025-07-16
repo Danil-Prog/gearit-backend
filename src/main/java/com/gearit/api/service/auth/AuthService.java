@@ -5,6 +5,7 @@ import com.gearit.api.entity.user.ConfirmCode;
 import com.gearit.api.entity.user.TypeProvider;
 import com.gearit.api.entity.user.UserProvider;
 import com.gearit.api.exception.BadRequestException;
+import com.gearit.api.exception.WebClientException;
 import com.gearit.api.service.jwt.JwtTokenProvider;
 import com.gearit.api.service.notification.NotificationService;
 import com.gearit.api.service.user.ConfirmCodeService;
@@ -80,20 +81,17 @@ public class AuthService {
     }
 
     public TokenResponse login(String email, String password) {
-        var user = userProviderService.getUserProviderByEmailOrNull(email);
-
-        if (user == null) {
-            throw new BadRequestException("Invalid email or password");
-        }
+        var errorMessage = "User authentication failed";
+        var user = userProviderService.getUserProviderByEmailOrThrow(email);
 
         if (user.getConfirmed() == false) {
-            throw new BadRequestException("User is not confirmed");
+            throw new WebClientException(errorMessage, "User is not confirmed");
         }
 
         try {
             authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(email, password));
         } catch (BadCredentialsException exception) {
-            throw new BadRequestException("Invalid email or password");
+            throw new WebClientException(errorMessage, "Invalid email or password");
         }
 
         var accessToken = jwtTokenProvider.generateAccessToken(email);

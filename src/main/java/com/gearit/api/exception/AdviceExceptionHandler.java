@@ -43,7 +43,11 @@ public class AdviceExceptionHandler {
     @ExceptionHandler(BadRequestException.class)
     public ResponseEntity<ResponseException> badRequestException(BadRequestException ex) {
         ResponseException responseException = new ResponseException(ex.getMessage());
-
         return new ResponseEntity<>(responseException, HttpStatus.BAD_REQUEST);
+    }
+
+    @ExceptionHandler(WebClientException.class)
+    public ResponseEntity<WebClientException> webClientException(WebClientException ex) {
+        return new ResponseEntity<>(ex, HttpStatus.BAD_REQUEST);
     }
 }

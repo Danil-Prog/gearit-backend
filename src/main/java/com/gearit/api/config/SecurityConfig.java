@@ -1,13 +1,13 @@
 package com.gearit.api.config;
 
 import com.gearit.api.config.filter.JwtAuthenticationFilter;
-import jakarta.servlet.http.HttpServletResponse;
+import com.gearit.api.config.properties.CorsProperties;
 import java.util.List;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.http.MediaType;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.ProviderManager;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
@@ -26,6 +26,8 @@ import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 @EnableWebSecurity
 public class SecurityConfig {
 
+    private final CorsProperties corsProperties;
+
     private final Logger logger = LoggerFactory.getLogger(getClass());
 
     private final String[] PERMIT_ALL_ENDPOINTS = {
@@ -37,6 +39,11 @@ public class SecurityConfig {
             "/api/v1/yandex/callback",
     };
 
+    @Autowired
+    public SecurityConfig(CorsProperties corsProperties) {
+        this.corsProperties = corsProperties;
+    }
+
     @Bean
     public SecurityFilterChain securityFilterChain(
             HttpSecurity http,
@@ -46,28 +53,6 @@ public class SecurityConfig {
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers(PERMIT_ALL_ENDPOINTS).permitAll()
                         .anyRequest().authenticated()
-                )
-                .exceptionHandling(ex -> ex
-                        .authenticationEntryPoint((
-                                request,
-                                response,
-                                authException
-                        ) -> {
-                            logger.warn("An attempt to gain access to a protected resource: [{}]", request.getRequestURI());
-
-                            response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
-                            response.setContentType(MediaType.APPLICATION_JSON_VALUE);
-                        })
-                        .accessDeniedHandler((
-                                request,
-                                response,
-                                accessDeniedException
-                        ) -> {
-                            logger.error("Access denied for request: [{}]", request.getRequestURI());
-
-                            response.setStatus(HttpServletResponse.SC_FORBIDDEN);
-                            response.setContentType(MediaType.APPLICATION_JSON_VALUE);
-                        })
                 )
                 .formLogin(AbstractHttpConfigurer::disable)
                 .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
@@ -82,7 +67,7 @@ public class SecurityConfig {
     public CorsConfigurationSource corsConfigurationSource() {
         var configuration = new CorsConfiguration();
 
-        configuration.setAllowedOriginPatterns(List.of("*"));
+        configuration.setAllowedOriginPatterns(List.of(corsProperties.getCorsAllowedOriginsUri()));
         configuration.setAllowedMethods(List.of("*"));
         configuration.setAllowedHeaders(List.of("*"));
         configuration.setAllowCredentials(true);

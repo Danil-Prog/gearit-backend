@@ -78,7 +78,7 @@ paths:
               $ref: '#/components/schemas/LoginRequest'
       responses:
         200:
-          description: Успешная регистрация
+          description: Успешная аутентификация
           content:
             application/json:
               schema:
@@ -101,6 +101,30 @@ paths:
       tags:
         - Auth
       summary: Обновление токена доступа
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TokenRequest'
+      responses:
+        200:
+          description: Успешная регистрация
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TokenResponse'
+        400:
+          description: Если были переданы некорректные данные
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ClientException"
+        500:
+          description: Ошибка сервера
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ClientException"
 
   /yandex/login:
     get:
@@ -158,6 +182,10 @@ components:
           type:
             - string
           example: 'Неверный логин'
+        extendedHelp:
+          type:
+            - string
+          example: 'Измените логин и попробуйте ещё раз'
 
     RegisterRequest:
       type:
@@ -174,10 +202,18 @@ components:
       type:
         - object
       properties:
-        username:
+        email:
           type:
             - string
         password:
+          type:
+            - string
+
+    TokenRequest:
+      type:
+        - object
+      properties:
+        refreshToken:
           type:
             - string
 
