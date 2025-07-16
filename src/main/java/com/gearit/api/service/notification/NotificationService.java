@@ -43,6 +43,8 @@ public class NotificationService {
 
     public void sendConfirmEmail(String to, String code) {
         var bodyMessage = HTML_BODY.replace("{{ URL }}", emailProperties.getUrlVerify() + code);
+        System.out.println(bodyMessage
+        );
         sendEmail(to, bodyMessage);
     }
 
