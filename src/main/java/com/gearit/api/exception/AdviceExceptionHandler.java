@@ -41,14 +41,14 @@ public class AdviceExceptionHandler {
     }
 
     @ExceptionHandler(BadRequestException.class)
-    public ResponseEntity<ResponseException> badRequestException(BadRequestException ex) {
-        ResponseException responseException = new ResponseException(ex.getMessage());
-        return new ResponseEntity<>(responseException, HttpStatus.BAD_REQUEST);
+    public ResponseEntity<BadRequestResponseException> badRequestException(BadRequestException ex) {
+        BadRequestResponseException badRequestResponseException = new BadRequestResponseException(ex.getMessage());
+        return new ResponseEntity<>(badRequestResponseException, HttpStatus.BAD_REQUEST);
     }
 
     @ExceptionHandler(WebClientException.class)
-    public ResponseEntity<ResponseException> webClientException(WebClientException ex) {
-        ResponseException responseException = new ResponseException(ex.getMessage(), ex.getExtendedHelp());
-        return new ResponseEntity<>(responseException, HttpStatus.BAD_REQUEST);
+    public ResponseEntity<WebClientExceptionResponse> webClientException(WebClientException ex) {
+        WebClientExceptionResponse webClientExceptionResponse = new WebClientExceptionResponse(ex.getMessage(), ex.getExtendedHelp());
+        return new ResponseEntity<>(webClientExceptionResponse, HttpStatus.BAD_REQUEST);
     }
 }

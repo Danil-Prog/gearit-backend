@@ -88,7 +88,7 @@ public class AuthService {
         var errorMessage = "User authentication failed";
         var user = userProviderService.getUserProviderByEmailOrThrow(email);
 
-        if (user.getConfirmed() == false) {
+        if (user.isConfirmed() == false) {
             throw new WebClientException(errorMessage, "User is not confirmed");
         }
 
