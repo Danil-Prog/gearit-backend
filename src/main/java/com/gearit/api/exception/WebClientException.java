@@ -14,4 +14,13 @@ public class WebClientException extends RuntimeException {
         this.message = message;
         this.extendedHelp = extendedHelp;
     }
+
+    @Override
+    public String getMessage() {
+        return message;
+    }
+
+    public String getExtendedHelp() {
+        return extendedHelp;
+    }
 }

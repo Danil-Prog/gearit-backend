@@ -27,7 +27,7 @@ public class UserProviderService {
 
     public UserProvider getUserProviderByEmailOrThrow(String email) {
         return userProviderRepository.findByEmail(email).orElseThrow(() ->
-                new BadRequestException("User with email '" + email + "' not found")
+                new BadRequestException("User with this email address was not found.")
         );
     }
 
@@ -45,11 +45,9 @@ public class UserProviderService {
         return userProviderRepository.save(userProvider);
     }
 
-    public UserProvider updateUserProvider(UserProvider userProvider) {
+    public void updateUserProvider(UserProvider userProvider) {
         UserProviderValidator.validateUserProvider(userProvider);
-        return userProviderRepository.save(userProvider);
+        userProviderRepository.save(userProvider);
     }
-
-
 }
 
