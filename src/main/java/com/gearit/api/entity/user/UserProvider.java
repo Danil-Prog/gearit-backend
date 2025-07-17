@@ -89,7 +89,7 @@ public class UserProvider implements UserDetails {
         this.email = email;
     }
 
-    public Boolean getConfirmed() {
+    public Boolean isConfirmed() {
         return isConfirmed;
     }
 
