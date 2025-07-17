@@ -17,6 +17,7 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 public class AuthService {
@@ -44,6 +45,7 @@ public class AuthService {
         this.notificationService = notificationService;
     }
 
+    @Transactional
     public void register(String email, String password) {
         var user = userProviderService.getUserProviderByEmailOrNull(email);
 
@@ -55,7 +57,6 @@ public class AuthService {
         userProvider.setEmail(email);
         userProvider.setPassword(password);
         userProvider.setProvider(TypeProvider.INTERNAL.name());
-        userProvider.setConfirmed(false);
 
         Long userProviderId = userProviderService.createUserProvider(userProvider).getId();
         ConfirmCode code = confirmCodeService.createNewConfirmCode(userProviderId);
@@ -65,17 +66,20 @@ public class AuthService {
         logger.info("New user created, send confirm code {}, to user with email: {}", code.getCode(), email);
     }
 
+    @Transactional
     public void verifyUserProvider(String code) {
         ConfirmCode confirmCode = confirmCodeService.getConfirmCodeByCode(code);
 
         if (confirmCode == null) {
-            throw new BadRequestException("Verification code sent is invalid.");
+            throw new WebClientException("User confirmed failed", "Verification code sent is invalid.");
         }
 
         UserProvider userProvider = userProviderService.getUserProviderById(confirmCode.getUserProviderId());
         userProvider.setConfirmed(true);
 
+        // Подтверждаем аккаунт пользователя и удаляем код подтверждения из БД.
         userProviderService.updateUserProvider(userProvider);
+        confirmCodeService.deleteConfirmCodeByCode(confirmCode.getCode());
 
         logger.info("Verify user with email: [{}], confirm code {}", userProvider.getEmail(), confirmCode.getCode());
     }

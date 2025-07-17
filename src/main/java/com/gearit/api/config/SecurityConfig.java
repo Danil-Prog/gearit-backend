@@ -3,14 +3,13 @@ package com.gearit.api.config;
 import com.gearit.api.config.filter.JwtAuthenticationFilter;
 import com.gearit.api.config.properties.CorsProperties;
 import java.util.List;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.authentication.ProviderManager;
+import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
+import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
@@ -27,8 +26,6 @@ import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 public class SecurityConfig {
 
     private final CorsProperties corsProperties;
-
-    private final Logger logger = LoggerFactory.getLogger(getClass());
 
     private final String[] PERMIT_ALL_ENDPOINTS = {
             "/api/v1/auth/login",
@@ -47,12 +44,16 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain securityFilterChain(
             HttpSecurity http,
-            JwtAuthenticationFilter jwtAuthenticationFilter
+            JwtAuthenticationFilter jwtAuthenticationFilter,
+            UserDetailsService userDetailsService
     ) throws Exception {
         http
+                .authenticationProvider(authenticationProvider(userDetailsService))
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers(PERMIT_ALL_ENDPOINTS).permitAll()
-                        .anyRequest().authenticated()
+                        .requestMatchers(PERMIT_ALL_ENDPOINTS)
+                        .permitAll()
+                        .anyRequest()
+                        .authenticated()
                 )
                 .formLogin(AbstractHttpConfigurer::disable)
                 .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
@@ -79,12 +80,15 @@ public class SecurityConfig {
     }
 
     @Bean
-    public AuthenticationManager authenticationManager(UserDetailsService userDetailsService) {
-        DaoAuthenticationProvider daoAuthenticationProvider = new DaoAuthenticationProvider();
-        daoAuthenticationProvider.setPasswordEncoder(bcryptPasswordEncoder());
-        daoAuthenticationProvider.setUserDetailsService(userDetailsService);
+    public AuthenticationManager authenticationManager(AuthenticationConfiguration configuration) throws Exception {
+        return configuration.getAuthenticationManager();
+    }
 
-        return new ProviderManager(daoAuthenticationProvider);
+    @Bean
+    public AuthenticationProvider authenticationProvider(UserDetailsService userDetailsService) {
+        DaoAuthenticationProvider provider = new DaoAuthenticationProvider(userDetailsService);
+        provider.setPasswordEncoder(bcryptPasswordEncoder());
+        return provider;
     }
 
     @Bean
