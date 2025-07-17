@@ -5,9 +5,13 @@ import com.resend.Resend;
 import com.resend.core.exception.ResendException;
 import com.resend.services.emails.model.CreateEmailOptions;
 import com.resend.services.emails.model.CreateEmailResponse;
+import java.io.IOException;
+import java.nio.file.Files;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.Resource;
+import org.springframework.core.io.ResourceLoader;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -15,43 +19,41 @@ public class NotificationService {
 
     private final Resend resend;
     private final EmailProperties emailProperties;
+    private final ResourceLoader resourceLoader;
 
     private final Logger logger = LoggerFactory.getLogger(NotificationService.class);
 
+    private final String HTML_BODY;
+    private static final String SUBJECT = "Пожалуйста, подтвердите регистрацию.";
+
     @Autowired
-    public NotificationService(Resend resend, EmailProperties emailProperties) {
+    public NotificationService(
+            Resend resend,
+            EmailProperties emailProperties,
+            ResourceLoader resourceLoader
+    ) throws IOException {
         this.resend = resend;
         this.emailProperties = emailProperties;
-    }
+        this.resourceLoader = resourceLoader;
 
-    public void sendNotificationToEmail() {
-        String to = "9mlcduov5oij@mail.ru";
-        CreateEmailOptions emailOptions = CreateEmailOptions.builder()
-                .from("onboarding@resend.dev")
-                .to(to)
-                .subject("Gearit mail")
-                .html("<p>Congrats on sending your <strong>first email</strong>!</p>")
-                .build();
+        this.HTML_BODY = loadHtmlFromResource();
+
+        System.out.println(HTML_BODY);
     }
 
     public void sendConfirmEmail(String to, String code) {
-        String subject = "Please verify your registration";
-        String body = "<br>"
-                + "Please click the link below to verify your registration:<br>"
-                + "<h3><a href=\"[[URL]]\" target=\"_self\">VERIFY</a></h3>"
-                + "Thank you<br>"
-                + "Gearit.";
-
-        body = body.replace("[[URL]]", "http://localhost:8080/api/v1/auth/verify?code=" + code);
-        sendEmail(to, subject, body);
+        var bodyMessage = HTML_BODY.replace("{{ URL }}", emailProperties.getUrlVerify() + code);
+        System.out.println(bodyMessage
+        );
+        sendEmail(to, bodyMessage);
     }
 
-    private void sendEmail(String to, String subject, String body) {
+    private void sendEmail(String to, String body) {
         String from = emailProperties.getFrom();
         CreateEmailOptions emailOptions = CreateEmailOptions.builder()
                 .from(from)
                 .to(to)
-                .subject(subject)
+                .subject(NotificationService.SUBJECT)
                 .html(body)
                 .build();
 
@@ -61,5 +63,10 @@ public class NotificationService {
         } catch (ResendException e) {
             logger.error("Error sending email, message: {}", e.getMessage());
         }
+    }
+
+    private String loadHtmlFromResource() throws IOException {
+        Resource resource = resourceLoader.getResource("classpath:email/verify_body.html");
+        return Files.readString(resource.getFile().toPath());
     }
 }

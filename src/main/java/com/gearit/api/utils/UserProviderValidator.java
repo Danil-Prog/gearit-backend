@@ -2,46 +2,49 @@ package com.gearit.api.utils;
 
 import com.gearit.api.entity.user.TypeProvider;
 import com.gearit.api.entity.user.UserProvider;
-import com.gearit.api.exception.BadRequestException;
+import com.gearit.api.exception.WebClientException;
 
+/**
+ * Валидация пользовательских данных при регистрации.
+ * На проверку идут email и password пользователя.
+ */
 public class UserProviderValidator {
 
+    private static final String ERROR_MESSAGE = "Incorrect user data";
+
     public static void validateUserProvider(UserProvider userProvider) {
-//        validateUsername(userProvider.getUsername());
-//        validateEmail(userProvider.getEmail());
-//
-//        if (userProvider.getPassword() != null && userProvider.getProvider().equals(TypeProvider.INTERNAL.name())) {
-//            validatePassword(userProvider.getPassword());
-//        }
-    }
+        isValidEmail(userProvider.getEmail());
 
-    private static void validateUsername(String username) {
-        if (username == null || username.isEmpty()) {
-            throw new BadRequestException("Username cannot be null or empty");
-        }
-
-        if (!username.matches("^[a-zA-Z0-9_-]{3,16}$")) {
-            throw new BadRequestException("Username contains invalid characters");
+        if (userProvider.getPassword() != null && userProvider.getProvider().equals(TypeProvider.INTERNAL.name())) {
+            isValidPassword(userProvider.getPassword());
         }
     }
 
-    private static void validateEmail(String email) {
+    private static void isValidEmail(String email) {
         if (email == null || email.isEmpty()) {
-            throw new BadRequestException("Email cannot be null or empty");
+            throw asWebClientException("Email cannot be null or empty");
         }
 
         if (!email.matches("^[a-zA-Z0-9_+&*-]+(?:\\.[a-zA-Z0-9_+&*-]+)*@(?:[a-zA-Z0-9-]+\\.)+[a-zA-Z]{2,7}$")) {
-            throw new BadRequestException("Invalid email format");
+            throw asWebClientException("Invalid email format");
         }
     }
 
-    private static void validatePassword(String password) {
+    private static void isValidPassword(String password) {
         if (password == null || password.isEmpty()) {
-            throw new BadRequestException("Password cannot be null or empty");
+            throw asWebClientException("Password cannot be null or empty");
         }
 
-        if (!password.matches("^[a-zA-Z0-9_-]{6,16}$")) {
-            throw new BadRequestException("Invalid password format");
+        if (!password.matches("^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[^A-Za-z0-9]).+$")) {
+            throw asWebClientException(
+                    "Password must contain at least one lowercase letter, " +
+                            "one uppercase letter, one digit, one special character," +
+                            " and must not be empty."
+            );
         }
+    }
+
+    private static WebClientException asWebClientException(String extendedHelp) {
+        return new WebClientException(ERROR_MESSAGE, extendedHelp);
     }
 }

@@ -1,14 +1,5 @@
 package com.gearit.api.exception;
 
-public class ResponseException {
+public record ResponseException(String message) {
 
-    private String message;
-
-    public ResponseException(String message) {
-        this.message = message;
-    }
-
-    public String getMessage() {
-        return message;
-    }
 }

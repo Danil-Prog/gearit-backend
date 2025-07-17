@@ -1,6 +1,7 @@
 package com.gearit.api.service.user;
 
 import com.gearit.api.entity.user.UserProvider;
+import com.gearit.api.exception.BadRequestException;
 import com.gearit.api.repository.UserProviderRepository;
 import com.gearit.api.utils.UserProviderValidator;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -22,6 +23,12 @@ public class UserProviderService {
 
     public UserProvider getUserProviderByEmailOrNull(String email) {
         return userProviderRepository.findByEmail(email).orElse(null);
+    }
+
+    public UserProvider getUserProviderByEmailOrThrow(String email) {
+        return userProviderRepository.findByEmail(email).orElseThrow(() ->
+                new BadRequestException("User with email '" + email + "' not found")
+        );
     }
 
     public UserProvider getUserProviderById(Long id) {
