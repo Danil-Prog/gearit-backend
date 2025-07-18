@@ -23,7 +23,7 @@ paths:
               $ref: '#/components/schemas/RegisterRequest'
       responses:
         200:
-          description: Успешная регистрация
+          description: Успешная регистрация.
         400:
           description: Если были переданы некорректные данные
           content:
