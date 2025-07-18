@@ -1,4 +1,4 @@
-package com.gearit.api.controller;
+package com.gearit.api.controller.profile;
 
 import com.gearit.api.controller.response.ProfileResponse;
 import org.springframework.http.ResponseEntity;

@@ -7,7 +7,6 @@ import com.gearit.api.controller.response.ConfirmResponse;
 import com.gearit.api.controller.response.RegisterResponse;
 import com.gearit.api.controller.response.TokenResponse;
 import com.gearit.api.service.auth.AuthService;
-import java.util.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -33,11 +32,6 @@ public class AuthenticationController {
     public ResponseEntity<ConfirmResponse> verify(@RequestParam String code) {
         authService.verifyUserProvider(code);
         return ResponseEntity.ok(new ConfirmResponse());
-    }
-
-    @GetMapping("/headers")
-    public ResponseEntity<?> headers(@RequestHeader Map<String, String> headers) {
-        return ResponseEntity.ok(headers);
     }
 
     @PostMapping("/login")
