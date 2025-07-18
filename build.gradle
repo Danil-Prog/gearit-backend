@@ -44,6 +44,10 @@ dependencies {
 
     /* Email sender */
     implementation 'com.resend:resend-java:3.1.0'
+
+    /* Monitoring */
+    implementation("io.micrometer:micrometer-registry-prometheus:1.15.1")
+    implementation("org.springframework.boot:spring-boot-starter-actuator")
 }
 
 jib {

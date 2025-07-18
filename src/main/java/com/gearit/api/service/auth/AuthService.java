@@ -8,7 +8,7 @@ import com.gearit.api.exception.BadRequestException;
 import com.gearit.api.exception.WebClientException;
 import com.gearit.api.service.jwt.JwtTokenProvider;
 import com.gearit.api.service.notification.NotificationService;
-import com.gearit.api.service.user.ConfirmCodeService;
+import com.gearit.api.service.confirmcode.ConfirmCodeService;
 import com.gearit.api.service.user.UserProviderService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

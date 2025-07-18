@@ -41,6 +41,34 @@ services:
     networks:
       - gearit-network
 
+  victoria-metrics:
+    container_name: gearit-victoria
+    image: victoriametrics/victoria-metrics
+    ports:
+      - "8428:8428"
+    command:
+      - '-retentionPeriod=1'
+    networks:
+      - gearit-network
+
+  vmagent:
+    container_name: gearit-vmagent
+    image: victoriametrics/vmagent
+    command:
+      - '-promscrape.config=/etc/prometheus/scrape.yml'
+      - '-remoteWrite.url=http://gearit-victoria:8428/api/v1/write'
+    volumes:
+      - ./prometheus/:/etc/prometheus/
+    networks:
+      - gearit-network
+
+  grafana:
+    container_name: gearit-grafana
+    image: grafana/grafana
+    ports:
+      - "8008:3000"
+    networks:
+      - gearit-network
 
 networks:
   gearit-network:
