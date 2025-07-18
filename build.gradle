@@ -60,7 +60,9 @@ jib {
         }
     }
 
-    container.creationTime = Instant.now().toString()
+    container {
+        creationTime = Instant.now().toString()
+    }
 }
 
 tasks.named('test') {

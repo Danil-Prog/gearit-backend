@@ -1,11 +1,11 @@
-name: Build
+name: Публикация образа backend-a и рестарт сервиса
 on:
   push:
-    branches: [develop]
+    branches: [ develop ]
 
 jobs:
-  build: 
-    runs-on: [self-hosted]
+  build:
+    runs-on: [ self-hosted ]
     
     steps:
       - name: Checkout code
