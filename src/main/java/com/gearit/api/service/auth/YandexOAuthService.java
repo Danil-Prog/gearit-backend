@@ -18,16 +18,19 @@ public class YandexOAuthService {
     private final JwtTokenProvider jwtTokenProvider;
     private final YandexProperties yandexProperties;
     private final UserProviderService userProviderService;
+    private final RestTemplate restTemplate;
 
     private final Logger logger = LoggerFactory.getLogger(this.getClass());
 
     public YandexOAuthService(
             JwtTokenProvider jwtTokenProvider,
-            YandexProperties yandexProperties, UserProviderService userProviderService
+            YandexProperties yandexProperties,
+            UserProviderService userProviderService
     ) {
         this.jwtTokenProvider = jwtTokenProvider;
         this.yandexProperties = yandexProperties;
         this.userProviderService = userProviderService;
+        this.restTemplate = new RestTemplate();
     }
 
     public TokenResponse callbackAuthentication(String code) {
@@ -41,7 +44,6 @@ public class YandexOAuthService {
 
         HttpEntity<String> request = new HttpEntity<>(requestBody, headers);
 
-        RestTemplate restTemplate = new RestTemplate();
         ResponseEntity<Map> response = restTemplate.postForEntity(
                 yandexProperties.getTokenUri(),
                 request,

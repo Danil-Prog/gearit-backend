@@ -1,4 +1,4 @@
-package com.gearit.api.service.user;
+package com.gearit.api.service.confirmcode;
 
 import com.gearit.api.entity.user.ConfirmCode;
 import com.gearit.api.repository.ConfirmCodeRepository;

@@ -34,6 +34,7 @@ public class SecurityConfig {
             "/api/v1/auth/verify",
             "/api/v1/yandex/login",
             "/api/v1/yandex/callback",
+            "/actuator/**",
     };
 
     @Autowired
