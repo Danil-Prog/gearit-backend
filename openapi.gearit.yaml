@@ -1,7 +1,7 @@
 openapi: 3.1.0
 info:
-  title: Gearit-api
-  description: Gearit-api
+  title: gearit-api
+  description: gearit-api
   version: 0.1.1
 servers:
   - url: 'http://localhost:8080/api/v1'
@@ -16,6 +16,8 @@ paths:
       tags:
         - Auth
       summary: Регистрация
+      operationId: register
+      security: []
       requestBody:
         content:
           application/json:
@@ -42,9 +44,11 @@ paths:
       tags:
         - Auth
       summary: Регистрация
+      operationId: verify
+      security: []
       parameters:
         - name: code
-          in: path
+          in: query
           description: Код подтверждения, отправленный на почту
           required: true
           schema:
@@ -71,6 +75,8 @@ paths:
       tags:
         - Auth
       summary: Авторизация
+      operationId: login
+      security: []
       requestBody:
         content:
           application/json:
@@ -101,6 +107,8 @@ paths:
       tags:
         - Auth
       summary: Обновление токена доступа
+      operationId: refresh
+      security: []
       requestBody:
         content:
           application/json:
@@ -131,6 +139,8 @@ paths:
       tags:
         - Auth
       summary: Авторизация через сервер OAuth Yandex
+      operationId: yandex/login
+      security: []
       responses:
         200:
           description: Успешное получение редиректа
@@ -152,6 +162,8 @@ paths:
       tags:
         - Auth
       summary: Авторизация через сервер OAuth Yandex
+      operationId: yandex/callback
+      security: []
       responses:
         200:
           description: Успешное добавление пользователя в БД и получение токенов доступа
@@ -173,6 +185,12 @@ paths:
                 $ref: "#/components/schemas/ClientException"
 
 components:
+  securitySchemes:
+    JWT:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+
   schemas:
     ClientException:
       type:

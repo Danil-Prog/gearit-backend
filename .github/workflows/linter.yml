@@ -5,7 +5,7 @@ on:
       - openapi.gearit.yaml
 
 jobs:
-  build:
+  linter:
     runs-on: [ self-hosted ]
 
     steps:
