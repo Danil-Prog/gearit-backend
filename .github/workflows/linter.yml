@@ -1,16 +1,24 @@
-name: Проверка корректности содержимого файла openapi
+name: Проверка корректности содержимого openapi
 on:
   push:
     paths:
       - openapi.gearit.yaml
 
 jobs:
-  build:
+  linter:
     runs-on: [ self-hosted ]
 
     steps:
-      - name: OpenAPI Lint Checks
-        uses: nwestfall/openapi-action@v1.0.2
+      - name: Checkout repo
+        uses: actions/checkout@v3
+
+      - name: Set up node
+        uses: actions/setup-node@v4
         with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          file: openapi.gearit.yaml
+          node-version: '20'
+
+      - name: Install Redocly CLI
+        run: npm install -g @redocly/cli
+
+      - name: Lint OpenAPI
+        run: redocly lint openapi.gearit.yaml
