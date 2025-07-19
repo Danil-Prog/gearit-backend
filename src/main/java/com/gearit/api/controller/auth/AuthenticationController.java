@@ -1,14 +1,10 @@
 package com.gearit.api.controller.auth;
 
-import com.gearit.api.controller.request.LoginRequest;
-import com.gearit.api.controller.request.RegisterRequest;
-import com.gearit.api.controller.request.TokenRequest;
-import com.gearit.api.controller.response.ConfirmResponse;
-import com.gearit.api.controller.response.RegisterResponse;
-import com.gearit.api.controller.response.TokenResponse;
-import com.gearit.api.service.auth.AuthService;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
+import com.gearit.api.controller.request.*;
+import com.gearit.api.controller.response.*;
+import com.gearit.api.service.auth.*;
+import org.springframework.beans.factory.annotation.*;
+import org.springframework.http.*;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -44,5 +40,13 @@ public class AuthenticationController {
     public ResponseEntity<TokenResponse> refresh(@RequestBody TokenRequest tokenRequest) {
         var response = authService.refreshToken(tokenRequest.refreshToken());
         return ResponseEntity.ok(response);
+    }
+
+    @PostMapping("/password/recovery/notification")
+    public ResponseEntity<PasswordRecoveryResponse> sendRecoveryPasswordNotification(
+            @RequestBody PasswordRecoveryRequest passwordRecoveryRequest
+    ) {
+        authService.createAndSendRecoveryPasswordNotification(passwordRecoveryRequest.email());
+        return ResponseEntity.ok(new PasswordRecoveryResponse());
     }
 }

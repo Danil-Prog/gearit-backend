@@ -15,7 +15,7 @@ public class UserProviderValidator {
     public static void validateUserProvider(UserProvider userProvider) {
         isValidEmail(userProvider.getEmail());
 
-        if (userProvider.getPassword() != null && userProvider.getProvider().equals(TypeProvider.INTERNAL.name())) {
+        if (userProvider.getProvider().equals(TypeProvider.INTERNAL.name())) {
             isValidPassword(userProvider.getPassword());
         }
     }
@@ -33,6 +33,10 @@ public class UserProviderValidator {
     private static void isValidPassword(String password) {
         if (password == null || password.isEmpty()) {
             throw asWebClientException("Password cannot be null or empty");
+        }
+
+        if (password.length() < 10) {
+            throw asWebClientException("Password length should be at least 10 characters");
         }
 
         if (!password.matches("^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[^A-Za-z0-9]).+$")) {

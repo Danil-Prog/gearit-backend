@@ -199,11 +199,11 @@ components:
         message:
           type:
             - string
-          example: 'Неверный логин'
+          example: 'Incorrect user data'
         extendedHelp:
           type:
             - string
-          example: 'Измените логин и попробуйте ещё раз'
+          example: 'Password cannot be null or empty'
 
     RegisterRequest:
       type:
