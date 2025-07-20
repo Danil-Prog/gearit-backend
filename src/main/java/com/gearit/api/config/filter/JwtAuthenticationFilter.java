@@ -66,9 +66,10 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         String token = null;
 
         if (header != null && !header.isBlank() && header.startsWith(BEARER_PREFIX)) {
-            token = header.substring(BEARER_PREFIX.length());
+            token = header.substring(7);
         }
 
+        System.out.println(token);
         return token;
     }
 }
