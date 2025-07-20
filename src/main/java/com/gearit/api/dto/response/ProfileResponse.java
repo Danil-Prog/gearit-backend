@@ -1,4 +1,4 @@
-package com.gearit.api.controller.response;
+package com.gearit.api.dto.response;
 
 public record ProfileResponse(String email) {
 }

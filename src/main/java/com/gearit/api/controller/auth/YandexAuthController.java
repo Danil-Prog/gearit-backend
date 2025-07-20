@@ -1,7 +1,7 @@
 package com.gearit.api.controller.auth;
 
 import com.gearit.api.config.properties.*;
-import com.gearit.api.controller.response.*;
+import com.gearit.api.dto.response.*;
 import com.gearit.api.service.auth.*;
 import org.slf4j.*;
 import org.springframework.beans.factory.annotation.*;

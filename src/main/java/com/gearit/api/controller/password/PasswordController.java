@@ -1,6 +1,6 @@
 package com.gearit.api.controller.password;
 
-import com.gearit.api.controller.request.*;
+import com.gearit.api.dto.request.*;
 import com.gearit.api.service.password.*;
 import org.springframework.beans.factory.annotation.*;
 import org.springframework.http.*;

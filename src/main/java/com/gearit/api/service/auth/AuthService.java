@@ -1,6 +1,6 @@
 package com.gearit.api.service.auth;
 
-import com.gearit.api.controller.response.*;
+import com.gearit.api.dto.response.*;
 import com.gearit.api.entity.user.*;
 import com.gearit.api.exception.*;
 import com.gearit.api.service.confirmcode.*;

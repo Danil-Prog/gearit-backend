@@ -1,4 +1,4 @@
-package com.gearit.api.controller.request;
+package com.gearit.api.dto.request;
 
 public record TokenRequest(String refreshToken) {
 }

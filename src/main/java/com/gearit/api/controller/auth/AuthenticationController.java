@@ -1,7 +1,7 @@
 package com.gearit.api.controller.auth;
 
-import com.gearit.api.controller.request.*;
-import com.gearit.api.controller.response.*;
+import com.gearit.api.dto.request.*;
+import com.gearit.api.dto.response.*;
 import com.gearit.api.service.auth.*;
 import org.springframework.beans.factory.annotation.*;
 import org.springframework.http.*;
