@@ -134,6 +134,90 @@ paths:
               schema:
                 $ref: "#/components/schemas/ClientException"
 
+  /password/forgot:
+    post:
+      tags:
+        - Password operation
+      summary: Отправка уведомления о восстановление пароля на почту
+      operationId: password
+      security: [ ]
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ForgotRequest'
+      responses:
+        200:
+          description: Успешная отправка уведомления.
+        400:
+          description: Если были переданы некорректные данные
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ClientException"
+        500:
+          description: Ошибка сервера
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ClientException"
+
+  /password/verify-code:
+    post:
+      tags:
+        - Password operation
+      summary: Проверка на валидность отправленного кода для восстановления пароля
+      operationId: password
+      security: [ ]
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/VerifyCodeRequest'
+      responses:
+        200:
+          description: Успешная отправка уведомления.
+        400:
+          description: Если были переданы некорректные данные
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ClientException"
+        500:
+          description: Ошибка сервера
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ClientException"
+
+  /password/reset:
+    post:
+      tags:
+        - Password operation
+      summary: Обновление пароля пользователя
+      operationId: password
+      security: [ ]
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ResetPasswordRequest'
+      responses:
+        200:
+          description: Успешная отправка уведомления.
+        400:
+          description: Если были переданы некорректные данные
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ClientException"
+        500:
+          description: Ошибка сервера
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ClientException"
+
   /yandex/login:
     get:
       tags:
@@ -243,5 +327,32 @@ components:
           type:
             - string
         refreshToken:
+          type:
+            - string
+
+    ForgotRequest:
+      type:
+        - object
+      properties:
+        email:
+          type:
+            - string
+
+    VerifyCodeRequest:
+      type:
+        - object
+      properties:
+        code:
+          type:
+            - string
+
+    ResetPasswordRequest:
+      type:
+        - object
+      properties:
+        code:
+          type:
+            - string
+        password:
           type:
             - string

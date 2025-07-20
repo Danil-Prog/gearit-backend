@@ -41,12 +41,4 @@ public class AuthenticationController {
         var response = authService.refreshToken(tokenRequest.refreshToken());
         return ResponseEntity.ok(response);
     }
-
-    @PostMapping("/password/recovery/notification")
-    public ResponseEntity<PasswordRecoveryResponse> sendRecoveryPasswordNotification(
-            @RequestBody PasswordRecoveryRequest passwordRecoveryRequest
-    ) {
-        authService.createAndSendRecoveryPasswordNotification(passwordRecoveryRequest.email());
-        return ResponseEntity.ok(new PasswordRecoveryResponse());
-    }
 }

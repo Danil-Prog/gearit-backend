@@ -115,13 +115,4 @@ public class AuthService {
         }
     }
 
-    /**
-     * Отправляет пользователю на почту уведомление с ссылкой на восстановление пароля
-     *
-     * @param email - адрес электронной почты пользователя
-     */
-    public void createAndSendRecoveryPasswordNotification(String email) {
-        UserProvider userProvider = userProviderService.getUserProviderByEmailOrThrow(email);
-        passwordRecoveryService.createNewPasswordRecovery(userProvider.getId());
-    }
 }
