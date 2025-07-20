@@ -139,7 +139,7 @@ paths:
       tags:
         - Password operation
       summary: Отправка уведомления о восстановление пароля на почту
-      operationId: password
+      operationId: passwordForgot
       security: [ ]
       requestBody:
         content:
@@ -167,7 +167,7 @@ paths:
       tags:
         - Password operation
       summary: Проверка на валидность отправленного кода для восстановления пароля
-      operationId: password
+      operationId: passwordVerifyCode
       security: [ ]
       requestBody:
         content:
@@ -195,7 +195,7 @@ paths:
       tags:
         - Password operation
       summary: Обновление пароля пользователя
-      operationId: password
+      operationId: passwordReset
       security: [ ]
       requestBody:
         content:
