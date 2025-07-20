@@ -1,6 +1,7 @@
 package com.gearit.api.controller.profile;
 
 import com.gearit.api.controller.response.ProfileResponse;
+import com.gearit.api.entity.user.*;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -13,6 +14,7 @@ public class ProfileController {
 
     @GetMapping
     public ResponseEntity<ProfileResponse> profile(Authentication auth) {
-        return ResponseEntity.ok(new ProfileResponse(auth.getPrincipal().toString()));
+        UserProvider userProvider = (UserProvider) auth.getPrincipal();
+        return ResponseEntity.ok(new ProfileResponse(userProvider.getUsername()));
     }
 }

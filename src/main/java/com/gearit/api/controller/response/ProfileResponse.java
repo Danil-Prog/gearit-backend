@@ -1,4 +1,4 @@
 package com.gearit.api.controller.response;
 
-public record ProfileResponse(String username) {
+public record ProfileResponse(String email) {
 }
