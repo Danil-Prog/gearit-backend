@@ -1,6 +1,6 @@
 package com.gearit.api.service.user;
 
-import com.gearit.api.entity.user.UserProvider;
+import com.gearit.api.entity.user.*;
 import com.gearit.api.exception.BadRequestException;
 import com.gearit.api.repository.UserProviderRepository;
 import com.gearit.api.utils.UserProviderValidator;
@@ -38,7 +38,8 @@ public class UserProviderService {
     public UserProvider createUserProvider(UserProvider userProvider) {
         UserProviderValidator.validateUserProvider(userProvider);
 
-        if (userProvider.getPassword() != null && !userProvider.getPassword().isEmpty()) {
+        // Ожидается что при `TypeProvider.INTERNAL` пароль не пустой
+        if (userProvider.getProvider().equals(TypeProvider.INTERNAL.name())) {
             userProvider.setPassword(bCryptPasswordEncoder.encode(userProvider.getPassword()));
         }
 
