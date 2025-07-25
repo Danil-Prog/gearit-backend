@@ -19,7 +19,7 @@ public class PasswordController {
 
     @PostMapping("/forgot")
     public ResponseEntity<Void> forgot(@RequestBody ForgotRequest forgotRequest) {
-        passwordService.createAndSendRecoveryPasswordNotification(forgotRequest.email());
+        passwordService.forgot(forgotRequest.email());
         return ResponseEntity.ok().build();
     }
 

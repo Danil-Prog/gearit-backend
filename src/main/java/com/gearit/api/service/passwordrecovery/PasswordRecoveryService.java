@@ -18,7 +18,7 @@ public class PasswordRecoveryService {
         this.passwordRecoveryRepository = passwordRecoveryRepository;
     }
 
-    public PasswordRecovery createNewPasswordRecovery(Long userProviderId) {
+    public PasswordRecovery createPasswordRecovery(Long userProviderId) {
         var randomCode = UUID.randomUUID().toString();
 
         var passwordRecovery = new PasswordRecovery();
