@@ -9,26 +9,38 @@
 
         <createTable tableName="gearit_notifications">
 
+            <column name="id" type="BIGSERIAL">
+                <constraints primaryKey="true"/>
+            </column>
+
             <column name="user_provider_id" type="BIGINT">
                 <constraints primaryKey="true" nullable="false"/>
             </column>
 
-            <column name="recovery_code" type="VARCHAR">
+            <column name="template" type="VARCHAR">
                 <constraints unique="false" nullable="false"/>
             </column>
 
-            <column name="expires_at" type="JAVA.SQL.TYPES.TIMESTAMP_WITH_TIMEZONE">
+            <column name="type" type="VARCHAR">
                 <constraints unique="false" nullable="false"/>
+            </column>
+
+            <column name="status" type="VARCHAR">
+                <constraints unique="false" nullable="false"/>
+            </column>
+
+            <column name="variables" type="TEXT">
+                <constraints unique="false" nullable="true"/>
             </column>
 
         </createTable>
 
         <addForeignKeyConstraint
-                baseTableName="gearit_password_recovery"
+                baseTableName="gearit_notifications"
                 baseColumnNames="user_provider_id"
                 referencedTableName="gearit_user_provider"
                 referencedColumnNames="id"
-                constraintName="fk_gearit_password_recovery_user"/>
+                constraintName="fk_gearit_notifications_user"/>
 
     </changeSet>
 

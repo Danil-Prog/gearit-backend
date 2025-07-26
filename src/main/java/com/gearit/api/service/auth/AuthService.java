@@ -1,24 +1,20 @@
 package com.gearit.api.service.auth;
 
-import com.gearit.api.dto.response.TokenResponse;
-import com.gearit.api.entity.user.ConfirmCode;
-import com.gearit.api.entity.user.TypeProvider;
-import com.gearit.api.entity.user.UserProvider;
-import com.gearit.api.exception.BadRequestException;
-import com.gearit.api.exception.WebClientException;
-import com.gearit.api.service.confirmcode.ConfirmCodeService;
-import com.gearit.api.service.jwt.JwtTokenProvider;
-import com.gearit.api.service.notification.NotificationService;
-import com.gearit.api.service.passwordrecovery.PasswordRecoveryService;
-import com.gearit.api.service.user.UserProviderService;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.authentication.BadCredentialsException;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
+import com.gearit.api.dto.response.*;
+import com.gearit.api.entity.notification.*;
+import com.gearit.api.entity.user.*;
+import com.gearit.api.exception.*;
+import com.gearit.api.service.confirmcode.*;
+import com.gearit.api.service.jwt.*;
+import com.gearit.api.service.notification.*;
+import com.gearit.api.service.passwordrecovery.*;
+import com.gearit.api.service.user.*;
+import java.util.*;
+import org.slf4j.*;
+import org.springframework.beans.factory.annotation.*;
+import org.springframework.security.authentication.*;
+import org.springframework.stereotype.*;
+import org.springframework.transaction.annotation.*;
 
 @Service
 public class AuthService {
@@ -65,9 +61,13 @@ public class AuthService {
         Long userProviderId = userProviderService.createUserProvider(userProvider).getId();
         ConfirmCode confirmCode = confirmCodeService.createNewConfirmCode(userProviderId);
 
-        notificationService.sendConfirmEmail(email, confirmCode.getCode());
+        notificationService.createNotification(
+                NotificationTemplate.USER_CONFIRMED,
+                userProvider,
+                Map.of("code", confirmCode.getCode())
+        );
 
-        logger.info("New user created, send confirm code {}, to user with email: {}", confirmCode.getCode(), email);
+        logger.info("New user with email: {} created", email);
     }
 
     @Transactional
