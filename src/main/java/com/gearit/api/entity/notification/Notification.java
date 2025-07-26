@@ -27,7 +27,6 @@ public class Notification {
     private NotificationStatus status = NotificationStatus.PENDING;
 
     @OneToOne(fetch = FetchType.EAGER)
-    @MapsId
     @JoinColumn(name = "user_provider_id", referencedColumnName = "id")
     private UserProvider sentToUser;
 

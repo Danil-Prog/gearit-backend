@@ -43,10 +43,19 @@ public class NotificationTemplateEngine {
         });
     }
 
-    public String getTemplateByType(NotificationTemplate notificationTemplate) {
-        return templates.get(notificationTemplate);
+    public String renderTemplate(NotificationTemplate notificationTemplate, Map<String, Object> variables) {
+        String result = getTemplateByType(notificationTemplate);
+        for (Map.Entry<String, Object> entry : variables.entrySet()) {
+            String placeholder = "{{ " + entry.getKey() + " }}";
+            result = result.replace(placeholder, (String) entry.getValue());
+        }
+
+        return result;
     }
 
+    private String getTemplateByType(NotificationTemplate notificationTemplate) {
+        return templates.get(notificationTemplate);
+    }
 
     private String loadHtmlFromResource(String htmlName) throws IOException {
         Resource resource = resourceLoader.getResourceByFilename(htmlName);

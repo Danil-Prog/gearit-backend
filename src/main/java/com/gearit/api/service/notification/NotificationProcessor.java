@@ -17,6 +17,7 @@ public class NotificationProcessor {
     private final EmailProperties emailProperties;
     private final NotificationService notificationService;
     private final NotificationTemplateEngine templateEngine;
+    private final CorsProperties corsProperties;
 
     private final Logger logger = LoggerFactory.getLogger(NotificationProcessor.class);
 
@@ -25,12 +26,14 @@ public class NotificationProcessor {
             Resend resend,
             EmailProperties emailProperties,
             NotificationService notificationService,
-            NotificationTemplateEngine templateEngine
+            NotificationTemplateEngine templateEngine,
+            CorsProperties corsProperties
     ) {
         this.resend = resend;
         this.emailProperties = emailProperties;
         this.notificationService = notificationService;
         this.templateEngine = templateEngine;
+        this.corsProperties = corsProperties;
     }
 
     public void processPendingNotifications() {
@@ -40,7 +43,7 @@ public class NotificationProcessor {
         pendingNotifications.forEach(notification -> {
             try {
                 String to = notification.getSentToUser().getEmail();
-                String template = templateEngine.getTemplateByType(notification.getTemplate());
+                String template = templateEngine.renderTemplate(notification.getTemplate(), notification.getVariables());
                 String subject = notification.getTemplate().getSubject();
 
                 sendNotificationOrThrow(to, subject, template);
@@ -58,6 +61,9 @@ public class NotificationProcessor {
 
     private void sendNotificationOrThrow(String to, String subject, String body) throws ResendException {
         String from = emailProperties.getFrom();
+        String url = corsProperties.getCorsAllowedOriginsUri();
+        body = body.replace("{{ URL }}", url);
+
         CreateEmailOptions emailOptions = CreateEmailOptions.builder()
                 .from(from)
                 .to(to)
@@ -66,6 +72,7 @@ public class NotificationProcessor {
                 .build();
 
         CreateEmailResponse response = resend.emails().send(emailOptions);
+
         logger.info("Email sent successfully to address: {}, response id: {}", to, response.getId());
     }
 }

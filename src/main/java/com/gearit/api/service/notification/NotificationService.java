@@ -5,6 +5,7 @@ import com.gearit.api.entity.user.*;
 import com.gearit.api.repository.*;
 import java.util.*;
 import org.springframework.beans.factory.annotation.*;
+import org.springframework.data.domain.*;
 import org.springframework.stereotype.*;
 
 @Service
@@ -42,6 +43,6 @@ public class NotificationService {
     }
 
     public List<Notification> getNotificationsByStatus(NotificationStatus notificationStatus) {
-        return notificationRepository.getNotificationsByStatus(notificationStatus);
+        return notificationRepository.getNotificationsByStatus(notificationStatus, PageRequest.of(0, 10));
     }
 }
