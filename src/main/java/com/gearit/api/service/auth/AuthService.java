@@ -1,6 +1,7 @@
 package com.gearit.api.service.auth;
 
 import com.gearit.api.dto.response.*;
+import com.gearit.api.entity.notification.*;
 import com.gearit.api.entity.user.*;
 import com.gearit.api.exception.*;
 import com.gearit.api.service.confirmcode.*;
@@ -8,6 +9,7 @@ import com.gearit.api.service.jwt.*;
 import com.gearit.api.service.notification.*;
 import com.gearit.api.service.passwordrecovery.*;
 import com.gearit.api.service.user.*;
+import java.util.*;
 import org.slf4j.*;
 import org.springframework.beans.factory.annotation.*;
 import org.springframework.security.authentication.*;
@@ -57,11 +59,15 @@ public class AuthService {
         userProvider.setProvider(TypeProvider.INTERNAL.name());
 
         Long userProviderId = userProviderService.createUserProvider(userProvider).getId();
-        ConfirmCode code = confirmCodeService.createNewConfirmCode(userProviderId);
+        ConfirmCode confirmCode = confirmCodeService.createNewConfirmCode(userProviderId);
 
-        notificationService.sendConfirmEmail(email, code.getCode());
+        notificationService.createNotification(
+                NotificationTemplate.USER_CONFIRMED,
+                userProvider,
+                Map.of("code", confirmCode.getCode())
+        );
 
-        logger.info("New user created, send confirm code {}, to user with email: {}", code.getCode(), email);
+        logger.info("New user with email: {} created", email);
     }
 
     @Transactional

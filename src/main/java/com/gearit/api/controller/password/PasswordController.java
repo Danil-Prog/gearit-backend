@@ -19,12 +19,13 @@ public class PasswordController {
 
     @PostMapping("/forgot")
     public ResponseEntity<Void> forgot(@RequestBody ForgotRequest forgotRequest) {
-        passwordService.createAndSendRecoveryPasswordNotification(forgotRequest.email());
+        passwordService.forgot(forgotRequest.email());
         return ResponseEntity.ok().build();
     }
 
     @PostMapping("/verify-code")
     public ResponseEntity<Void> verify(@RequestBody VerifyCodeRequest verifyCodeRequest) {
+        passwordService.verifyCode(verifyCodeRequest.code());
         return ResponseEntity.ok().build();
     }
 

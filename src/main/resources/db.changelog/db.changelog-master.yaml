@@ -5,3 +5,5 @@ databaseChangeLog:
       file: db.changelog/v1/2025-07-11_10-00_create-table-confirm-code-user.xml
   - include:
       file: db.changelog/v1/2025-07-19_13-00_create-table-password-recovery-user.xml
+  - include:
+      file: db.changelog/v1/2025-07-21_14-45_create-table-notifications.xml

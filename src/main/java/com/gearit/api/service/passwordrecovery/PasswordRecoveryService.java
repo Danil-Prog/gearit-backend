@@ -18,7 +18,7 @@ public class PasswordRecoveryService {
         this.passwordRecoveryRepository = passwordRecoveryRepository;
     }
 
-    public PasswordRecovery createNewPasswordRecovery(Long userProviderId) {
+    public PasswordRecovery createPasswordRecovery(Long userProviderId) {
         var randomCode = UUID.randomUUID().toString();
 
         var passwordRecovery = new PasswordRecovery();
@@ -29,5 +29,9 @@ public class PasswordRecoveryService {
         passwordRecovery.setExpiresAt(Instant.now().plus(1, ChronoUnit.DAYS));
 
         return passwordRecoveryRepository.save(passwordRecovery);
+    }
+
+    public PasswordRecovery getPasswordRecoveryByCode(String code) {
+        return passwordRecoveryRepository.findByCode(code).orElse(null);
     }
 }
