@@ -2,6 +2,7 @@ package com.gearit.api.service.password;
 
 import com.gearit.api.entity.notification.*;
 import com.gearit.api.entity.user.*;
+import com.gearit.api.exception.*;
 import com.gearit.api.service.notification.*;
 import com.gearit.api.service.passwordrecovery.*;
 import com.gearit.api.service.user.*;
@@ -47,4 +48,10 @@ public class PasswordService {
         logger.info("Password recovery code: {}, sent to user with email: {}", passwordRecovery.getCode(), email);
     }
 
+    public void verifyCode(String code) {
+        var passwordRecovery = passwordRecoveryService.getPasswordRecoveryByCode(code);
+        if (passwordRecovery == null) {
+            throw new WebClientException("Password user recovery failed", "Recovery code sent is invalid.");
+        }
+    }
 }

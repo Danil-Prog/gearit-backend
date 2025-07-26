@@ -30,4 +30,8 @@ public class PasswordRecoveryService {
 
         return passwordRecoveryRepository.save(passwordRecovery);
     }
+
+    public PasswordRecovery getPasswordRecoveryByCode(String code) {
+        return passwordRecoveryRepository.findByCode(code).orElse(null);
+    }
 }

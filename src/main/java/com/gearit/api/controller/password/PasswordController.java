@@ -25,6 +25,7 @@ public class PasswordController {
 
     @PostMapping("/verify-code")
     public ResponseEntity<Void> verify(@RequestBody VerifyCodeRequest verifyCodeRequest) {
+        passwordService.verifyCode(verifyCodeRequest.code());
         return ResponseEntity.ok().build();
     }
 
