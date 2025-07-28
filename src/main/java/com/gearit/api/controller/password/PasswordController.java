@@ -1,10 +1,15 @@
 package com.gearit.api.controller.password;
 
-import com.gearit.api.dto.request.*;
-import com.gearit.api.service.password.*;
-import org.springframework.beans.factory.annotation.*;
-import org.springframework.http.*;
-import org.springframework.web.bind.annotation.*;
+import com.gearit.api.dto.request.ForgotRequest;
+import com.gearit.api.dto.request.ResetPasswordRequest;
+import com.gearit.api.dto.request.VerifyCodeRequest;
+import com.gearit.api.service.password.PasswordService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping("/api/v1/password")
@@ -31,6 +36,7 @@ public class PasswordController {
 
     @PostMapping("/reset")
     public ResponseEntity<Void> reset(@RequestBody ResetPasswordRequest resetPasswordRequest) {
+        passwordService.resetPassword(resetPasswordRequest.code(), resetPasswordRequest.newPassword());
         return ResponseEntity.ok().build();
     }
 }

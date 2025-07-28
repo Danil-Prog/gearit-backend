@@ -8,6 +8,8 @@ servers:
 tags:
   - name: Auth
     description: Аутентификация/Авторизация/Регистрация пользователей в системе
+  - name: Password
+    description: Восстановление пароля пользователя
   - name: Profile
     description: Операции с профилем пользователя
 paths:
@@ -137,7 +139,7 @@ paths:
   /password/forgot:
     post:
       tags:
-        - Password operation
+        - Password
       summary: Отправка уведомления о восстановление пароля на почту
       operationId: passwordForgot
       security: [ ]
@@ -165,7 +167,7 @@ paths:
   /password/verify-code:
     post:
       tags:
-        - Password operation
+        - Password
       summary: Проверка на валидность отправленного кода для восстановления пароля
       operationId: passwordVerifyCode
       security: [ ]
@@ -193,7 +195,7 @@ paths:
   /password/reset:
     post:
       tags:
-        - Password operation
+        - Password
       summary: Обновление пароля пользователя
       operationId: passwordReset
       security: [ ]
@@ -353,6 +355,6 @@ components:
         code:
           type:
             - string
-        password:
+        newPassword:
           type:
             - string

@@ -6,7 +6,7 @@ import com.gearit.api.exception.WebClientException;
 
 /**
  * Валидация пользовательских данных при регистрации.
- * На проверку идут email и password пользователя.
+ * На проверку идут email и newPassword пользователя.
  */
 public class UserProviderValidator {
 

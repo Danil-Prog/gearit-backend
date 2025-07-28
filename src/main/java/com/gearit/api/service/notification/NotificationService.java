@@ -1,12 +1,16 @@
 package com.gearit.api.service.notification;
 
-import com.gearit.api.entity.notification.*;
-import com.gearit.api.entity.user.*;
-import com.gearit.api.repository.*;
-import java.util.*;
-import org.springframework.beans.factory.annotation.*;
-import org.springframework.data.domain.*;
-import org.springframework.stereotype.*;
+import com.gearit.api.entity.notification.Notification;
+import com.gearit.api.entity.notification.NotificationStatus;
+import com.gearit.api.entity.notification.NotificationTemplate;
+import com.gearit.api.entity.notification.NotificationType;
+import com.gearit.api.entity.user.UserProvider;
+import com.gearit.api.repository.NotificationRepository;
+import java.util.List;
+import java.util.Map;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.stereotype.Service;
 
 @Service
 public class NotificationService {
@@ -21,20 +25,14 @@ public class NotificationService {
     public void createNotification(
             NotificationTemplate template,
             UserProvider userProvider,
-            Map<String, Object> variable
+            Map<String, Object> variables
     ) {
         Notification notification = new Notification();
         notification.setType(NotificationType.EMAIL);
         notification.setTemplate(template);
         notification.setSentToUser(userProvider);
-        notification.setVariables(variable);
+        notification.setVariables(variables);
 
-        notificationRepository.save(notification);
-    }
-
-    public void updateNotificationStatus(Long id, NotificationStatus status) {
-        var notification = notificationRepository.findById(id).orElseThrow();
-        notification.setStatus(status);
         notificationRepository.save(notification);
     }
 
