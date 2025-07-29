@@ -56,7 +56,7 @@ jib {
     }
 
     to {
-        image = "8922gc/gearit-backend:latest"
+        image = "ghcr.io/danil-prog/gearit-backend:latest"
 
         auth {
             username = providers.environmentVariable('DOCKER_USERNAME')

@@ -1,15 +1,18 @@
 package com.gearit.api.service.notification;
 
-import com.gearit.api.entity.notification.*;
-import com.gearit.api.utils.*;
-import jakarta.annotation.*;
-import java.io.*;
-import java.nio.file.*;
-import java.util.*;
-import org.slf4j.*;
-import org.springframework.beans.factory.annotation.*;
+import com.gearit.api.entity.notification.NotificationTemplate;
+import com.gearit.api.utils.ResourceLoaderUtils;
+import jakarta.annotation.PostConstruct;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Map;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.Resource;
-import org.springframework.stereotype.*;
+import org.springframework.stereotype.Service;
 
 /**
  * Подгружает в память список шаблонов, для уведомлений

@@ -1,4 +1,4 @@
 package com.gearit.api.dto.request;
 
-public record ResetPasswordRequest(String code, String password) {
+public record ResetPasswordRequest(String code, String newPassword) {
 }
