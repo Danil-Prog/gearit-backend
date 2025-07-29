@@ -7,6 +7,7 @@ services:
       POSTGRES_DB: "${DB_NAME}"
       POSTGRES_USER: "${DB_USERNAME}"
       POSTGRES_PASSWORD: "${DB_PASSWORD}"
+      TZ: "Asia/Novosibirsk"
     ports:
       - "5433:5432"
     networks:
@@ -35,6 +36,8 @@ services:
 
       # CORS
       CORS_PROPERTIES_CORS_ALLOWED_ORIGINS_URI: "${CORS_ALLOWED_ORIGINS_URI}"
+
+      TZ: "Asia/Novosibirsk"
     ports:
       - "4040:8080"
     restart: unless-stopped
@@ -44,6 +47,8 @@ services:
   victoria-metrics:
     container_name: gearit-victoria
     image: victoriametrics/victoria-metrics
+    environment:
+      TZ: "Asia/Novosibirsk"
     ports:
       - "8428:8428"
     command:
@@ -65,6 +70,8 @@ services:
   grafana:
     container_name: gearit-grafana
     image: grafana/grafana
+    environment:
+      TZ: "Asia/Novosibirsk"
     ports:
       - "8008:3000"
     networks:

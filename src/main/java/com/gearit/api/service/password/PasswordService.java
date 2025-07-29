@@ -1,11 +1,12 @@
 package com.gearit.api.service.password;
 
+import com.gearit.api.entity.actioncode.ActionCode;
+import com.gearit.api.entity.actioncode.ActionType;
 import com.gearit.api.entity.notification.NotificationTemplate;
-import com.gearit.api.entity.user.PasswordRecovery;
 import com.gearit.api.entity.user.UserProvider;
 import com.gearit.api.exception.WebClientException;
+import com.gearit.api.service.actioncode.ActionCodeService;
 import com.gearit.api.service.notification.NotificationService;
-import com.gearit.api.service.passwordrecovery.PasswordRecoveryService;
 import com.gearit.api.service.user.UserProviderService;
 import java.util.Map;
 import org.slf4j.Logger;
@@ -17,19 +18,19 @@ import org.springframework.stereotype.Service;
 public class PasswordService {
 
     private final UserProviderService userProviderService;
-    private final PasswordRecoveryService passwordRecoveryService;
     private final NotificationService notificationService;
+    private final ActionCodeService actionCodeService;
 
     private final Logger logger = LoggerFactory.getLogger(PasswordService.class);
 
     @Autowired
     public PasswordService(
             UserProviderService userProviderService,
-            PasswordRecoveryService passwordRecoveryService,
-            NotificationService notificationService
+            NotificationService notificationService,
+            ActionCodeService actionCodeService
     ) {
         this.userProviderService = userProviderService;
-        this.passwordRecoveryService = passwordRecoveryService;
+        this.actionCodeService = actionCodeService;
         this.notificationService = notificationService;
     }
 
@@ -40,7 +41,7 @@ public class PasswordService {
      */
     public void forgot(String email) {
         UserProvider userProvider = userProviderService.getUserProviderByEmailOrThrow(email);
-        var passwordRecovery = passwordRecoveryService.createPasswordRecovery(userProvider.getId());
+        var passwordRecovery = actionCodeService.createCode(userProvider.getId(), ActionType.PASSWORD_RECOVERY);
 
         notificationService.createNotification(
                 NotificationTemplate.PASSWORD_RECOVERED,
@@ -51,10 +52,14 @@ public class PasswordService {
         logger.info("Password recovery code: {}, sent to user with email: {}", passwordRecovery.getCode(), email);
     }
 
-    public PasswordRecovery verifyCode(String code) {
-        var passwordRecovery = passwordRecoveryService.getPasswordRecoveryByCode(code);
+    public ActionCode verifyCode(String code) {
+        var passwordRecovery = actionCodeService.findByCode(code);
         if (passwordRecovery == null) {
-            throw new WebClientException("Password user recovery failed", "Recovery code sent is invalid.");
+
+            throw new WebClientException(
+                    "Password user recovery failed",
+                    "Recovery code sent is invalid."
+            );
         }
 
         return passwordRecovery;

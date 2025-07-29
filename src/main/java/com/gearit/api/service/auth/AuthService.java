@@ -1,13 +1,14 @@
 package com.gearit.api.service.auth;
 
 import com.gearit.api.dto.response.TokenResponse;
+import com.gearit.api.entity.actioncode.ActionType;
 import com.gearit.api.entity.notification.NotificationTemplate;
-import com.gearit.api.entity.user.ConfirmCode;
+import com.gearit.api.entity.actioncode.ActionCode;
 import com.gearit.api.entity.user.TypeProvider;
 import com.gearit.api.entity.user.UserProvider;
 import com.gearit.api.exception.BadRequestException;
 import com.gearit.api.exception.WebClientException;
-import com.gearit.api.service.confirmcode.ConfirmCodeService;
+import com.gearit.api.service.actioncode.ActionCodeService;
 import com.gearit.api.service.jwt.JwtTokenProvider;
 import com.gearit.api.service.notification.NotificationService;
 import com.gearit.api.service.user.UserProviderService;
@@ -27,7 +28,7 @@ public class AuthService {
     private final JwtTokenProvider jwtTokenProvider;
     private final UserProviderService userProviderService;
     private final AuthenticationManager authenticationManager;
-    private final ConfirmCodeService confirmCodeService;
+    private final ActionCodeService actionCodeService;
     private final NotificationService notificationService;
 
     private final Logger logger = LoggerFactory.getLogger(AuthService.class);
@@ -37,13 +38,13 @@ public class AuthService {
             JwtTokenProvider jwtTokenProvider,
             UserProviderService userProviderService,
             AuthenticationManager authenticationManager,
-            ConfirmCodeService confirmCodeService,
+            ActionCodeService actionCodeService,
             NotificationService notificationService
     ) {
         this.jwtTokenProvider = jwtTokenProvider;
         this.userProviderService = userProviderService;
         this.authenticationManager = authenticationManager;
-        this.confirmCodeService = confirmCodeService;
+        this.actionCodeService = actionCodeService;
         this.notificationService = notificationService;
     }
 
@@ -61,12 +62,12 @@ public class AuthService {
         userProvider.setProvider(TypeProvider.INTERNAL.name());
 
         Long userProviderId = userProviderService.createUserProvider(userProvider).getId();
-        ConfirmCode confirmCode = confirmCodeService.createNewConfirmCode(userProviderId);
+        ActionCode actionCode = actionCodeService.createCode(userProviderId, ActionType.CONFIRM_USER);
 
         notificationService.createNotification(
                 NotificationTemplate.USER_CONFIRMED,
                 userProvider,
-                Map.of("code", confirmCode.getCode())
+                Map.of("code", actionCode.getCode())
         );
 
         logger.info("New user with email: {} created", email);
@@ -74,20 +75,20 @@ public class AuthService {
 
     @Transactional
     public void verifyUserProvider(String code) {
-        ConfirmCode confirmCode = confirmCodeService.getConfirmCodeByCode(code);
+        ActionCode actionCode = actionCodeService.findByCode(code);
 
-        if (confirmCode == null) {
+        if (actionCode == null) {
             throw new WebClientException("User confirmed failed", "Verification code sent is invalid.");
         }
 
-        UserProvider userProvider = userProviderService.getUserProviderById(confirmCode.getUserProviderId());
+        UserProvider userProvider = userProviderService.getUserProviderById(actionCode.getUserProviderId());
         userProvider.setConfirmed(true);
 
         // Подтверждаем аккаунт пользователя и удаляем код подтверждения из БД.
         userProviderService.updateUserProvider(userProvider);
-        confirmCodeService.deleteConfirmCodeByCode(confirmCode.getCode());
+        actionCodeService.deleteByCode(actionCode.getCode());
 
-        logger.info("Verify user with email: [{}], confirm code {}", userProvider.getEmail(), confirmCode.getCode());
+        logger.info("Verify user with email: [{}], confirm code {}", userProvider.getEmail(), actionCode.getCode());
     }
 
     public TokenResponse login(String email, String password) {

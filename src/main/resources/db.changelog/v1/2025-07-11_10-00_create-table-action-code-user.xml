@@ -7,24 +7,32 @@
 
     <changeSet id="2" author="master">
 
-        <createTable tableName="gearit_confirm_code">
+        <createTable tableName="gearit_action_codes">
 
             <column name="user_provider_id" type="BIGINT">
                 <constraints primaryKey="true" nullable="false"/>
             </column>
 
-            <column name="confirm_code" type="VARCHAR">
+            <column name="code" type="VARCHAR">
+                <constraints unique="false" nullable="false"/>
+            </column>
+
+            <column name="expires_at" type="JAVA.SQL.TYPES.TIMESTAMP_WITH_TIMEZONE">
+                <constraints unique="false" nullable="false"/>
+            </column>
+
+            <column name="action_type" type="VARCHAR">
                 <constraints unique="false" nullable="false"/>
             </column>
 
         </createTable>
 
         <addForeignKeyConstraint
-                baseTableName="gearit_confirm_code"
+                baseTableName="gearit_action_codes"
                 baseColumnNames="user_provider_id"
                 referencedTableName="gearit_user_provider"
                 referencedColumnNames="id"
-                constraintName="fk_gearit_confirm_code_user"/>
+                constraintName="fk_gearit_action_code_user"/>
 
     </changeSet>
 
