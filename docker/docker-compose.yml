@@ -2,7 +2,7 @@ services:
 
   gearit-data:
     container_name: gearit-data
-    image: postgres:16.3
+    image: ghcr.io/danil-prog/gearit-data:16.3
     environment:
       POSTGRES_DB: "${DB_NAME}"
       POSTGRES_USER: "${DB_USERNAME}"
@@ -14,7 +14,7 @@ services:
 
   gearit-backend:
     container_name: gearit-backend
-    image: 8922gc/gearit-backend:latest
+    image: ghcr.io/danil-prog/gearit-backend:latest
     environment:
       SPRING_PROFILES_ACTIVE: "develop"
 
