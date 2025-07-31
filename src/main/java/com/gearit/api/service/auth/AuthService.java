@@ -123,5 +123,4 @@ public class AuthService {
             throw new BadCredentialsException("Invalid refresh token");
         }
     }
-
 }

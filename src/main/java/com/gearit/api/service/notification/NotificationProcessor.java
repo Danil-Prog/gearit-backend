@@ -44,7 +44,7 @@ public class NotificationProcessor {
 
     public void processPendingNotifications() {
         List<Notification> pendingNotifications = notificationService.getNotificationsByStatus(PENDING);
-        List<Notification> sentNotifications = new ArrayList<>();
+        List<Notification> processedNotifications = new ArrayList<>();
 
         pendingNotifications.forEach(notification -> {
             try {
@@ -55,14 +55,15 @@ public class NotificationProcessor {
                 sendNotificationOrThrow(to, subject, template);
 
                 notification.setStatus(NotificationStatus.SENT);
-                sentNotifications.add(notification);
-            } catch (ResendException e) {
+            } catch (Exception e) {
                 notification.setStatus(NotificationStatus.FAILED);
                 logger.error("Error sending email, message: {}", e.getMessage());
+            } finally {
+                processedNotifications.add(notification);
             }
         });
 
-        notificationService.updateNotifications(sentNotifications);
+        notificationService.updateNotifications(processedNotifications);
     }
 
     private void sendNotificationOrThrow(String to, String subject, String body) throws ResendException {

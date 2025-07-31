@@ -18,3 +18,4 @@ VALUES (
         'admin@mail.ru',
         TRUE
        )
+ON CONFLICT DO NOTHING
