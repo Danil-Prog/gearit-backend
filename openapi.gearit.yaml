@@ -90,7 +90,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/TokenResponse'
+                $ref: '#/components/schemas/LoginResponse'
         400:
           description: Если были переданы некорректные данные.
           content:
@@ -111,18 +111,19 @@ paths:
       summary: Обновление токена доступа
       operationId: refresh
       security: []
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/TokenRequest'
+      parameters:
+        - name: refreshToken
+          in: cookie
+          required: true
+          schema:
+            type: string
       responses:
         200:
-          description: Успешная регистрация.
+          description: Успешное обновление токенов доступа.
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/TokenResponse'
+                $ref: '#/components/schemas/RefreshResponse'
         400:
           description: Если были переданы некорректные данные
           content:
@@ -198,7 +199,7 @@ paths:
         - Password
       summary: Обновление пароля пользователя
       operationId: passwordReset
-      security: [ ]
+      security: []
       requestBody:
         content:
           application/json:
@@ -256,7 +257,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/TokenResponse'
+                $ref: '#/components/schemas/LoginResponse'
         400:
           description: Если были переданы некорректные данные
           content:
@@ -313,22 +314,19 @@ components:
           type:
             - string
 
-    TokenRequest:
-      type:
-        - object
-      properties:
-        refreshToken:
-          type:
-            - string
-
-    TokenResponse:
+    LoginResponse:
       type:
         - object
       properties:
         accessToken:
           type:
             - string
-        refreshToken:
+
+    RefreshResponse:
+      type:
+        - object
+      properties:
+        accessToken:
           type:
             - string
 
