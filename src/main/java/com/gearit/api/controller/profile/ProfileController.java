@@ -1,6 +1,6 @@
 package com.gearit.api.controller.profile;
 
-import com.gearit.api.controller.response.ProfileResponse;
+import com.gearit.api.dto.response.ProfileResponse;
 import com.gearit.api.entity.user.*;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;

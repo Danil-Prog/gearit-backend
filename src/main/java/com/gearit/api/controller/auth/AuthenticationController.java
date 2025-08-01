@@ -1,11 +1,24 @@
 package com.gearit.api.controller.auth;
 
-import com.gearit.api.controller.request.*;
-import com.gearit.api.controller.response.*;
-import com.gearit.api.service.auth.*;
-import org.springframework.beans.factory.annotation.*;
-import org.springframework.http.*;
-import org.springframework.web.bind.annotation.*;
+import com.gearit.api.constants.http.CookieObjects.RefreshCookie;
+import com.gearit.api.dto.request.LoginRequest;
+import com.gearit.api.dto.request.RegisterRequest;
+import com.gearit.api.dto.response.ConfirmResponse;
+import com.gearit.api.dto.response.LoginResponse;
+import com.gearit.api.dto.response.RefreshResponse;
+import com.gearit.api.dto.response.RegisterResponse;
+import com.gearit.api.service.auth.AuthService;
+import com.gearit.api.utils.http.HttpCookieUtils;
+import jakarta.servlet.http.HttpServletResponse;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CookieValue;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping("/api/v1/auth")
@@ -31,22 +44,24 @@ public class AuthenticationController {
     }
 
     @PostMapping("/login")
-    public ResponseEntity<TokenResponse> login(@RequestBody LoginRequest loginRequest) {
-        var response = authService.login(loginRequest.email(), loginRequest.password());
-        return ResponseEntity.ok(response);
+    public ResponseEntity<LoginResponse> login(
+            @RequestBody LoginRequest loginRequest,
+            HttpServletResponse servletResponse
+    ) {
+        var tokenResponse = authService.login(loginRequest.email(), loginRequest.password());
+        HttpCookieUtils.setHttpCookie(servletResponse, new RefreshCookie(tokenResponse.refreshToken()));
+
+        return ResponseEntity.ok(new LoginResponse(tokenResponse.accessToken()));
     }
 
     @PostMapping("/token/refresh")
-    public ResponseEntity<TokenResponse> refresh(@RequestBody TokenRequest tokenRequest) {
-        var response = authService.refreshToken(tokenRequest.refreshToken());
-        return ResponseEntity.ok(response);
-    }
-
-    @PostMapping("/password/recovery/notification")
-    public ResponseEntity<PasswordRecoveryResponse> sendRecoveryPasswordNotification(
-            @RequestBody PasswordRecoveryRequest passwordRecoveryRequest
+    public ResponseEntity<RefreshResponse> refresh(
+            @CookieValue(name = RefreshCookie.NAME) String refreshToken,
+            HttpServletResponse servletResponse
     ) {
-        authService.createAndSendRecoveryPasswordNotification(passwordRecoveryRequest.email());
-        return ResponseEntity.ok(new PasswordRecoveryResponse());
+        var tokenResponse = authService.refreshToken(refreshToken);
+        HttpCookieUtils.setHttpCookie(servletResponse, new RefreshCookie(tokenResponse.refreshToken()));
+
+        return ResponseEntity.ok(new RefreshResponse(tokenResponse.accessToken()));
     }
 }

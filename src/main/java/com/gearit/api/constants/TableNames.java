@@ -5,7 +5,7 @@ public class TableNames {
     private static final String PREFIX = "gearit_";
 
     public static final String USER_PROVIDER = PREFIX + "user_provider";
-    public static final String CONFIRM_CODE = PREFIX + "confirm_code";
-    public static final String PASSWORD_RECOVERY = PREFIX + "password_recovery";
+    public static final String ACTION_CODES = PREFIX + "action_codes";
+    public static final String NOTIFICATIONS = PREFIX + "notifications";
 
 }

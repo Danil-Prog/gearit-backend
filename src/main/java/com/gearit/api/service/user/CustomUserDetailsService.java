@@ -1,9 +1,11 @@
 package com.gearit.api.service.user;
 
-import com.gearit.api.repository.*;
-import org.hibernate.internal.build.*;
-import org.springframework.security.core.userdetails.*;
-import org.springframework.stereotype.*;
+import com.gearit.api.repository.UserProviderRepository;
+import org.hibernate.internal.build.AllowNonPortable;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.stereotype.Service;
 
 @Service
 public class CustomUserDetailsService implements UserDetailsService {

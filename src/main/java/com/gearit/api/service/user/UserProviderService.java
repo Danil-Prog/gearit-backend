@@ -1,7 +1,9 @@
 package com.gearit.api.service.user;
 
-import com.gearit.api.entity.user.*;
+import com.gearit.api.entity.user.TypeProvider;
+import com.gearit.api.entity.user.UserProvider;
 import com.gearit.api.exception.BadRequestException;
+import com.gearit.api.exception.WebClientException;
 import com.gearit.api.repository.UserProviderRepository;
 import com.gearit.api.utils.UserProviderValidator;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -44,6 +46,16 @@ public class UserProviderService {
         }
 
         return userProviderRepository.save(userProvider);
+    }
+
+    public void updateUserProviderPassword(Long id, String password) {
+        UserProvider userProvider = getUserProviderById(id);
+        if (userProvider == null) {
+            throw new WebClientException("Couldn't update password", "User with not found");
+        }
+
+        userProvider.setPassword(bCryptPasswordEncoder.encode(password));
+        updateUserProvider(userProvider);
     }
 
     public void updateUserProvider(UserProvider userProvider) {

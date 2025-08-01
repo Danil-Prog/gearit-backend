@@ -8,6 +8,8 @@ servers:
 tags:
   - name: Auth
     description: Аутентификация/Авторизация/Регистрация пользователей в системе
+  - name: Password
+    description: Восстановление пароля пользователя
   - name: Profile
     description: Операции с профилем пользователя
 paths:
@@ -43,7 +45,7 @@ paths:
     get:
       tags:
         - Auth
-      summary: Регистрация
+      summary: Подтверждение аккаунта пользователя
       operationId: verify
       security: []
       parameters:
@@ -56,7 +58,7 @@ paths:
               - string
       responses:
         200:
-          description: Успешная верификация аккаунта
+          description: Успешное подтверждение аккаунта
         400:
           description: Если были переданы некорректные данные
           content:
@@ -74,7 +76,7 @@ paths:
     post:
       tags:
         - Auth
-      summary: Авторизация
+      summary: Логин
       operationId: login
       security: []
       requestBody:
@@ -88,7 +90,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/TokenResponse'
+                $ref: '#/components/schemas/LoginResponse'
         400:
           description: Если были переданы некорректные данные.
           content:
@@ -109,18 +111,103 @@ paths:
       summary: Обновление токена доступа
       operationId: refresh
       security: []
+      parameters:
+        - name: refreshToken
+          in: cookie
+          required: true
+          schema:
+            type: string
+      responses:
+        200:
+          description: Успешное обновление токенов доступа.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RefreshResponse'
+        400:
+          description: Если были переданы некорректные данные
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ClientException"
+        500:
+          description: Ошибка сервера
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ClientException"
+
+  /password/forgot:
+    post:
+      tags:
+        - Password
+      summary: Отправка уведомления о восстановление пароля на почту
+      operationId: passwordForgot
+      security: [ ]
       requestBody:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/TokenRequest'
+              $ref: '#/components/schemas/ForgotRequest'
       responses:
         200:
-          description: Успешная регистрация.
+          description: Успешная отправка уведомления.
+        400:
+          description: Если были переданы некорректные данные
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/TokenResponse'
+                $ref: "#/components/schemas/ClientException"
+        500:
+          description: Ошибка сервера
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ClientException"
+
+  /password/verify-code:
+    post:
+      tags:
+        - Password
+      summary: Проверка на валидность отправленного кода для восстановления пароля
+      operationId: passwordVerifyCode
+      security: [ ]
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/VerifyCodeRequest'
+      responses:
+        200:
+          description: Успешная отправка уведомления.
+        400:
+          description: Если были переданы некорректные данные
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ClientException"
+        500:
+          description: Ошибка сервера
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ClientException"
+
+  /password/reset:
+    post:
+      tags:
+        - Password
+      summary: Обновление пароля пользователя
+      operationId: passwordReset
+      security: []
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ResetPasswordRequest'
+      responses:
+        200:
+          description: Успешная отправка уведомления.
         400:
           description: Если были переданы некорректные данные
           content:
@@ -170,7 +257,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/TokenResponse'
+                $ref: '#/components/schemas/LoginResponse'
         400:
           description: Если были переданы некорректные данные
           content:
@@ -227,21 +314,45 @@ components:
           type:
             - string
 
-    TokenRequest:
-      type:
-        - object
-      properties:
-        refreshToken:
-          type:
-            - string
-
-    TokenResponse:
+    LoginResponse:
       type:
         - object
       properties:
         accessToken:
           type:
             - string
-        refreshToken:
+
+    RefreshResponse:
+      type:
+        - object
+      properties:
+        accessToken:
+          type:
+            - string
+
+    ForgotRequest:
+      type:
+        - object
+      properties:
+        email:
+          type:
+            - string
+
+    VerifyCodeRequest:
+      type:
+        - object
+      properties:
+        code:
+          type:
+            - string
+
+    ResetPasswordRequest:
+      type:
+        - object
+      properties:
+        code:
+          type:
+            - string
+        newPassword:
           type:
             - string

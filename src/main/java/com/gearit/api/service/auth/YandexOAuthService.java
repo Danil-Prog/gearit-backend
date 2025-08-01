@@ -1,16 +1,23 @@
 package com.gearit.api.service.auth;
 
-import com.gearit.api.config.properties.*;
-import com.gearit.api.controller.response.*;
-import com.gearit.api.entity.user.*;
-import com.gearit.api.exception.*;
-import com.gearit.api.service.jwt.*;
-import com.gearit.api.service.user.*;
-import java.util.*;
-import org.slf4j.*;
-import org.springframework.http.*;
-import org.springframework.stereotype.*;
-import org.springframework.web.client.*;
+import com.gearit.api.config.properties.YandexProperties;
+import com.gearit.api.dto.response.TokenResponse;
+import com.gearit.api.entity.user.TypeProvider;
+import com.gearit.api.entity.user.UserProvider;
+import com.gearit.api.exception.BadRequestException;
+import com.gearit.api.service.jwt.JwtTokenProvider;
+import com.gearit.api.service.user.UserProviderService;
+import java.util.Map;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpMethod;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Service;
+import org.springframework.web.client.RestTemplate;
 
 @Service
 public class YandexOAuthService {
