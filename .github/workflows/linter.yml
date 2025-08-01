@@ -16,9 +16,10 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: '20'
+          cache: 'npm'
 
       - name: Install Redocly CLI
-        run: npm install -g @redocly/cli
+        run: npm install @redocly/cli --save-dev
 
       - name: Lint OpenAPI
         run: redocly lint openapi.gearit.yaml
