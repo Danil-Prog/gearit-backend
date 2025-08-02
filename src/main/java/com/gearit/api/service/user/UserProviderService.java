@@ -41,7 +41,7 @@ public class UserProviderService {
         UserProviderValidator.validateUserProvider(userProvider);
 
         // Ожидается что при `TypeProvider.INTERNAL` пароль не пустой
-        if (userProvider.getProvider().equals(TypeProvider.INTERNAL.name())) {
+        if (userProvider.getProvider().equals(TypeProvider.INTERNAL)) {
             userProvider.setPassword(bCryptPasswordEncoder.encode(userProvider.getPassword()));
         }
 

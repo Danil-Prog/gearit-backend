@@ -12,7 +12,7 @@ public class UserProviderValidatorTest {
         UserProvider userProvider = new UserProvider();
         userProvider.setEmail("valid@mail.ru");
         userProvider.setPassword("ValidPassword!1");
-        userProvider.setProvider(TypeProvider.INTERNAL.name());
+        userProvider.setProvider(TypeProvider.INTERNAL);
 
         assertDoesNotThrow(() -> UserProviderValidator.validateUserProvider(userProvider));
     }
@@ -22,7 +22,7 @@ public class UserProviderValidatorTest {
         UserProvider userProvider = new UserProvider();
         userProvider.setEmail("not_valid.ru");
         userProvider.setPassword("ValidPassword!1");
-        userProvider.setProvider(TypeProvider.INTERNAL.name());
+        userProvider.setProvider(TypeProvider.INTERNAL);
 
         WebClientException ex = assertThrows(
                 WebClientException.class,
@@ -38,7 +38,7 @@ public class UserProviderValidatorTest {
         UserProvider userProvider = new UserProvider();
         userProvider.setEmail(null);
         userProvider.setPassword("ValidPassword!1");
-        userProvider.setProvider(TypeProvider.INTERNAL.name());
+        userProvider.setProvider(TypeProvider.INTERNAL);
 
         WebClientException ex = assertThrows(
                 WebClientException.class,
@@ -54,7 +54,7 @@ public class UserProviderValidatorTest {
         UserProvider userProvider = new UserProvider();
         userProvider.setEmail("valid@mail.ru");
         userProvider.setPassword(null);
-        userProvider.setProvider(TypeProvider.INTERNAL.name());
+        userProvider.setProvider(TypeProvider.INTERNAL);
 
         WebClientException ex = assertThrows(
                 WebClientException.class,
@@ -70,7 +70,7 @@ public class UserProviderValidatorTest {
         UserProvider userProvider = new UserProvider();
         userProvider.setEmail("valid@mail.ru");
         userProvider.setPassword(null);
-        userProvider.setProvider(TypeProvider.OAUTH.name());
+        userProvider.setProvider(TypeProvider.OAUTH);
 
         assertDoesNotThrow(() -> UserProviderValidator.validateUserProvider(userProvider));
     }
@@ -80,7 +80,7 @@ public class UserProviderValidatorTest {
         UserProvider userProvider = new UserProvider();
         userProvider.setEmail("valid@mail.ru");
         userProvider.setPassword("not_valid_password");
-        userProvider.setProvider(TypeProvider.INTERNAL.name());
+        userProvider.setProvider(TypeProvider.INTERNAL);
 
         WebClientException ex = assertThrows(
                 WebClientException.class,
@@ -99,7 +99,7 @@ public class UserProviderValidatorTest {
         UserProvider userProvider = new UserProvider();
         userProvider.setEmail("valid@mail.ru");
         userProvider.setPassword("qwerty");
-        userProvider.setProvider(TypeProvider.INTERNAL.name());
+        userProvider.setProvider(TypeProvider.INTERNAL);
 
         WebClientException ex = assertThrows(
                 WebClientException.class,

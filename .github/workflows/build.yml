@@ -1,4 +1,4 @@
-name: Публикация образа backend-a и рестарт сервиса
+name: Публикация docker образа backend-a
 on:
   push:
     branches: [ develop ]
@@ -6,7 +6,12 @@ on:
 jobs:
   build:
     runs-on: [ ubuntu-latest ]
-    
+    environment:
+      name: gearit
+    env:
+      DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
+      DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
+
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
@@ -16,10 +21,8 @@ jobs:
         with:
           distribution: 'temurin'
           java-version: '21'
-
-      - name: Login to ghcr.io
-        run: |
-          echo "${{ secrets.DOCKER_PASSWORD }}" | docker login ghcr.io -u ${{ secrets.DOCKER_USERNAME }} --password-stdin
+          cache: gradle
 
       - name: Build and push docker image
-        run: ./gradlew jib
+        run: |
+          ./gradlew jib

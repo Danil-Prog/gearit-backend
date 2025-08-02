@@ -45,7 +45,7 @@ paths:
     get:
       tags:
         - Auth
-      summary: Подтверждение аккаунта пользователя
+      summary: Подтверждение аккаунта пользователя.
       operationId: verify
       security: []
       parameters:
@@ -58,7 +58,7 @@ paths:
               - string
       responses:
         200:
-          description: Успешное подтверждение аккаунта
+          description: Успешное подтверждение аккаунта.
         400:
           description: Если были переданы некорректные данные
           content:

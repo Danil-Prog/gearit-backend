@@ -18,7 +18,8 @@ public class UserProvider implements UserDetails {
     private String password;
 
     @Column(name = "provider")
-    private String provider;
+    @Enumerated(EnumType.STRING)
+    private TypeProvider provider;
 
     @Column(name = "default_email")
     private String email;
@@ -73,11 +74,11 @@ public class UserProvider implements UserDetails {
         this.password = password;
     }
 
-    public String getProvider() {
+    public TypeProvider getProvider() {
         return provider;
     }
 
-    public void setProvider(String provider) {
+    public void setProvider(TypeProvider provider) {
         this.provider = provider;
     }
 
