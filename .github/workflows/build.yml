@@ -3,10 +3,6 @@ on:
   push:
     branches: [ develop ]
 
-permissions:
-  packages: write
-  repository-projects: read
-
 jobs:
   build:
     runs-on: [ ubuntu-latest ]
