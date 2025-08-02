@@ -35,10 +35,7 @@ jobs:
           restore-keys: |
             jib-${{ runner.os }}-
 
-      - name: Set environment variables for Docker auth
-        run: |
-          echo "DOCKER_USERNAME=${{ github.actor }}" >> $GITHUB_ENV
-          echo "DOCKER_PASSWORD=${{ secrets.GITHUB_TOKEN }}" >> $GITHUB_ENV
-
       - name: Build and push docker image
-        run: ./gradlew jib
+        run: ./gradlew jib \
+          -Djib.to.auth.username=${{ github.actor }} \
+          -Djib.to.auth.password=${{ secrets.DOCKER_PASSWORD }}
