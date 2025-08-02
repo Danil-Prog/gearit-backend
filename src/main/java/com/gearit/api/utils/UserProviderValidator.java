@@ -15,7 +15,7 @@ public class UserProviderValidator {
     public static void validateUserProvider(UserProvider userProvider) {
         isValidEmail(userProvider.getEmail());
 
-        if (userProvider.getProvider().equals(TypeProvider.INTERNAL.name())) {
+        if (userProvider.getProvider().equals(TypeProvider.INTERNAL)) {
             isValidPassword(userProvider.getPassword());
         }
     }

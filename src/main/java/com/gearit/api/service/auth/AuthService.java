@@ -59,7 +59,7 @@ public class AuthService {
 
         userProvider.setEmail(email);
         userProvider.setPassword(password);
-        userProvider.setProvider(TypeProvider.INTERNAL.name());
+        userProvider.setProvider(TypeProvider.INTERNAL);
 
         Long userProviderId = userProviderService.createUserProvider(userProvider).getId();
         ActionCode actionCode = actionCodeService.createCode(userProviderId, ActionType.CONFIRM_USER);

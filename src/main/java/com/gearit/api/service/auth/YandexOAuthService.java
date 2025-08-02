@@ -106,7 +106,7 @@ public class YandexOAuthService {
         // пустой пароль задается исключительно при авторизации через oath2
         newUserProvider.setPassword("");
         newUserProvider.setEmail(email);
-        newUserProvider.setProvider(TypeProvider.OAUTH.name());
+        newUserProvider.setProvider(TypeProvider.OAUTH);
         newUserProvider.setConfirmed(true);
 
         userProviderService.createUserProvider(newUserProvider);
