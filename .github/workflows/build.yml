@@ -36,6 +36,5 @@ jobs:
             jib-${{ runner.os }}-
 
       - name: Build and push docker image
-        run: ./gradlew jib \
-          -Djib.to.auth.username=${{ github.actor }} \
-          -Djib.to.auth.password=${{ secrets.DOCKER_PASSWORD }}
+        run: |
+          ./gradlew jib -Djib.to.auth.username=${{ github.actor }} -Djib.to.auth.password=${{ secrets.DOCKER_PASSWORD }}
