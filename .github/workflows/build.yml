@@ -17,9 +17,28 @@ jobs:
           distribution: 'temurin'
           java-version: '21'
 
-      - name: Login to ghcr.io
+      - name: Cache Gradle
+        uses: actions/cache@v4
+        with:
+          path: |
+            ~/.gradle/caches
+            ~/.gradle/wrapper
+          key: gradle-${{ runner.os }}-${{ hashFiles('**/*.gradle*', '**/gradle-wrapper.properties') }}
+          restore-keys: |
+            gradle-${{ runner.os }}-
+
+      - name: Cache Jib Docker layers
+        uses: actions/cache@v4
+        with:
+          path: ~/.cache/jib
+          key: jib-${{ runner.os }}-${{ github.sha }}
+          restore-keys: |
+            jib-${{ runner.os }}-
+
+      - name: Set environment variables for Docker auth
         run: |
-          echo "${{ secrets.GITHUB_TOKEN }}" | docker login ghcr.io -u ${{ github.actor }} --password-stdin
+          echo "DOCKER_USERNAME=${{ secrets.GITHUB_TOKEN }}" >> $GITHUB_ENV
+          echo "DOCKER_PASSWORD=${{ github.actor }}" >> $GITHUB_ENV
 
       - name: Build and push docker image
         run: ./gradlew jib

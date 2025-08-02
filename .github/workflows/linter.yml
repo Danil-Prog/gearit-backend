@@ -21,4 +21,4 @@ jobs:
         run: npm install -g @redocly/cli
 
       - name: Lint OpenAPI
-        run: redocly lint openapi.gearit.yamlдж
+        run: redocly lint openapi.gearit.yaml
