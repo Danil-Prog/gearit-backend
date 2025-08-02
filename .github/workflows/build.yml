@@ -6,6 +6,11 @@ on:
 jobs:
   build:
     runs-on: [ ubuntu-latest ]
+    environment:
+      name: gearit
+    env:
+      DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
+      DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
 
     permissions:
       packages: write
@@ -21,6 +26,9 @@ jobs:
           distribution: 'temurin'
           java-version: '21'
 
+      - name: Echo variable
+        run: echo $DOCKER_USERNAME
+
       - name: Build and push docker image
         run: |
-          ./gradlew jib -Djib.to.auth.username=${{ github.actor }} -Djib.to.auth.password=${{ secrets.GITHUB_TOKEN }}
+          ./gradlew jib
