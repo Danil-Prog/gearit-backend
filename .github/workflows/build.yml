@@ -1,4 +1,4 @@
-name: Публикация образа backend-a и рестарт сервиса
+name: Публикация docker образа backend-a
 on:
   push:
     branches: [ develop ]
