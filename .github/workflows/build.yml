@@ -5,6 +5,7 @@ on:
 
 permissions:
   packages: write
+  repository-projects: read
 
 jobs:
   build:
@@ -19,24 +20,6 @@ jobs:
         with:
           distribution: 'temurin'
           java-version: '21'
-
-      - name: Cache Gradle
-        uses: actions/cache@v4
-        with:
-          path: |
-            ~/.gradle/caches
-            ~/.gradle/wrapper
-          key: gradle-${{ runner.os }}-${{ hashFiles('**/*.gradle*', '**/gradle-wrapper.properties') }}
-          restore-keys: |
-            gradle-${{ runner.os }}-
-
-      - name: Cache Jib Docker layers
-        uses: actions/cache@v4
-        with:
-          path: ~/.cache/jib
-          key: jib-${{ runner.os }}-${{ github.sha }}
-          restore-keys: |
-            jib-${{ runner.os }}-
 
       - name: Build and push docker image
         run: |
