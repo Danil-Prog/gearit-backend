@@ -96,20 +96,21 @@ public class YandexOAuthService {
     private void saveYandexUser(String email) {
         UserProvider userProvider = userProviderService.getUserProviderByEmailOrNull(email);
 
-        if (userProvider == null) {
-            UserProvider newUserProvider = new UserProvider();
-
-            // пустой пароль задается исключительно при авторизации через oath2
-            newUserProvider.setPassword("");
-            newUserProvider.setEmail(email);
-            newUserProvider.setProvider(TypeProvider.OAUTH.name());
-            newUserProvider.setConfirmed(true);
-
-            userProviderService.createUserProvider(newUserProvider);
-
-            logger.info("Created new user provider from Yandex oauth2");
-        } else {
+        if (userProvider != null) {
             logger.info("Yandex user provider already exists");
+            return;
         }
+
+        UserProvider newUserProvider = new UserProvider();
+
+        // пустой пароль задается исключительно при авторизации через oath2
+        newUserProvider.setPassword("");
+        newUserProvider.setEmail(email);
+        newUserProvider.setProvider(TypeProvider.OAUTH.name());
+        newUserProvider.setConfirmed(true);
+
+        userProviderService.createUserProvider(newUserProvider);
+
+        logger.info("Created new user provider from Yandex oauth2");
     }
 }

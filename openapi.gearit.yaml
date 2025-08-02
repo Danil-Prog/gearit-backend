@@ -29,7 +29,7 @@ paths:
         200:
           description: Успешная регистрация.
         400:
-          description: Если были переданы некорректные данные
+          description: Если были переданы некорректные данные.
           content:
             application/json:
               schema:
