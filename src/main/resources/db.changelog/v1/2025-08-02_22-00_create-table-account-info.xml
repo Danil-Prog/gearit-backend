@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                   https://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-latest.xsd">
+
+    <changeSet id="4" author="master">
+
+        <createTable tableName="gearit_account_info">
+
+            <column name="id" type="BIGSERIAL">
+                <constraints primaryKey="true"/>
+            </column>
+
+            <column name="firstname" type="VARCHAR">
+                <constraints unique="false" nullable="true"/>
+            </column>
+
+            <column name="middlename" type="VARCHAR">
+                <constraints unique="false" nullable="true"/>
+            </column>
+
+            <column name="lastname" type="VARCHAR">
+                <constraints unique="false" nullable="true"/>
+            </column>
+
+            <column name="phone_number" type="VARCHAR">
+                <constraints unique="false" nullable="true"/>
+            </column>
+
+            <column name="gender" type="VARCHAR">
+                <constraints unique="false" nullable="true"/>
+            </column>
+
+            <column name="birth_date" type="JAVA.SQL.TYPES.TIMESTAMP_WITH_TIMEZONE">
+                <constraints unique="false" nullable="true"/>
+            </column>
+
+        </createTable>
+
+        <addColumn tableName="gearit_user_provider">
+            <column name="account_id" type="BIGINT">
+                <constraints unique="true" nullable="false"/>
+            </column>
+        </addColumn>
+
+        <addForeignKeyConstraint
+                baseTableName="gearit_user_provider"
+                baseColumnNames="account_id"
+                referencedTableName="gearit_account_info"
+                referencedColumnNames="id"
+                constraintName="fk_user_provider_account"/>
+
+    </changeSet>
+
+</databaseChangeLog>

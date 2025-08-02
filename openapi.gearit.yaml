@@ -9,9 +9,9 @@ tags:
   - name: Auth
     description: Аутентификация/Авторизация/Регистрация пользователей в системе
   - name: Password
-    description: Восстановление пароля пользователя
-  - name: Profile
-    description: Операции с профилем пользователя
+    description: Восстановление/изменение пароля пользователя
+  - name: Account
+    description: Операции с пользовательским аккаунтом
 paths:
   /auth/register:
     post:
@@ -271,6 +271,34 @@ paths:
               schema:
                 $ref: "#/components/schemas/ClientException"
 
+  /account:
+    get:
+      tags:
+        - Account
+      summary: Информация об аккаунте пользователя
+      operationId: account
+      security:
+        - JWT: []
+      responses:
+        200:
+          description: Успешное получение информации об аккаунте пользователя
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AccountInfo'
+        400:
+          description: Если был передан некорректный accessToken
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ClientException"
+        500:
+          description: Ошибка сервера
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ClientException"
+
 components:
   securitySchemes:
     JWT:
@@ -354,5 +382,31 @@ components:
           type:
             - string
         newPassword:
+          type:
+            - string
+
+    AccountInfo:
+      type:
+        - object
+      properties:
+        id:
+          type:
+            - integer
+        firstName:
+          type:
+            - string
+        middleName:
+          type:
+            - string
+        lastName:
+          type:
+            - string
+        phoneNumber:
+          type:
+            - string
+        gender:
+          type:
+            - string
+        birthDate:
           type:
             - string
