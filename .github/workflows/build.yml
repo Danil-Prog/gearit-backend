@@ -22,9 +22,6 @@ jobs:
           distribution: 'temurin'
           java-version: '21'
 
-      - name: Echo variable
-        run: echo $DOCKER_USERNAME
-
       - name: Build and push docker image
         run: |
           ./gradlew jib
