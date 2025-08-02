@@ -6,6 +6,10 @@ on:
 jobs:
   build:
     runs-on: [ ubuntu-latest ]
+
+    permissions:
+      packages: write
+      contents: read
     
     steps:
       - name: Checkout code
@@ -19,4 +23,4 @@ jobs:
 
       - name: Build and push docker image
         run: |
-          ./gradlew jib -Djib.to.auth.username=${{ secrets.DOCKER_USERNAME }} -Djib.to.auth.password=${{ secrets.DOCKER_PASSWORD }}
+          ./gradlew jib -Djib.to.auth.username=${{ github.actor }} -Djib.to.auth.password=${{ secrets.GITHUB_TOKEN }}
