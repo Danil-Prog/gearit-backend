@@ -1,9 +1,9 @@
 package com.gearit.api.service.auth;
 
 import com.gearit.api.dto.response.TokenResponse;
+import com.gearit.api.entity.actioncode.ActionCode;
 import com.gearit.api.entity.actioncode.ActionType;
 import com.gearit.api.entity.notification.NotificationTemplate;
-import com.gearit.api.entity.actioncode.ActionCode;
 import com.gearit.api.entity.user.TypeProvider;
 import com.gearit.api.entity.user.UserProvider;
 import com.gearit.api.exception.BadRequestException;
@@ -100,7 +100,8 @@ public class AuthService {
         }
 
         try {
-            authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(email, password));
+            var authentication = new UsernamePasswordAuthenticationToken(user, password);
+            authenticationManager.authenticate(authentication);
         } catch (BadCredentialsException exception) {
             throw new WebClientException(errorMessage, "Invalid email or password");
         }
@@ -112,15 +113,15 @@ public class AuthService {
     }
 
     public TokenResponse refreshToken(String refreshToken) {
-        if (jwtTokenProvider.validateToken(refreshToken)) {
-            String email = jwtTokenProvider.getEmailFromToken(refreshToken);
-
-            String newAccessToken = jwtTokenProvider.generateAccessToken(email);
-            String newRefreshToken = jwtTokenProvider.generateRefreshToken(email);
-
-            return new TokenResponse(newAccessToken, newRefreshToken);
-        } else {
+        if (!jwtTokenProvider.validateToken(refreshToken)) {
             throw new BadCredentialsException("Invalid refresh token");
         }
+
+        String email = jwtTokenProvider.getEmailFromToken(refreshToken);
+
+        String newAccessToken = jwtTokenProvider.generateAccessToken(email);
+        String newRefreshToken = jwtTokenProvider.generateRefreshToken(email);
+
+        return new TokenResponse(newAccessToken, newRefreshToken);
     }
 }
