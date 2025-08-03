@@ -33,4 +33,13 @@ public class AccountInfoService {
 
         accountInfoRepository.save(accountInfo);
     }
+
+    /**
+     * Создает пустой аккаунт, необходим на этапе регистрации пользователя
+     *
+     * @return `AccountInfo` - пустой аккаунт
+     */
+    public AccountInfo createEmptyAccount() {
+        return accountInfoRepository.save(new AccountInfo());
+    }
 }
