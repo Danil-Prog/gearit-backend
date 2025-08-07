@@ -1,4 +1,4 @@
-name: Публикация docker образа backend-a
+name: Публикация docker образа backend-a. Деплой.
 on:
   push:
     branches: [ develop ]
@@ -26,3 +26,22 @@ jobs:
       - name: Build and push docker image
         run: |
           ./gradlew jib
+
+  deploy:
+    runs-on: [ ubuntu-latest ]
+    needs:
+      - build
+    environment:
+      name: gearit
+
+    steps:
+      - name: Deploy to develop server
+        uses: appleboy/ssh-action@v1.0.3
+        with:
+          host: ${{ secrets.SSH_HOST }}
+          port: ${{ secrets.SSH_PORT }}
+          username: ${{ secrets.SSH_USER }}
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          passphrase: ${{ secrets.SSH_PASSPHRASE }}
+          script: |
+            cat "Hello world!"
