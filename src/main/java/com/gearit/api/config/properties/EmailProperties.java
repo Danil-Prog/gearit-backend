@@ -9,8 +9,6 @@ public class EmailProperties {
 
     private String from;
 
-    private String urlVerify;
-
     public String getFrom() {
         return from;
     }
@@ -25,13 +23,5 @@ public class EmailProperties {
 
     public void setResendToken(String resendToken) {
         this.resendToken = resendToken;
-    }
-
-    public String getUrlVerify() {
-        return urlVerify;
-    }
-
-    public void setUrlVerify(String urlVerify) {
-        this.urlVerify = urlVerify;
     }
 }
