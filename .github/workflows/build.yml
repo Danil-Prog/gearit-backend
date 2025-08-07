@@ -43,5 +43,4 @@ jobs:
           username: ${{ secrets.SSH_USER }}
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           passphrase: ${{ secrets.SSH_PASSPHRASE }}
-          script: |
-            cat "Hello world!"
+          script: ${{ secrets.PATH_WORKFLOW_SCRIPT }}
