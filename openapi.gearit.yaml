@@ -471,3 +471,6 @@ components:
           type:
             - string
           format: '2025-06-02 20:00:00.000000'
+        avatarId:
+          type:
+            - string
