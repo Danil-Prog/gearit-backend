@@ -2,6 +2,8 @@ package com.gearit.api.service.auth;
 
 import com.gearit.api.config.properties.YandexProperties;
 import com.gearit.api.dto.response.TokenResponse;
+import com.gearit.api.entity.account.AccountGender;
+import com.gearit.api.entity.account.AccountInfo;
 import com.gearit.api.entity.user.TypeProvider;
 import com.gearit.api.entity.user.UserProvider;
 import com.gearit.api.exception.BadRequestException;
@@ -83,7 +85,23 @@ public class YandexOAuthService {
         String yandexId = userInfoResponse.getBody().get("id").toString();
         String email = userInfoResponse.getBody().get("default_email").toString();
 
-        saveYandexUser(email);
+        String firstName = userInfoResponse.getBody().get("first_name").toString();
+        String lastName = userInfoResponse.getBody().get("last_name").toString();
+        String avatarId = userInfoResponse.getBody().get("default_avatar_id").toString();
+        String gender = userInfoResponse.getBody().get("sex").toString();
+
+        AccountGender accountGender = AccountGender.valueOf(gender.toUpperCase());
+
+        String phoneNumber = ((Map<String, String>) userInfoResponse.getBody().get("default_phone")).get("number");
+
+        AccountInfo accountInfo = new AccountInfo();
+        accountInfo.setFirstName(firstName);
+        accountInfo.setLastName(lastName);
+        accountInfo.setAvatarId(avatarId);
+        accountInfo.setGender(accountGender);
+        accountInfo.setPhoneNumber(phoneNumber);
+
+        saveYandexUser(email, accountInfo);
 
         logger.info("Client with ID: {}, successfully authorized!", yandexId);
 
@@ -93,7 +111,7 @@ public class YandexOAuthService {
         );
     }
 
-    private void saveYandexUser(String email) {
+    private void saveYandexUser(String email, AccountInfo accountInfo) {
         UserProvider userProvider = userProviderService.getUserProviderByEmailOrNull(email);
 
         if (userProvider != null) {
@@ -109,7 +127,7 @@ public class YandexOAuthService {
         newUserProvider.setProvider(TypeProvider.OAUTH);
         newUserProvider.setConfirmed(true);
 
-        userProviderService.createUserProvider(newUserProvider);
+        userProviderService.createUserProviderWithAccountInfo(newUserProvider, accountInfo);
 
         logger.info("Created new user provider from Yandex oauth2");
     }

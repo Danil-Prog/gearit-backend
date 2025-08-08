@@ -38,6 +38,9 @@ public class AccountInfo {
     @Column(name = "birth_date")
     private Instant birthDate;
 
+    @Column(name = "avatar_id")
+    private String avatarId;
+
     public Long getId() {
         return id;
     }
@@ -92,5 +95,13 @@ public class AccountInfo {
 
     public void setBirthDate(Instant birthDate) {
         this.birthDate = birthDate;
+    }
+
+    public String getAvatarId() {
+        return avatarId;
+    }
+
+    public void setAvatarId(String avatarId) {
+        this.avatarId = avatarId;
     }
 }

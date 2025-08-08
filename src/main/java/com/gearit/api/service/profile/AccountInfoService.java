@@ -42,4 +42,8 @@ public class AccountInfoService {
     public AccountInfo createEmptyAccount() {
         return accountInfoRepository.save(new AccountInfo());
     }
+
+    public AccountInfo createAccount(AccountInfo accountInfo) {
+        return accountInfoRepository.save(accountInfo);
+    }
 }

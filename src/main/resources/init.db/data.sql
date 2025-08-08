@@ -26,9 +26,8 @@ alter table gearit_account_info
     owner to gearit;
 
 INSERT INTO
-    gearit_account_info(id, firstname, middlename, lastname, phone_number, gender, birth_date)
+    gearit_account_info(firstname, middlename, lastname, phone_number, gender, birth_date)
 VALUES (
-        1,
         'Admin',
         'Admin',
         'Admin',

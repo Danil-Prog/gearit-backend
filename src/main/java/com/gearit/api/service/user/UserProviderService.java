@@ -11,6 +11,7 @@ import com.gearit.api.utils.UserProviderValidator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 public class UserProviderService {
@@ -44,18 +45,23 @@ public class UserProviderService {
         return userProviderRepository.findById(id).orElse(null);
     }
 
-    public UserProvider createUserProvider(UserProvider userProvider) {
-        UserProviderValidator.validateUserProvider(userProvider);
-
-        // Ожидается что при `TypeProvider.INTERNAL` пароль не пустой
-        if (userProvider.getProvider().equals(TypeProvider.INTERNAL)) {
-            userProvider.setPassword(bCryptPasswordEncoder.encode(userProvider.getPassword()));
-        }
-
+    @Transactional
+    public UserProvider createUserProviderWithoutAccountInfo(UserProvider userProvider) {
         AccountInfo accountInfo = accountInfoService.createEmptyAccount();
         userProvider.setAccountInfo(accountInfo);
 
-        return userProviderRepository.save(userProvider);
+        // Ожидается что при `TypeProvider.INTERNAL` пароль не пустой
+        if (userProvider.getProvider() == TypeProvider.INTERNAL) {
+            userProvider.setPassword(bCryptPasswordEncoder.encode(userProvider.getPassword()));
+        }
+
+        return createUserProvider(userProvider);
+    }
+
+    public void createUserProviderWithAccountInfo(UserProvider userProvider, AccountInfo accountInfo) {
+        AccountInfo savedAccountInfo = accountInfoService.createAccount(accountInfo);
+        userProvider.setAccountInfo(savedAccountInfo);
+        createUserProvider(userProvider);
     }
 
     public void updateUserProviderPassword(Long id, String password) {
@@ -71,6 +77,11 @@ public class UserProviderService {
     public void updateUserProvider(UserProvider userProvider) {
         UserProviderValidator.validateUserProvider(userProvider);
         userProviderRepository.save(userProvider);
+    }
+
+    private UserProvider createUserProvider(UserProvider userProvider) {
+        UserProviderValidator.validateUserProvider(userProvider);
+        return userProviderRepository.save(userProvider);
     }
 }
 

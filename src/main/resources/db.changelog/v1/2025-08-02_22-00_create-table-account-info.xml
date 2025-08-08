@@ -37,6 +37,10 @@
                 <constraints unique="false" nullable="true"/>
             </column>
 
+            <column name="avatar_id" type="VARCHAR">
+                <constraints unique="true" nullable="true"/>
+            </column>
+
         </createTable>
 
         <addColumn tableName="gearit_user_provider">
