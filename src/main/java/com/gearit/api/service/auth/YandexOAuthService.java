@@ -87,7 +87,6 @@ public class YandexOAuthService {
 
         String firstName = userInfoResponse.getBody().get("first_name").toString();
         String lastName = userInfoResponse.getBody().get("last_name").toString();
-        String avatarId = userInfoResponse.getBody().get("default_avatar_id").toString();
         String gender = userInfoResponse.getBody().get("sex").toString();
 
         AccountGender accountGender = AccountGender.valueOf(gender.toUpperCase());
@@ -97,7 +96,7 @@ public class YandexOAuthService {
         AccountInfo accountInfo = new AccountInfo();
         accountInfo.setFirstName(firstName);
         accountInfo.setLastName(lastName);
-        accountInfo.setAvatarId(avatarId);
+        accountInfo.setAvatarId("");
         accountInfo.setGender(accountGender);
         accountInfo.setPhoneNumber(phoneNumber);
 
