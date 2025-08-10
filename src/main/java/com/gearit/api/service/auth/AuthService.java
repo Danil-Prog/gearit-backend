@@ -61,7 +61,7 @@ public class AuthService {
         userProvider.setPassword(password);
         userProvider.setProvider(TypeProvider.INTERNAL);
 
-        Long userProviderId = userProviderService.createUserProvider(userProvider).getId();
+        Long userProviderId = userProviderService.createUserProviderWithoutAccountInfo(userProvider).getId();
         ActionCode actionCode = actionCodeService.createCode(userProviderId, ActionType.CONFIRM_USER);
 
         notificationService.createNotification(

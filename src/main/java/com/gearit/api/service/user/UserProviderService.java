@@ -1,26 +1,34 @@
 package com.gearit.api.service.user;
 
+import com.gearit.api.entity.account.AccountInfo;
 import com.gearit.api.entity.user.TypeProvider;
 import com.gearit.api.entity.user.UserProvider;
 import com.gearit.api.exception.BadRequestException;
 import com.gearit.api.exception.WebClientException;
 import com.gearit.api.repository.UserProviderRepository;
+import com.gearit.api.service.profile.AccountInfoService;
 import com.gearit.api.utils.UserProviderValidator;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 public class UserProviderService {
 
     private final UserProviderRepository userProviderRepository;
     private final BCryptPasswordEncoder bCryptPasswordEncoder;
+    private final AccountInfoService accountInfoService;
 
+    @Autowired
     public UserProviderService(
             UserProviderRepository userProviderRepository,
-            BCryptPasswordEncoder bCryptPasswordEncoder
+            BCryptPasswordEncoder bCryptPasswordEncoder,
+            AccountInfoService accountInfoService
     ) {
         this.userProviderRepository = userProviderRepository;
         this.bCryptPasswordEncoder = bCryptPasswordEncoder;
+        this.accountInfoService = accountInfoService;
     }
 
     public UserProvider getUserProviderByEmailOrNull(String email) {
@@ -37,15 +45,23 @@ public class UserProviderService {
         return userProviderRepository.findById(id).orElse(null);
     }
 
-    public UserProvider createUserProvider(UserProvider userProvider) {
-        UserProviderValidator.validateUserProvider(userProvider);
+    @Transactional
+    public UserProvider createUserProviderWithoutAccountInfo(UserProvider userProvider) {
+        AccountInfo accountInfo = accountInfoService.createEmptyAccount();
+        userProvider.setAccountInfo(accountInfo);
 
         // Ожидается что при `TypeProvider.INTERNAL` пароль не пустой
-        if (userProvider.getProvider().equals(TypeProvider.INTERNAL)) {
+        if (userProvider.getProvider() == TypeProvider.INTERNAL) {
             userProvider.setPassword(bCryptPasswordEncoder.encode(userProvider.getPassword()));
         }
 
-        return userProviderRepository.save(userProvider);
+        return createUserProvider(userProvider);
+    }
+
+    public void createUserProviderWithAccountInfo(UserProvider userProvider, AccountInfo accountInfo) {
+        AccountInfo savedAccountInfo = accountInfoService.createAccount(accountInfo);
+        userProvider.setAccountInfo(savedAccountInfo);
+        createUserProvider(userProvider);
     }
 
     public void updateUserProviderPassword(Long id, String password) {
@@ -61,6 +77,11 @@ public class UserProviderService {
     public void updateUserProvider(UserProvider userProvider) {
         UserProviderValidator.validateUserProvider(userProvider);
         userProviderRepository.save(userProvider);
+    }
+
+    private UserProvider createUserProvider(UserProvider userProvider) {
+        UserProviderValidator.validateUserProvider(userProvider);
+        return userProviderRepository.save(userProvider);
     }
 }
 

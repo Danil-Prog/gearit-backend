@@ -9,7 +9,7 @@ services:
       POSTGRES_PASSWORD: "${DB_PASSWORD}"
       TZ: "Asia/Novosibirsk"
     ports:
-      - "5433:5432"
+      - "5432:5432"
     networks:
       - gearit-network
 
@@ -39,14 +39,14 @@ services:
 
       TZ: "Asia/Novosibirsk"
     ports:
-      - "4040:8080"
+      - "8080:8080"
     restart: unless-stopped
     networks:
       - gearit-network
 
   victoria-metrics:
     container_name: gearit-victoria
-    image: victoriametrics/victoria-metrics
+    image: ghcr.io/danil-prog/victoriametrics:v1.123.0
     environment:
       TZ: "Asia/Novosibirsk"
     ports:
@@ -58,7 +58,7 @@ services:
 
   vmagent:
     container_name: gearit-vmagent
-    image: victoriametrics/vmagent
+    image: ghcr.io/danil-prog/victoriametrics-vmagent:v.1.123.0
     command:
       - '-promscrape.config=/etc/prometheus/scrape.yml'
       - '-remoteWrite.url=http://gearit-victoria:8428/api/v1/write'
@@ -69,7 +69,7 @@ services:
 
   grafana:
     container_name: gearit-grafana
-    image: grafana/grafana
+    image: ghcr.io/danil-prog/grafana:12.2.0
     environment:
       TZ: "Asia/Novosibirsk"
     ports:
