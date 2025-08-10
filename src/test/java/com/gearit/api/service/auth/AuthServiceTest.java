@@ -58,7 +58,7 @@ public class AuthServiceTest {
 
         UserProvider userProvider = new UserProvider();
         userProvider.setId(1L);
-        when(userProviderService.createUserProvider(any())).thenReturn(userProvider);
+        when(userProviderService.createUserProviderWithoutAccountInfo(any())).thenReturn(userProvider);
 
         ActionCode actionCode = new ActionCode();
         actionCode.setCode("action_code");
@@ -66,7 +66,7 @@ public class AuthServiceTest {
 
         authService.register(email, password);
 
-        verify(userProviderService).createUserProvider(any(UserProvider.class));
+        verify(userProviderService).createUserProviderWithoutAccountInfo(any(UserProvider.class));
         verify(actionCodeService).createCode(eq(1L), eq(ActionType.CONFIRM_USER));
         verify(notificationService).createNotification(
                 eq(NotificationTemplate.USER_CONFIRMED),
