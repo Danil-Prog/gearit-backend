@@ -49,7 +49,10 @@ public class NotificationProcessor {
         pendingNotifications.forEach(notification -> {
             try {
                 String to = notification.getSentToUser().getEmail();
-                String template = templateEngine.renderTemplate(notification.getTemplate(), notification.getVariables());
+                String template = templateEngine.renderTemplate(
+                        notification.getTemplate(),
+                        notification.getVariables()
+                );
                 String subject = notification.getTemplate().getSubject();
 
                 sendNotificationOrThrow(to, subject, template);
