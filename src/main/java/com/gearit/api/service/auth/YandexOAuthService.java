@@ -1,15 +1,16 @@
 package com.gearit.api.service.auth;
 
 import com.gearit.api.config.properties.YandexProperties;
+import com.gearit.api.dto.YandexPassport;
+import com.gearit.api.dto.YandexToken;
 import com.gearit.api.dto.response.TokenResponse;
 import com.gearit.api.entity.account.AccountGender;
 import com.gearit.api.entity.account.AccountInfo;
 import com.gearit.api.entity.user.TypeProvider;
 import com.gearit.api.entity.user.UserProvider;
-import com.gearit.api.exception.BadRequestException;
+import com.gearit.api.exception.WebClientException;
 import com.gearit.api.service.jwt.JwtTokenProvider;
 import com.gearit.api.service.user.UserProviderService;
-import java.util.Map;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpEntity;
@@ -25,11 +26,15 @@ import org.springframework.web.client.RestTemplate;
 public class YandexOAuthService {
 
     private final JwtTokenProvider jwtTokenProvider;
-    private final YandexProperties yandexProperties;
     private final UserProviderService userProviderService;
     private final RestTemplate restTemplate;
 
-    private final Logger logger = LoggerFactory.getLogger(this.getClass());
+    private final String clientId;
+    private final String clientSecret;
+    private final String tokenUri;
+    private final String userInfoUri;
+
+    private final Logger logger = LoggerFactory.getLogger(YandexOAuthService.class);
 
     public YandexOAuthService(
             JwtTokenProvider jwtTokenProvider,
@@ -37,77 +42,38 @@ public class YandexOAuthService {
             UserProviderService userProviderService
     ) {
         this.jwtTokenProvider = jwtTokenProvider;
-        this.yandexProperties = yandexProperties;
         this.userProviderService = userProviderService;
+
+        this.clientId = yandexProperties.getClientId();
+        this.clientSecret = yandexProperties.getClientSecret();
+        this.tokenUri = yandexProperties.getTokenUri();
+        this.userInfoUri = yandexProperties.getUserInfoUri();
+
         this.restTemplate = new RestTemplate();
     }
 
     public TokenResponse callbackAuthentication(String code) {
-        HttpHeaders headers = new HttpHeaders();
-        headers.setContentType(MediaType.APPLICATION_FORM_URLENCODED);
+        String token = authorizeYandexRequest(code);
+        YandexPassport yandexPassport = getYandexPassport(token);
 
-        String requestBody = "grant_type=authorization_code"
-                + "&code=" + code
-                + "&client_id=" + yandexProperties.getClientId()
-                + "&client_secret=" + yandexProperties.getClientSecret();
-
-        HttpEntity<String> request = new HttpEntity<>(requestBody, headers);
-
-        ResponseEntity<Map> response = restTemplate.postForEntity(
-                yandexProperties.getTokenUri(),
-                request,
-                Map.class
-        );
-
-        if (response.getStatusCode() != HttpStatus.OK || response.getBody() == null) {
-            logger.error("Request for user data could not be completed, status code: {}", response.getStatusCode());
-            throw new BadRequestException("Invalid authorization code.");
-        }
-
-        String accessToken = response.getBody().get("access_token").toString();
-
-        HttpHeaders userInfoHeaders = new HttpHeaders();
-        userInfoHeaders.set("Authorization", "OAuth " + accessToken);
-
-        HttpEntity<String> userInfoRequest = new HttpEntity<>(userInfoHeaders);
-        ResponseEntity<Map> userInfoResponse = restTemplate.exchange(
-                yandexProperties.getUserInfoUri(),
-                HttpMethod.GET,
-                userInfoRequest,
-                Map.class
-        );
-
-        if (userInfoResponse.getStatusCode() != HttpStatus.OK || userInfoResponse.getBody() == null) {
-            logger.error("Couldn't get user data, status code: {}", userInfoResponse.getStatusCode());
-            throw new BadRequestException("Couldn't get user data");
-        }
-
-        String yandexId = userInfoResponse.getBody().get("id").toString();
-        String email = userInfoResponse.getBody().get("default_email").toString();
-
-        String firstName = userInfoResponse.getBody().get("first_name").toString();
-        String lastName = userInfoResponse.getBody().get("last_name").toString();
-        String gender = userInfoResponse.getBody().get("sex").toString();
-
-        AccountGender accountGender = AccountGender.valueOf(gender.toUpperCase());
-
-        String phoneNumber = ((Map<String, String>) userInfoResponse.getBody().get("default_phone")).get("number");
+        AccountGender accountGender = AccountGender.valueOf(yandexPassport.getSex().toUpperCase());
 
         AccountInfo accountInfo = new AccountInfo();
-        accountInfo.setFirstName(firstName);
-        accountInfo.setLastName(lastName);
-        accountInfo.setAvatarId("");
+        accountInfo.setFirstName(yandexPassport.getFirstName());
+        accountInfo.setLastName(yandexPassport.getLastName());
+        accountInfo.setAvatarId(yandexPassport.getDefaultAvatarId());
         accountInfo.setGender(accountGender);
-        accountInfo.setPhoneNumber(phoneNumber);
+
+        String email = yandexPassport.getDefaultEmail();
 
         saveYandexUser(email, accountInfo);
 
-        logger.info("Client with ID: {}, successfully authorized!", yandexId);
+        logger.info("Client with ID: {}, successfully authorized!", yandexPassport.getId());
 
-        return new TokenResponse(
-                jwtTokenProvider.generateAccessToken(email),
-                jwtTokenProvider.generateRefreshToken(email)
-        );
+        var accessToken = jwtTokenProvider.generateAccessToken(email);
+        var refreshToken = jwtTokenProvider.generateRefreshToken(email);
+
+        return new TokenResponse(accessToken, refreshToken);
     }
 
     private void saveYandexUser(String email, AccountInfo accountInfo) {
@@ -120,7 +86,7 @@ public class YandexOAuthService {
 
         UserProvider newUserProvider = new UserProvider();
 
-        // пустой пароль задается исключительно при авторизации через oath2
+        // пустой пароль задается исключительно при авторизации через oauth2
         newUserProvider.setPassword("");
         newUserProvider.setEmail(email);
         newUserProvider.setProvider(TypeProvider.OAUTH);
@@ -129,5 +95,50 @@ public class YandexOAuthService {
         userProviderService.createUserProviderWithAccountInfo(newUserProvider, accountInfo);
 
         logger.info("Created new user provider from Yandex oauth2");
+    }
+
+    private YandexPassport getYandexPassport(String accessToken) {
+        HttpHeaders userInfoHeaders = new HttpHeaders();
+        userInfoHeaders.set("Authorization", "OAuth " + accessToken);
+
+        HttpEntity<String> userInfoRequest = new HttpEntity<>(userInfoHeaders);
+        ResponseEntity<YandexPassport> userInfoResponse = restTemplate.exchange(
+                userInfoUri,
+                HttpMethod.GET,
+                userInfoRequest,
+                YandexPassport.class
+        );
+
+        if (userInfoResponse.getStatusCode() != HttpStatus.OK || userInfoResponse.getBody() == null) {
+            logger.error("Couldn't get user data, status code: {}", userInfoResponse.getStatusCode());
+            throw asWebClientException("Couldn't get user data");
+        }
+
+        return userInfoResponse.getBody();
+    }
+
+    private String authorizeYandexRequest(String code) {
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_FORM_URLENCODED);
+
+        String requestBody = "grant_type=authorization_code"
+                + "&code=" + code
+                + "&client_id=" + clientId
+                + "&client_secret=" + clientSecret;
+
+        HttpEntity<String> request = new HttpEntity<>(requestBody, headers);
+
+        ResponseEntity<YandexToken> response = restTemplate.postForEntity(tokenUri, request, YandexToken.class);
+
+        if (response.getStatusCode() != HttpStatus.OK || response.getBody() == null) {
+            logger.error("Request for user data could not be completed, status code: {}", response.getStatusCode());
+            throw asWebClientException("Invalid authorization code.");
+        }
+
+        return response.getBody().getAccessToken();
+    }
+
+    private WebClientException asWebClientException(String message) {
+        return new WebClientException("Authorization error via the Yandex service", message);
     }
 }

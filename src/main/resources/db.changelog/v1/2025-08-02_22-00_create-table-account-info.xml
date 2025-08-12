@@ -38,7 +38,7 @@
             </column>
 
             <column name="avatar_id" type="VARCHAR">
-                <constraints unique="true" nullable="true"/>
+                <constraints unique="false" nullable="true"/>
             </column>
 
         </createTable>
