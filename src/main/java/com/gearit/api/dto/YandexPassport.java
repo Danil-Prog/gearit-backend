@@ -2,6 +2,12 @@ package com.gearit.api.dto;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.gearit.api.entity.account.AccountGender;
+import com.gearit.api.entity.account.AccountInfo;
+import java.time.Instant;
+import java.time.LocalDate;
+import java.time.ZoneId;
+import java.util.Arrays;
 import java.util.List;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
@@ -135,5 +141,24 @@ public class YandexPassport {
 
     public void setDefaultAvatarId(String defaultAvatarId) {
         this.defaultAvatarId = defaultAvatarId;
+    }
+
+    public AccountInfo toAccountInfo() {
+        LocalDate localDate = LocalDate.parse(birthday);
+        Instant instant = localDate.atStartOfDay(ZoneId.of("UTC")).toInstant();
+
+        AccountGender accountGender = Arrays.stream(AccountGender.values())
+                .filter(gender -> gender.getName().equals(getSex()))
+                .findFirst()
+                .orElse(null);
+
+        AccountInfo accountInfo = new AccountInfo();
+        accountInfo.setFirstName(firstName);
+        accountInfo.setLastName(lastName);
+        accountInfo.setAvatarId(defaultAvatarId);
+        accountInfo.setGender(accountGender);
+        accountInfo.setBirthDate(instant);
+
+        return accountInfo;
     }
 }

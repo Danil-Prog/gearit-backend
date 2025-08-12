@@ -4,7 +4,6 @@ import com.gearit.api.config.properties.YandexProperties;
 import com.gearit.api.dto.YandexPassport;
 import com.gearit.api.dto.YandexToken;
 import com.gearit.api.dto.response.TokenResponse;
-import com.gearit.api.entity.account.AccountGender;
 import com.gearit.api.entity.account.AccountInfo;
 import com.gearit.api.entity.user.TypeProvider;
 import com.gearit.api.entity.user.UserProvider;
@@ -56,15 +55,8 @@ public class YandexOAuthService {
         String token = authorizeYandexRequest(code);
         YandexPassport yandexPassport = getYandexPassport(token);
 
-        AccountGender accountGender = AccountGender.valueOf(yandexPassport.getSex().toUpperCase());
-
-        AccountInfo accountInfo = new AccountInfo();
-        accountInfo.setFirstName(yandexPassport.getFirstName());
-        accountInfo.setLastName(yandexPassport.getLastName());
-        accountInfo.setAvatarId(yandexPassport.getDefaultAvatarId());
-        accountInfo.setGender(accountGender);
-
         String email = yandexPassport.getDefaultEmail();
+        AccountInfo accountInfo = yandexPassport.toAccountInfo();
 
         saveYandexUser(email, accountInfo);
 
