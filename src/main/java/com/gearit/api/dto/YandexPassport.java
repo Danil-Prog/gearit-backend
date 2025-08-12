@@ -144,8 +144,6 @@ public class YandexPassport {
     }
 
     public AccountInfo toAccountInfo() {
-        LocalDate localDate = LocalDate.parse(birthday);
-        Instant instant = localDate.atStartOfDay(ZoneId.of("UTC")).toInstant();
 
         AccountGender accountGender = Arrays.stream(AccountGender.values())
                 .filter(gender -> gender.getName().equals(getSex()))
@@ -157,7 +155,16 @@ public class YandexPassport {
         accountInfo.setLastName(lastName);
         accountInfo.setAvatarId(defaultAvatarId);
         accountInfo.setGender(accountGender);
-        accountInfo.setBirthDate(instant);
+
+        if (birthday != null) {
+            try {
+                LocalDate localDate = LocalDate.parse(birthday);
+                Instant instant = localDate.atStartOfDay(ZoneId.of("UTC")).toInstant();
+                accountInfo.setBirthDate(instant);
+            } catch (Exception exception) {
+                exception.printStackTrace(System.err);
+            }
+        }
 
         return accountInfo;
     }
