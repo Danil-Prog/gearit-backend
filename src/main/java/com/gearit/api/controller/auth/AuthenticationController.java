@@ -59,9 +59,12 @@ public class AuthenticationController {
             @CookieValue(name = RefreshCookie.NAME) String refreshToken,
             HttpServletResponse servletResponse
     ) {
-        var tokenResponse = authService.refreshToken(refreshToken);
-        HttpCookieUtils.setHttpCookie(servletResponse, new RefreshCookie(tokenResponse.refreshToken()));
-
-        return ResponseEntity.ok(new RefreshResponse(tokenResponse.accessToken()));
+        try {
+            var tokenResponse = authService.refreshToken(refreshToken);
+            HttpCookieUtils.setHttpCookie(servletResponse, new RefreshCookie(tokenResponse.refreshToken()));
+            return ResponseEntity.ok(new RefreshResponse(tokenResponse.accessToken()));
+        } catch (Exception ex) {
+            return ResponseEntity.status(HttpServletResponse.SC_UNAUTHORIZED).build();
+        }
     }
 }
