@@ -9,7 +9,11 @@ import java.time.LocalDate;
 import java.time.ZoneId;
 import java.util.Arrays;
 import java.util.List;
+import lombok.Getter;
+import lombok.Setter;
 
+@Getter
+@Setter
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class YandexPassport {
 
@@ -47,117 +51,28 @@ public class YandexPassport {
     @JsonProperty("default_avatar_id")
     private String defaultAvatarId;
 
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public String getFirstName() {
-        return firstName;
-    }
-
-    public void setFirstName(String firstName) {
-        this.firstName = firstName;
-    }
-
-    public String getLastName() {
-        return lastName;
-    }
-
-    public void setLastName(String lastName) {
-        this.lastName = lastName;
-    }
-
-    public String getDisplayName() {
-        return displayName;
-    }
-
-    public void setDisplayName(String displayName) {
-        this.displayName = displayName;
-    }
-
-    public List<String> getEmails() {
-        return emails;
-    }
-
-    public void setEmails(List<String> emails) {
-        this.emails = emails;
-    }
-
-    public String getDefaultEmail() {
-        return defaultEmail;
-    }
-
-    public void setDefaultEmail(String defaultEmail) {
-        this.defaultEmail = defaultEmail;
-    }
-
-    public String getRealName() {
-        return realName;
-    }
-
-    public void setRealName(String realName) {
-        this.realName = realName;
-    }
-
-    public String getBirthday() {
-        return birthday;
-    }
-
-    public void setBirthday(String birthday) {
-        this.birthday = birthday;
-    }
-
-    public String getLogin() {
-        return login;
-    }
-
-    public void setLogin(String login) {
-        this.login = login;
-    }
-
-    public String getOldSocialLogin() {
-        return oldSocialLogin;
-    }
-
-    public void setOldSocialLogin(String oldSocialLogin) {
-        this.oldSocialLogin = oldSocialLogin;
-    }
-
-    public String getSex() {
-        return sex;
-    }
-
-    public void setSex(String sex) {
-        this.sex = sex;
-    }
-
-    public String getDefaultAvatarId() {
-        return defaultAvatarId;
-    }
-
-    public void setDefaultAvatarId(String defaultAvatarId) {
-        this.defaultAvatarId = defaultAvatarId;
-    }
-
     public AccountInfo toAccountInfo() {
-        LocalDate localDate = LocalDate.parse(birthday);
-        Instant instant = localDate.atStartOfDay(ZoneId.of("UTC")).toInstant();
+        AccountInfo accountInfo = new AccountInfo();
 
         AccountGender accountGender = Arrays.stream(AccountGender.values())
                 .filter(gender -> gender.getName().equals(getSex()))
                 .findFirst()
                 .orElse(null);
 
-        AccountInfo accountInfo = new AccountInfo();
         accountInfo.setFirstName(firstName);
         accountInfo.setLastName(lastName);
         accountInfo.setAvatarId(defaultAvatarId);
         accountInfo.setGender(accountGender);
-        accountInfo.setBirthDate(instant);
+
+        if (birthday != null && !birthday.isEmpty()) {
+            try {
+                LocalDate localDate = LocalDate.parse(birthday);
+                Instant instant = localDate.atStartOfDay(ZoneId.of("UTC")).toInstant();
+                accountInfo.setBirthDate(instant);
+            } catch (Exception exception) {
+                exception.printStackTrace(System.err);
+            }
+        }
 
         return accountInfo;
     }
