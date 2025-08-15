@@ -4,5 +4,4 @@ public enum ActionType {
 
     PASSWORD_RECOVERY,
     CONFIRM_USER,
-    ;
 }
