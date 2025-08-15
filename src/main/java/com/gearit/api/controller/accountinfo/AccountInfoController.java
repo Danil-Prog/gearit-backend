@@ -1,6 +1,7 @@
 package com.gearit.api.controller.accountinfo;
 
 import com.gearit.api.dto.request.UpdateAccountInfoRequest;
+import com.gearit.api.dto.response.GetAccountInfoResponse;
 import com.gearit.api.entity.account.AccountInfo;
 import com.gearit.api.entity.user.UserProvider;
 import com.gearit.api.service.profile.AccountInfoService;
@@ -25,9 +26,22 @@ public class AccountInfoController {
     }
 
     @GetMapping()
-    public ResponseEntity<AccountInfo> getAccountInfo(Authentication auth) {
-        AccountInfo accountInfo = ((UserProvider) auth.getPrincipal()).getAccountInfo();
-        return ResponseEntity.ok().body(accountInfo);
+    public ResponseEntity<GetAccountInfoResponse> getAccountInfo(Authentication auth) {
+        UserProvider userProvider = (UserProvider) auth.getPrincipal();
+        AccountInfo accountInfo = userProvider.getAccountInfo();
+
+        var response = new GetAccountInfoResponse(
+                accountInfo.getFirstName(),
+                accountInfo.getMiddleName(),
+                accountInfo.getLastName(),
+                userProvider.getEmail(),
+                accountInfo.getPhoneNumber(),
+                accountInfo.getGender(),
+                accountInfo.getBirthDate(),
+                accountInfo.getAvatarId()
+        );
+
+        return ResponseEntity.ok().body(response);
     }
 
     @PostMapping()
