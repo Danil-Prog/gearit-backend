@@ -69,10 +69,11 @@ public class SecurityConfig {
     @Bean
     public CorsConfigurationSource corsConfigurationSource() {
         var configuration = new CorsConfiguration();
+        String allowedUri = corsProperties.getCorsAllowedOriginsUri();
 
-        configuration.setAllowedOriginPatterns(List.of(corsProperties.getCorsAllowedOriginsUri()));
-        configuration.setAllowedMethods(List.of("*"));
-        configuration.setAllowedHeaders(List.of("*"));
+        configuration.setAllowedOriginPatterns(List.of(allowedUri));
+        configuration.setAllowedMethods(List.of("GET, POST"));
+        configuration.setAllowedHeaders(List.of("Authorization", "Cache-Control", "Content-Type"));
         configuration.setAllowCredentials(true);
 
         var corsConfigurationSource = new UrlBasedCorsConfigurationSource();
