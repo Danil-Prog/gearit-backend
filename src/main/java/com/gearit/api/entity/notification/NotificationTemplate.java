@@ -1,5 +1,8 @@
 package com.gearit.api.entity.notification;
 
+import lombok.Getter;
+
+@Getter
 public enum NotificationTemplate {
 
     USER_CONFIRMED(
@@ -10,7 +13,8 @@ public enum NotificationTemplate {
     PASSWORD_RECOVERED(
             "[Gearit] Восстановление пароля.",
             "classpath:email/password_recovery.html"
-    );
+    )
+    ;
 
     private final String subject;
     private final String filePath;
@@ -18,13 +22,5 @@ public enum NotificationTemplate {
     NotificationTemplate(String subject, String filePath) {
         this.subject = subject;
         this.filePath = filePath;
-    }
-
-    public String getFilePath() {
-        return filePath;
-    }
-
-    public String getSubject() {
-        return subject;
     }
 }

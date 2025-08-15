@@ -5,7 +5,11 @@ import com.gearit.api.converter.*;
 import com.gearit.api.entity.user.*;
 import jakarta.persistence.*;
 import java.util.*;
+import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 
+@Data
 @Entity
 @Table(name = TableNames.NOTIFICATIONS)
 public class Notification {
@@ -33,52 +37,4 @@ public class Notification {
     @Convert(converter = JsonConverter.class)
     @Column(name = "variables", columnDefinition = "JSONB")
     private Map<String, Object> variables;
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public NotificationTemplate getTemplate() {
-        return template;
-    }
-
-    public void setTemplate(NotificationTemplate template) {
-        this.template = template;
-    }
-
-    public NotificationType getType() {
-        return type;
-    }
-
-    public void setType(NotificationType type) {
-        this.type = type;
-    }
-
-    public UserProvider getSentToUser() {
-        return sentToUser;
-    }
-
-    public void setSentToUser(UserProvider sentToUser) {
-        this.sentToUser = sentToUser;
-    }
-
-    public Map<String, Object> getVariables() {
-        return variables;
-    }
-
-    public void setVariables(Map<String, Object> variables) {
-        this.variables = variables;
-    }
-
-    public NotificationStatus getStatus() {
-        return status;
-    }
-
-    public void setStatus(NotificationStatus status) {
-        this.status = status;
-    }
 }

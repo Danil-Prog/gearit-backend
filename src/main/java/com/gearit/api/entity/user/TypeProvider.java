@@ -4,4 +4,5 @@ public enum TypeProvider {
 
     OAUTH,
     INTERNAL,
+    ;
 }
