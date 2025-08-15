@@ -58,7 +58,7 @@ public class AuthServiceTest {
 
         UserProvider userProvider = new UserProvider();
         userProvider.setId(1L);
-        when(userProviderService.createUserProviderWithoutAccountInfo(any())).thenReturn(userProvider);
+        when(userProviderService.createUserProviderWithEmptyAccountInfo(any())).thenReturn(userProvider);
 
         ActionCode actionCode = new ActionCode();
         actionCode.setCode("action_code");
@@ -66,7 +66,7 @@ public class AuthServiceTest {
 
         authService.register(email, password);
 
-        verify(userProviderService).createUserProviderWithoutAccountInfo(any(UserProvider.class));
+        verify(userProviderService).createUserProviderWithEmptyAccountInfo(any(UserProvider.class));
         verify(actionCodeService).createCode(eq(1L), eq(ActionType.CONFIRM_USER));
         verify(notificationService).createNotification(
                 eq(NotificationTemplate.USER_CONFIRMED),
@@ -101,7 +101,7 @@ public class AuthServiceTest {
 
         authService.verifyUserProvider("action_code");
 
-        assertTrue(userProvider.isConfirmed());
+        assertTrue(userProvider.getIsConfirmed());
 
         verify(userProviderService).updateUserProvider(userProvider);
         verify(actionCodeService).deleteByCode("action_code");
@@ -123,7 +123,7 @@ public class AuthServiceTest {
     void passLoginIfSuccess() {
         UserProvider userProvider = new UserProvider();
         userProvider.setEmail(email);
-        userProvider.setConfirmed(true);
+        userProvider.setIsConfirmed(true);
 
         when(userProviderService.getUserProviderByEmailOrThrow(email)).thenReturn(userProvider);
         when(jwtTokenProvider.generateAccessToken(email)).thenReturn("access_token");
@@ -138,7 +138,7 @@ public class AuthServiceTest {
     @Test
     void failLoginIfUserNotConfirmed() {
         UserProvider userProvider = new UserProvider();
-        userProvider.setConfirmed(false);
+        userProvider.setIsConfirmed(false);
 
         when(userProviderService.getUserProviderByEmailOrThrow(email)).thenReturn(userProvider);
 
@@ -150,7 +150,7 @@ public class AuthServiceTest {
     @Test
     void failLoginIfCredentialsInvalid() {
         UserProvider userProvider = new UserProvider();
-        userProvider.setConfirmed(true);
+        userProvider.setIsConfirmed(true);
         when(userProviderService.getUserProviderByEmailOrThrow(email)).thenReturn(userProvider);
 
         doThrow(new WebClientException("User authentication failed", "Invalid email or password"))

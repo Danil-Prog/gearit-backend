@@ -4,8 +4,6 @@ import com.gearit.api.dto.request.UpdateAccountInfoRequest;
 import com.gearit.api.entity.account.AccountInfo;
 import com.gearit.api.repository.AccountInfoRepository;
 import com.gearit.api.utils.AccountInfoValidator;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -13,8 +11,6 @@ import org.springframework.stereotype.Service;
 public class AccountInfoService {
 
     private final AccountInfoRepository accountInfoRepository;
-
-    private final Logger logger = LoggerFactory.getLogger(AccountInfoService.class);
 
     @Autowired
     public AccountInfoService(AccountInfoRepository accountInfoRepository) {

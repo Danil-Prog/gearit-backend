@@ -1,5 +1,6 @@
-package com.gearit.api.scheduler;
+package com.gearit.api.scheduler.impl;
 
+import com.gearit.api.scheduler.JobScheduler;
 import com.gearit.api.service.notification.NotificationProcessor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

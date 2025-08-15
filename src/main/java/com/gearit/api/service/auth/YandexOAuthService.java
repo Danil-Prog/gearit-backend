@@ -82,7 +82,7 @@ public class YandexOAuthService {
         newUserProvider.setPassword("");
         newUserProvider.setEmail(email);
         newUserProvider.setProvider(TypeProvider.OAUTH);
-        newUserProvider.setConfirmed(true);
+        newUserProvider.setIsConfirmed(true);
 
         userProviderService.createUserProviderWithAccountInfo(newUserProvider, accountInfo);
 

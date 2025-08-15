@@ -46,7 +46,7 @@ public class UserProviderService {
     }
 
     @Transactional
-    public UserProvider createUserProviderWithoutAccountInfo(UserProvider userProvider) {
+    public UserProvider createUserProviderWithEmptyAccountInfo(UserProvider userProvider) {
         AccountInfo accountInfo = accountInfoService.createEmptyAccount();
         userProvider.setAccountInfo(accountInfo);
 
