@@ -61,7 +61,7 @@ public class AuthService {
         userProvider.setPassword(password);
         userProvider.setProvider(TypeProvider.INTERNAL);
 
-        Long userProviderId = userProviderService.createUserProviderWithoutAccountInfo(userProvider).getId();
+        Long userProviderId = userProviderService.createUserProviderWithEmptyAccountInfo(userProvider).getId();
         ActionCode actionCode = actionCodeService.createCode(userProviderId, ActionType.CONFIRM_USER);
 
         notificationService.createNotification(
@@ -82,7 +82,7 @@ public class AuthService {
         }
 
         UserProvider userProvider = userProviderService.getUserProviderById(actionCode.getUserProviderId());
-        userProvider.setConfirmed(true);
+        userProvider.setIsConfirmed(true);
 
         // Подтверждаем аккаунт пользователя и удаляем код подтверждения из БД.
         userProviderService.updateUserProvider(userProvider);
@@ -95,7 +95,7 @@ public class AuthService {
         var errorMessage = "User authentication failed";
         var user = userProviderService.getUserProviderByEmailOrThrow(email);
 
-        if (user.isConfirmed() == false) {
+        if (user.getIsConfirmed() == false) {
             throw new WebClientException(errorMessage, "User is not confirmed");
         }
 

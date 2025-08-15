@@ -15,9 +15,11 @@ import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 import java.util.Collection;
 import java.util.List;
+import lombok.Data;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
+@Data
 @Entity
 @Table(name = TableNames.USER_PROVIDER)
 public class UserProvider implements UserDetails {
@@ -76,49 +78,5 @@ public class UserProvider implements UserDetails {
     @Override
     public boolean isEnabled() {
         return UserDetails.super.isEnabled();
-    }
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
-    }
-
-    public TypeProvider getProvider() {
-        return provider;
-    }
-
-    public void setProvider(TypeProvider provider) {
-        this.provider = provider;
-    }
-
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
-    public Boolean isConfirmed() {
-        return isConfirmed;
-    }
-
-    public void setConfirmed(Boolean confirmed) {
-        isConfirmed = confirmed;
-    }
-
-    public AccountInfo getAccountInfo() {
-        return accountInfo;
-    }
-
-    public void setAccountInfo(AccountInfo accountInfo) {
-        this.accountInfo = accountInfo;
     }
 }

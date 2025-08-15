@@ -1,5 +1,8 @@
 package com.gearit.api.entity.account;
 
+import lombok.Getter;
+
+@Getter
 public enum AccountGender {
 
     MALE("male"),
@@ -10,9 +13,5 @@ public enum AccountGender {
 
     AccountGender(String name) {
         this.name = name;
-    }
-
-    public String getName() {
-        return name;
     }
 }

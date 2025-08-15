@@ -8,7 +8,9 @@ import jakarta.persistence.Enumerated;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 import java.time.Instant;
+import lombok.Data;
 
+@Data
 @Entity
 @Table(name = TableNames.ACTION_CODES)
 public class ActionCode {
@@ -26,36 +28,4 @@ public class ActionCode {
     @Enumerated(EnumType.STRING)
     @Column(name = "action_type")
     private ActionType actionType;
-
-    public Long getUserProviderId() {
-        return userProviderId;
-    }
-
-    public void setUserProviderId(Long userProviderId) {
-        this.userProviderId = userProviderId;
-    }
-
-    public String getCode() {
-        return code;
-    }
-
-    public void setCode(String code) {
-        this.code = code;
-    }
-
-    public Instant getExpiresAt() {
-        return expiresAt;
-    }
-
-    public void setExpiresAt(Instant expiresAt) {
-        this.expiresAt = expiresAt;
-    }
-
-    public ActionType getActionType() {
-        return actionType;
-    }
-
-    public void setActionType(ActionType actionType) {
-        this.actionType = actionType;
-    }
 }

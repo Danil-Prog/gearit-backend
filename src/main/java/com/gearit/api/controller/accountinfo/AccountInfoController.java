@@ -25,13 +25,16 @@ public class AccountInfoController {
     }
 
     @GetMapping()
-    public ResponseEntity<AccountInfo> profile(Authentication auth) {
+    public ResponseEntity<AccountInfo> getAccountInfo(Authentication auth) {
         AccountInfo accountInfo = ((UserProvider) auth.getPrincipal()).getAccountInfo();
         return ResponseEntity.ok().body(accountInfo);
     }
 
     @PostMapping()
-    public ResponseEntity<Void> updateAccountInfo(@RequestBody UpdateAccountInfoRequest request, Authentication auth) {
+    public ResponseEntity<Void> updateAccountInfo(
+            @RequestBody UpdateAccountInfoRequest request,
+            Authentication auth
+    ) {
         AccountInfo accountInfo = ((UserProvider) auth.getPrincipal()).getAccountInfo();
         accountInfoService.updateAccountInfo(accountInfo, request);
         return ResponseEntity.ok().build();
