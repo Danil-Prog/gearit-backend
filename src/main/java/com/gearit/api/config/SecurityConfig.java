@@ -73,7 +73,7 @@ public class SecurityConfig {
 
         configuration.setAllowedOriginPatterns(List.of(allowedUri));
         configuration.setAllowedMethods(List.of("GET, POST"));
-        configuration.setAllowedHeaders(List.of("Authorization", "Cache-Control", "Content-Type"));
+        configuration.setAllowedHeaders(List.of("*"));
         configuration.setAllowCredentials(true);
 
         var corsConfigurationSource = new UrlBasedCorsConfigurationSource();
