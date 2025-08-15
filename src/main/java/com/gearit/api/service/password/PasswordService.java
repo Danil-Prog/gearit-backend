@@ -37,7 +37,7 @@ public class PasswordService {
     /**
      * Отправляет пользователю на почту уведомление со ссылкой на восстановление пароля
      *
-     * @param email - адрес электронной почты пользователя
+     * @param email адрес электронной почты пользователя
      */
     public void forgot(String email) {
         UserProvider userProvider = userProviderService.getUserProviderByEmailOrThrow(email);
