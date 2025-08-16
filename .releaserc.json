@@ -1,5 +1,5 @@
 {
-  "branches": ["develop", "master"],
+  "branches": ["develop"],
   "repositoryUrl": "https://github.com/Danil-Prog/gearit-backend",
   "tagFormat": "v${version}",
   "plugins": [
