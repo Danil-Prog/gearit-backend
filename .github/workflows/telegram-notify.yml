@@ -1,0 +1,58 @@
+name: Release and Notify
+on:
+  workflow_run:
+    workflows: ["Публикация docker образа backend-a. Деплой."]
+    types:
+      - completed
+
+jobs:
+  release-and-notify:
+    if: ${{ github.event.workflow_run.conclusion == 'success' }}
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      issues: write
+      pull-requests: write
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          token: ${{ secrets.PAT_TOKEN || secrets.GITHUB_TOKEN }}
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Run semantic-release
+        env:
+          GITHUB_TOKEN: ${{ secrets.PAT_TOKEN || secrets.GITHUB_TOKEN }}
+        run: npx semantic-release
+
+      - name: Check if release was created
+        id: check_release
+        run: |
+          if [ -f release_notes_telegram.txt ]; then
+            echo "release_created=true" >> $GITHUB_OUTPUT
+          else
+            echo "release_created=false" >> $GITHUB_OUTPUT
+          fi
+      - name: Send Telegram message
+        if: steps.check_release.outputs.release_created == 'true'
+        env:
+          TELEGRAM_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+          TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
+        run: |
+          VERSION=$(jq -r .version package.json)
+          NOTES=$(cat release_notes_telegram.txt)
+          
+          MESSAGE="$NOTES"
+          
+          curl -s -X POST "https://api.telegram.org/bot$TELEGRAM_TOKEN/sendMessage" \
+            -d chat_id="$TELEGRAM_CHAT_ID" \
+            -d text="$MESSAGE" \
+            -d parse_mode="HTML"
