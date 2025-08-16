@@ -36,7 +36,7 @@ function convertMarkdownToTelegramHTML(markdown) {
 function generateHTMLReleaseNotes(version, notes) {
     const htmlNotes = convertMarkdownToTelegramHTML(notes);
 
-    const htmlContent = `<b>🚀 Release [Frontend] v${version}</b>
+    const htmlContent = `<b>✨ Release [Backend] v${version}</b>
 
 ${htmlNotes}`;
 

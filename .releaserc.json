@@ -1,5 +1,5 @@
 {
-  "branches": ["master"],
+  "branches": ["develop", "master"],
   "repositoryUrl": "https://github.com/Chswell/gearit-web",
   "tagFormat": "v${version}",
   "plugins": [
