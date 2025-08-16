@@ -1,6 +1,6 @@
 {
   "branches": ["develop", "master"],
-  "repositoryUrl": "https://github.com/Chswell/gearit-web",
+  "repositoryUrl": "https://github.com/Danil-Prog/gearit-backend",
   "tagFormat": "v${version}",
   "plugins": [
     "@semantic-release/commit-analyzer",
