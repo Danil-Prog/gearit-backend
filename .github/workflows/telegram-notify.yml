@@ -1,7 +1,7 @@
 name: Release and Notify
 on:
   workflow_run:
-    workflows: ["Публикация docker образа backend-a. Деплой."]
+    workflows: ["Build and Deploy"]
     types:
       - completed
     branches:

@@ -1,4 +1,4 @@
-name: Публикация docker образа backend-a. Деплой.
+name: Build and Deploy
 on:
   push:
     branches: [ develop ]
