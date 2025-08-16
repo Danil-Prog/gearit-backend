@@ -1,3 +1,11 @@
+## [0.0.3](https://github.com/Danil-Prog/gearit-backend/compare/v0.0.2...v0.0.3) (2025-08-16)
+
+
+### Bug Fixes
+
+* тест workflow ([50acba1](https://github.com/Danil-Prog/gearit-backend/commit/50acba12b4a9541a6fade7ab6430f58b534c2866))
+* фикс пути скрипта ([c685726](https://github.com/Danil-Prog/gearit-backend/commit/c685726d37b7ce45ece2bd3a758da7937db0306a))
+
 ## [0.0.2](https://github.com/Danil-Prog/gearit-backend/compare/v0.0.1...v0.0.2) (2025-08-16)
 
 

@@ -17,6 +17,7 @@ import lombok.Setter;
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class YandexPassport {
 
+    @JsonProperty("id")
     private Long id;
 
     @JsonProperty("first_name")
