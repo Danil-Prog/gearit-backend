@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                   https://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-latest.xsd">
+
+    <changeSet id="5" author="master">
+
+        <createTable tableName="gearit_endpoints">
+
+            <column name="id" type="BIGSERIAL">
+                <constraints primaryKey="true"/>
+            </column>
+
+            <column name="method" type="VARCHAR">
+                <constraints unique="false" nullable="false"/>
+            </column>
+
+            <column name="path" type="VARCHAR">
+                <constraints unique="false" nullable="false"/>
+            </column>
+
+            <column name="description" type="VARCHAR">
+                <constraints unique="false" nullable="true"/>
+            </column>
+
+        </createTable>
+
+    </changeSet>
+
+</databaseChangeLog>

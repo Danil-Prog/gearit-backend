@@ -7,7 +7,9 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
+import lombok.Data;
 
+@Data
 @Entity
 @Table(name = TableNames.ENDPOINTS)
 public class Endpoint {
@@ -21,4 +23,7 @@ public class Endpoint {
 
     @Column(name = "path")
     private String path;
+
+    @Column(name = "description")
+    private String description;
 }

@@ -1,6 +1,7 @@
 package com.gearit.api.entity.user;
 
 import com.gearit.api.constants.TableNames;
+import com.gearit.api.entity.accesspolicy.AccessPolicy;
 import com.gearit.api.entity.account.AccountInfo;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -44,6 +45,10 @@ public class UserProvider implements UserDetails {
     @OneToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "account_id", referencedColumnName = "id")
     private AccountInfo accountInfo;
+
+    @OneToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "access_policy_id", nullable = false)
+    private AccessPolicy accessPolicy;
 
     @Override
     public String getUsername() {
