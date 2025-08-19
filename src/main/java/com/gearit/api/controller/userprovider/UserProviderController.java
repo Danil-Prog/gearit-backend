@@ -1,10 +1,9 @@
 package com.gearit.api.controller.userprovider;
 
 import com.gearit.api.dto.view.UserProviderView;
-import com.gearit.api.dto.request.GetUserProvidersRequest;
 import com.gearit.api.service.user.UserProviderService;
+import com.gearit.api.utils.http.PageableRequest;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -23,10 +22,10 @@ public class UserProviderController {
     }
 
     @GetMapping
-    public ResponseEntity<Page<UserProviderView>> getUserProviders(
-            @RequestBody GetUserProvidersRequest getUserProvidersRequest
+    public ResponseEntity<?> getUserProviders(
+            @RequestBody PageableRequest request
     ) {
-        var response = userProviderService.getUserProviders(getUserProvidersRequest.pageable());
+        var response = userProviderService.getUserProviders(request).map(UserProviderView::from);
 
         return ResponseEntity.ok(null);
     }

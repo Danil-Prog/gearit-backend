@@ -3,7 +3,6 @@ package com.gearit.api.utils.http;
 import java.util.List;
 import lombok.Getter;
 import lombok.Setter;
-import org.apache.commons.lang3.math.NumberUtils;
 
 @Getter
 @Setter
@@ -17,11 +16,11 @@ public class ResponsePageable<T> {
     private int recordFrom;
     private int recordTo;
 
-    public ResponsePageable(int records, List<T> items, RequestPageable pageable) {
+    public ResponsePageable(int records, List<T> items, PageableRequest pageable) {
         this((long) records, items, pageable);
     }
 
-    public ResponsePageable(long records, List<T> items, RequestPageable pageable) {
+    public ResponsePageable(long records, List<T> items, PageableRequest pageable) {
         this.records = records;
         this.items = items;
         this.pages = (int) Math.ceil((double) this.records / pageable.getSize());
