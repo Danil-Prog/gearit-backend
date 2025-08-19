@@ -31,6 +31,10 @@
 
         </createTable>
 
+        <insert tableName="gearit_access_policies">
+            <column name="name" value="MANAGER"/>
+        </insert>
+
         <addForeignKeyConstraint baseTableName="gearit_access_policies_endpoints"
                                  baseColumnNames="access_policy_id"
                                  constraintName="gearit_access_policies_endpoints_access_policies_fk"
@@ -42,6 +46,16 @@
                                  constraintName="gearit_access_policies_endpoints_endpoints_fk"
                                  referencedTableName="gearit_endpoints"
                                  referencedColumnNames="id"/>
+
+        <insert tableName="gearit_access_policies_endpoints">
+            <column name="access_policy_id" value="1"/>
+            <column name="endpoint_id" value="1"/>
+        </insert>
+
+        <insert tableName="gearit_access_policies_endpoints">
+            <column name="access_policy_id" value="1"/>
+            <column name="endpoint_id" value="2"/>
+        </insert>
 
     </changeSet>
 

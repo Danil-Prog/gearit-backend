@@ -27,6 +27,20 @@
 
         </createTable>
 
+        <insert tableName="gearit_endpoints">
+            <column name="id" value="1"/>
+            <column name="method" value="GET"/>
+            <column name="path" value="/api/v1/account"/>
+            <column name="description" value="Получение информации об аккаунте"/>
+        </insert>
+
+        <insert tableName="gearit_endpoints">
+            <column name="id" value="2"/>
+            <column name="method" value="POST"/>
+            <column name="path" value="/api/v1/account"/>
+            <column name="description" value="Обновление аккаунта"/>
+        </insert>
+
     </changeSet>
 
 </databaseChangeLog>

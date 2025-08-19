@@ -14,11 +14,12 @@ import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import java.util.Set;
 import lombok.Data;
+import org.springframework.security.core.GrantedAuthority;
 
 @Data
 @Entity
 @Table(name = TableNames.ACCESS_POLICIES)
-public class AccessPolicy {
+public class AccessPolicy implements GrantedAuthority {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -34,4 +35,9 @@ public class AccessPolicy {
             inverseJoinColumns = @JoinColumn(name = "endpoint_id")
     )
     private Set<Endpoint> endpoints;
+
+    @Override
+    public String getAuthority() {
+        return name;
+    }
 }

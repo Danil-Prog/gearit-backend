@@ -57,7 +57,7 @@ public class UserProvider implements UserDetails {
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return List.of(() -> "ROLE_USER");
+        return List.of(accessPolicy);
     }
 
     @Override
