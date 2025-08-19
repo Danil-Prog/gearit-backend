@@ -7,8 +7,10 @@ import com.gearit.api.exception.BadRequestException;
 import com.gearit.api.exception.WebClientException;
 import com.gearit.api.repository.UserProviderRepository;
 import com.gearit.api.service.profile.AccountInfoService;
-import com.gearit.api.utils.UserProviderValidator;
+import com.gearit.api.utils.validator.UserProviderValidator;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -29,6 +31,10 @@ public class UserProviderService {
         this.userProviderRepository = userProviderRepository;
         this.bCryptPasswordEncoder = bCryptPasswordEncoder;
         this.accountInfoService = accountInfoService;
+    }
+
+    public Page<UserProvider> getUserProviders(Pageable pageable) {
+        userProviderRepository.findAll(pageable);
     }
 
     public UserProvider getUserProviderByEmailOrNull(String email) {

@@ -1,4 +1,4 @@
-package com.gearit.api.utils;
+package com.gearit.api.utils.resourceloader;
 
 import org.springframework.core.io.*;
 import org.springframework.stereotype.*;

@@ -26,4 +26,7 @@ public class Endpoint {
 
     @Column(name = "description")
     private String description;
+
+    @Column(name = "resource")
+    private String resource;
 }
