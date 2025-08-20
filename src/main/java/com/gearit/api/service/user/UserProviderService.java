@@ -1,5 +1,6 @@
 package com.gearit.api.service.user;
 
+import com.gearit.api.dto.view.UserProviderView;
 import com.gearit.api.entity.account.AccountInfo;
 import com.gearit.api.entity.user.TypeProvider;
 import com.gearit.api.entity.user.UserProvider;
@@ -33,8 +34,8 @@ public class UserProviderService {
         this.accountInfoService = accountInfoService;
     }
 
-    public Page<UserProvider> getUserProviders(PageableRequest request) {
-        return userProviderRepository.findAll(request.toPageable());
+    public Page<UserProviderView> getUserProviders(PageableRequest request) {
+        return userProviderRepository.findAll(request.toPageable()).map(UserProviderView::from);
     }
 
     public UserProvider getUserProviderByEmailOrNull(String email) {

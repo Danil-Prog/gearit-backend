@@ -1,8 +1,12 @@
 package com.gearit.api.utils.http;
 
+import jakarta.persistence.criteria.Predicate;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import lombok.Getter;
 import lombok.Setter;
+import org.springframework.data.jpa.domain.Specification;
 
 @Getter
 @Setter
@@ -32,5 +36,24 @@ public class ResponsePageable<T> {
             this.recordFrom = (this.page * pageable.getSize()) - pageable.getSize();
             this.recordTo = Math.toIntExact((this.page == pages) ? this.records : (long) this.page * pageable.getSize());
         }
+    }
+
+    private Specification<T> buildSpecification(Map<String, Object> filters) {
+        return (root, query, cb) -> {
+            List<Predicate> predicates = new ArrayList<>();
+
+            filters.forEach((key, value) -> {
+                if (value != null) {
+                    // пример: если строка – LIKE, иначе – EQUAL
+                    if (value instanceof String stringValue) {
+                        predicates.add(cb.like(cb.lower(root.get(key)), "%" + stringValue.toLowerCase() + "%"));
+                    } else {
+                        predicates.add(cb.equal(root.get(key), value));
+                    }
+                }
+            });
+
+            return cb.and(predicates.toArray(new Predicate[0]));
+        };
     }
 }
