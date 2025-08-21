@@ -12,6 +12,7 @@ import com.gearit.api.utils.http.PageableRequest;
 import com.gearit.api.utils.validator.UserProviderValidator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -34,8 +35,9 @@ public class UserProviderService {
         this.accountInfoService = accountInfoService;
     }
 
-    public Page<UserProviderView> getUserProviders(PageableRequest request) {
-        return userProviderRepository.findAll(request.toPageable()).map(UserProviderView::from);
+    public Page<UserProviderView> getUserProviders(PageableRequest<UserProvider> request) {
+        Specification<UserProvider> spec = request.toSpecification();
+        return userProviderRepository.findAll(spec, request.toPageable()).map(UserProviderView::from);
     }
 
     public UserProvider getUserProviderByEmailOrNull(String email) {

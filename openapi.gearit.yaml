@@ -7,11 +7,13 @@ servers:
   - url: 'http://localhost:8080/api/v1'
 tags:
   - name: Auth
-    description: Аутентификация/Авторизация/Регистрация пользователей в системе
+    description: Аутентификация/Авторизация/Регистрация пользователей в системе.
   - name: Password
-    description: Восстановление/изменение пароля пользователя
+    description: Восстановление/изменение пароля пользователя.
   - name: Account
-    description: Операции с пользовательским аккаунтом
+    description: Операции с пользовательским аккаунтом.
+  - name: Users
+    description: Операции с пользователями.
 paths:
   /auth/register:
     post:
@@ -301,7 +303,7 @@ paths:
     post:
       tags:
         - Account
-      summary: Обновление аккаунта пользователя
+      summary: Обновление аккаунта пользователя.
       operationId: account/update
       security:
         - JWT: []
@@ -321,6 +323,39 @@ paths:
                 $ref: "#/components/schemas/ClientException"
         500:
           description: Ошибка сервера
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ClientException"
+
+  /user-provider:
+    post:
+      tags:
+        - Users
+      summary: Получение списка пользователей.
+      operationId: users/get
+      security:
+        - JWT: []
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PageableRequest'
+      responses:
+        200:
+          description: Успешное получение списка пользователей.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/PageableResponse"
+        400:
+          description: Если был переданы некорректные данные фильтра.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ClientException"
+        500:
+          description: Ошибка сервера.
           content:
             application/json:
               schema:
@@ -477,3 +512,70 @@ components:
         avatarId:
           type:
             - string
+
+    PageableRequest:
+      type:
+        - object
+      description: Запрос на получение данных с пагинацией, фильтрацией, сортировкой.
+      properties:
+        page:
+          type:
+            - integer
+          description: Текущая запрашиваемая страница.
+        size:
+          type:
+            - integer
+          description: Необходимое количество получаемых элементов.
+        container:
+          type:
+            - object
+          description: Контейнер с фильтрами.
+
+    PageableResponse:
+      type:
+        - object
+      properties:
+        page:
+          type:
+            - integer
+          description: Номер текущей страницы.
+        pages:
+          type:
+            - integer
+          description: Количество страниц.
+        items:
+          type:
+            - array
+        total:
+          type:
+            - integer
+          description:
+            Всего элементов.
+
+    SingleFilter:
+      type:
+        - object
+      description:
+        Фильтр, используется для формирования выборки по условиям.
+      properties:
+        field:
+          type:
+            - string
+          description: Наименование поля, по которому предполагается фильтрация
+        condition:
+          $ref: "#/components/schemas/SingleCondition"
+        value:
+          type:
+            - object
+          description: Значение, по которому фильтруются данные.
+
+    SingleCondition:
+      type: string
+      description:
+        Условие фильтрации.
+      enum:
+        - EQUALS
+        - NOT_EQUALS
+        - GREATER_THAN
+        - LESS_THAN
+        - CONTAINS
