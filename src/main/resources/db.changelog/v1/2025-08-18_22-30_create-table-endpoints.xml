@@ -55,6 +55,22 @@
             <column name="resource" value="user-providers:info"/>
         </insert>
 
+        <insert tableName="gearit_endpoints">
+            <column name="id" value="4"/>
+            <column name="method" value="POST"/>
+            <column name="path" value="/api/v1/access-policy"/>
+            <column name="description" value="Получение списка доступных ресурсов"/>
+            <column name="resource" value="access-policy:info"/>
+        </insert>
+
+        <insert tableName="gearit_endpoints">
+            <column name="id" value="5"/>
+            <column name="method" value="GET"/>
+            <column name="path" value="/api/v1/access-policy/resources"/>
+            <column name="description" value="Получение списка доступных ресурсов"/>
+            <column name="resource" value="access-policy/resources:info"/>
+        </insert>
+
     </changeSet>
 
 </databaseChangeLog>

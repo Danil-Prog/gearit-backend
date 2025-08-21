@@ -3,6 +3,7 @@ package com.gearit.api.service.accesspolicy;
 import com.gearit.api.entity.accesspolicy.AccessPolicy;
 import com.gearit.api.entity.enpoint.Endpoint;
 import com.gearit.api.repository.AccessPolicyRepository;
+import com.gearit.api.utils.http.PageableRequest;
 import jakarta.annotation.PostConstruct;
 import java.util.HashMap;
 import java.util.List;
@@ -12,6 +13,8 @@ import java.util.stream.Collectors;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -50,5 +53,10 @@ public class AccessPolicyService {
 
     public Set<Endpoint> getEndpointsByAccessPolicyName(String accessPolicyName) {
         return accessPolicyMap.get(accessPolicyName);
+    }
+
+    public Page<AccessPolicy> getAllAccessPolicies(PageableRequest<AccessPolicy> request) {
+        Specification<AccessPolicy> spec = request.toSpecification();
+        return accessPolicyRepository.findAll(spec, request.toPageable());
     }
 }

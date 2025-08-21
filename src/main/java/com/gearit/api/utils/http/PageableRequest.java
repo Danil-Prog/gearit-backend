@@ -33,6 +33,10 @@ public class PageableRequest<T> {
     }
 
     public Specification<T> toSpecification() {
+        if (container == null) {
+            return null;
+        }
+
         return (root, criteriaQuery, criteriaBuilder) -> {
             Predicate[] predicates = container.getFilters()
                     .stream()
