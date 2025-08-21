@@ -49,7 +49,7 @@
 
         <insert tableName="gearit_endpoints">
             <column name="id" value="3"/>
-            <column name="method" value="GET"/>
+            <column name="method" value="POST"/>
             <column name="path" value="/api/v1/user-provider"/>
             <column name="description" value="Получение списка пользователей"/>
             <column name="resource" value="user-providers:info"/>
