@@ -38,7 +38,7 @@ public class YandexPassport {
     private String realName;
 
     @JsonProperty("birthday")
-    private String birthday;
+    private String birthDate;
 
     @JsonProperty("login")
     private String login;
@@ -65,9 +65,9 @@ public class YandexPassport {
         accountInfo.setAvatarId(defaultAvatarId);
         accountInfo.setGender(accountGender);
 
-        if (birthday != null && !birthday.isEmpty()) {
+        if (birthDate != null && !birthDate.isEmpty()) {
             try {
-                LocalDate localDate = LocalDate.parse(birthday);
+                LocalDate localDate = LocalDate.parse(birthDate);
                 Instant instant = localDate.atStartOfDay(ZoneId.of("UTC")).toInstant();
                 accountInfo.setBirthDate(instant);
             } catch (Exception exception) {

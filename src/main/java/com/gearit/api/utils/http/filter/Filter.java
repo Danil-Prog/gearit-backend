@@ -5,13 +5,13 @@ import lombok.Setter;
 
 @Getter
 @Setter
-public class SingleFilter {
+public class Filter {
 
     private String field;
-    private SingleCondition condition;
+    private FilterCondition condition;
     private Object value;
 
-    public SingleFilter(String field, SingleCondition condition, Object value) {
+    public Filter(String field, FilterCondition condition, Object value) {
         this.field = field;
         this.condition = condition;
         this.value = value;

@@ -1,5 +1,6 @@
 package com.gearit.api.controller.userprovider;
 
+import com.gearit.api.dto.request.UpdateAccessPolicyUserProviderRequest;
 import com.gearit.api.dto.view.UserProviderView;
 import com.gearit.api.entity.user.UserProvider;
 import com.gearit.api.service.user.UserProviderService;
@@ -30,5 +31,13 @@ public class UserProviderController {
         var userViews = userProviderService.getUserProviders(request);
         var response = new PageableResponse<>(userViews.getTotalElements(), userViews.getContent(), request);
         return ResponseEntity.ok(response);
+    }
+
+    @PostMapping("/access-policy")
+    public ResponseEntity<Void> updateAccessPolicyUserProvider(
+            @RequestBody UpdateAccessPolicyUserProviderRequest request
+    ) {
+        userProviderService.updateAccessPolicyUserProvider(request);
+        return ResponseEntity.ok().build();
     }
 }

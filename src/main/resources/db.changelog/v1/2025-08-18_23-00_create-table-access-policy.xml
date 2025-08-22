@@ -72,6 +72,16 @@
             <column name="endpoint_id" value="5"/>
         </insert>
 
+        <insert tableName="gearit_access_policies_endpoints">
+            <column name="access_policy_id" value="1"/>
+            <column name="endpoint_id" value="6"/>
+        </insert>
+
+        <insert tableName="gearit_access_policies_endpoints">
+            <column name="access_policy_id" value="1"/>
+            <column name="endpoint_id" value="7"/>
+        </insert>
+
     </changeSet>
 
 </databaseChangeLog>

@@ -8,9 +8,9 @@ import lombok.Setter;
 @Setter
 public class FilterContainer {
 
-    private List<SingleFilter> filters;
+    private List<Filter> filters;
 
-    public FilterContainer(List<SingleFilter> filters) {
+    public FilterContainer(List<Filter> filters) {
         this.filters = filters;
     }
 }

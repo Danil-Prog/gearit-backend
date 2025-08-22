@@ -615,7 +615,7 @@ components:
           description:
             Всего элементов.
 
-    SingleFilter:
+    Filter:
       type:
         - object
       description:
@@ -626,13 +626,13 @@ components:
             - string
           description: Наименование поля, по которому предполагается фильтрация
         condition:
-          $ref: "#/components/schemas/SingleCondition"
+          $ref: "#/components/schemas/FilterCondition"
         value:
           type:
             - object
           description: Значение, по которому фильтруются данные.
 
-    SingleCondition:
+    FilterCondition:
       type: string
       description:
         Условие фильтрации.

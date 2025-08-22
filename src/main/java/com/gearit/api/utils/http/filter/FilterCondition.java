@@ -1,6 +1,6 @@
 package com.gearit.api.utils.http.filter;
 
-public enum SingleCondition {
+public enum FilterCondition {
     EQUALS,
     NOT_EQUALS,
     GREATER_THAN,

@@ -2,7 +2,7 @@ package com.gearit.api.utils.http;
 
 import com.gearit.api.exception.WebClientException;
 import com.gearit.api.utils.http.filter.FilterContainer;
-import com.gearit.api.utils.http.filter.SingleFilter;
+import com.gearit.api.utils.http.filter.Filter;
 import jakarta.persistence.criteria.CriteriaBuilder;
 import jakarta.persistence.criteria.Predicate;
 import jakarta.persistence.criteria.Root;
@@ -40,7 +40,7 @@ public class PageableRequest<T> {
         return (root, criteriaQuery, criteriaBuilder) -> {
             Predicate[] predicates = container.getFilters()
                     .stream()
-                    .map((singleFilter) -> toPredicate(root, criteriaBuilder, singleFilter))
+                    .map((filter) -> toPredicate(root, criteriaBuilder, filter))
                     .toArray(Predicate[]::new);
 
             return criteriaBuilder.and(predicates);
@@ -50,7 +50,7 @@ public class PageableRequest<T> {
     /**
      * Формирует Predicate по переданному условию.
      */
-    private Predicate toPredicate(Root<T> root, CriteriaBuilder criteriaBuilder, SingleFilter filter) {
+    private Predicate toPredicate(Root<T> root, CriteriaBuilder criteriaBuilder, Filter filter) {
         Predicate predicate;
         try {
             predicate = switch (filter.getCondition()) {

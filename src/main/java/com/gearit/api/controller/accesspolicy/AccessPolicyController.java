@@ -1,6 +1,7 @@
 package com.gearit.api.controller.accesspolicy;
 
 
+import com.gearit.api.dto.request.CreateAccessPolicyRequest;
 import com.gearit.api.dto.response.GetAvailableResourcesResponse;
 import com.gearit.api.entity.accesspolicy.AccessPolicy;
 import com.gearit.api.entity.enpoint.Endpoint;
@@ -47,5 +48,11 @@ public class AccessPolicyController {
                 .collect(Collectors.toSet());
 
         return ResponseEntity.ok(new GetAvailableResourcesResponse(endpoints));
+    }
+
+    @PostMapping("/create")
+    public ResponseEntity<Void> createAccessPolicy(@RequestBody CreateAccessPolicyRequest request) {
+        accessPolicyService.createAccessPolicy(request);
+        return ResponseEntity.ok().build();
     }
 }
