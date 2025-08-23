@@ -458,7 +458,7 @@ paths:
       tags:
         - AccessPolicy
       summary: Создание политики доступа.
-      operationId: accessPolicy/get
+      operationId: accessPolicy/create
       security:
         - JWT: [ ]
       requestBody:
@@ -649,8 +649,9 @@ components:
           description: Необходимое количество получаемых элементов.
         container:
           type:
-            - object
+            - array
           description: Контейнер с фильтрами.
+          $ref: "#/components/schemas/Filter"
 
     PageableResponse:
       type:
