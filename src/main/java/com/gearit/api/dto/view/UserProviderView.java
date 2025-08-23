@@ -9,7 +9,7 @@ public record UserProviderView(
         String email,
         TypeProvider provider,
         AccessPolicy accessPolicy,
-        AccountInfoView accountInfoView
+        AccountInfoView accountInfo
 ) {
 
     public static UserProviderView from(UserProvider userProvider) {

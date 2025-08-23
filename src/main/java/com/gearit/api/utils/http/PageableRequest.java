@@ -1,9 +1,10 @@
 package com.gearit.api.utils.http;
 
 import com.gearit.api.exception.WebClientException;
-import com.gearit.api.utils.http.filter.FilterContainer;
 import com.gearit.api.utils.http.filter.Filter;
+import com.gearit.api.utils.http.filter.FilterContainer;
 import jakarta.persistence.criteria.CriteriaBuilder;
+import jakarta.persistence.criteria.Path;
 import jakarta.persistence.criteria.Predicate;
 import jakarta.persistence.criteria.Root;
 import lombok.Getter;
@@ -53,17 +54,18 @@ public class PageableRequest<T> {
     private Predicate toPredicate(Root<T> root, CriteriaBuilder criteriaBuilder, Filter filter) {
         Predicate predicate;
         try {
+            Path path = getPathFromField(root, filter.getField());
+
             predicate = switch (filter.getCondition()) {
-                case EQUALS -> criteriaBuilder.equal(root.get(filter.getField()), filter.getValue());
+                case EQUALS -> criteriaBuilder.equal(path, filter.getValue());
 
-                case NOT_EQUALS -> criteriaBuilder.notEqual(root.get(filter.getField()), filter.getValue());
+                case NOT_EQUALS -> criteriaBuilder.notEqual(path, filter.getValue());
 
-                case GREATER_THAN ->
-                        criteriaBuilder.greaterThan(root.get(filter.getField()), (Integer) filter.getValue());
+                case GREATER_THAN -> criteriaBuilder.greaterThan(path, (Integer) filter.getValue());
 
-                case LESS_THAN -> criteriaBuilder.lessThan(root.get(filter.getField()), (Integer) filter.getValue());
+                case LESS_THAN -> criteriaBuilder.lessThan(path, (Integer) filter.getValue());
 
-                case CONTAINS -> criteriaBuilder.like(root.get(filter.getField()), "%" + filter.getValue() + "%");
+                case CONTAINS -> criteriaBuilder.like(path, "%" + filter.getValue() + "%");
             };
         } catch (Exception e) {
             throw asWebClientException(
@@ -73,6 +75,17 @@ public class PageableRequest<T> {
         }
 
         return predicate;
+    }
+
+    private Path<?> getPathFromField(Root<T> root, String field) {
+        String[] parts = field.split("\\.");
+        Path<?> path = root;
+
+        for (String part : parts) {
+            path = path.get(part);
+        }
+
+        return path;
     }
 
     private WebClientException asWebClientException(String message, String extendedHelp) {
