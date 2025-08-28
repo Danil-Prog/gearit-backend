@@ -65,6 +65,10 @@ public class AccessPolicyService {
         return accessPolicyRepository.findById(accessPolicyId).orElse(null);
     }
 
+    public AccessPolicy getAccessPolicyByName(String name) {
+        return accessPolicyRepository.findByName(name);
+    }
+
     /**
      * Обновляет внутренний кэш.
      * Кэширование политик доступа необходимо, так как запрос на

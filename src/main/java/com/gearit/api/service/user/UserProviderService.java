@@ -50,6 +50,10 @@ public class UserProviderService {
         return userProviderRepository.findByEmail(email).orElse(null);
     }
 
+    public Boolean isUserProviderByEmailExist(String email) {
+        return userProviderRepository.findByEmail(email).isPresent();
+    }
+
     public UserProvider getUserProviderByEmailOrThrow(String email) {
         return userProviderRepository.findByEmail(email).orElseThrow(() ->
                 new WebClientException(
@@ -77,32 +81,28 @@ public class UserProviderService {
         AccountInfo accountInfo = accountInfoService.createEmptyAccount();
         userProvider.setAccountInfo(accountInfo);
 
-        // Ожидается что при `TypeProvider.INTERNAL` пароль не пустой
-        if (userProvider.getProvider() == TypeProvider.INTERNAL) {
-            userProvider.setPassword(bCryptPasswordEncoder.encode(userProvider.getPassword()));
-        }
-
         return createUserProvider(userProvider);
     }
 
     public void createUserProviderWithAccountInfo(UserProvider userProvider, AccountInfo accountInfo) {
         AccountInfo savedAccountInfo = accountInfoService.createAccount(accountInfo);
         userProvider.setAccountInfo(savedAccountInfo);
+
         createUserProvider(userProvider);
     }
 
     public void updateUserProviderPassword(Long id, String password) {
-        UserProvider userProvider = getUserProviderById(id);
-        if (userProvider == null) {
-            throw new WebClientException("Couldn't update password", "User with not found");
-        }
-
-        userProvider.setPassword(bCryptPasswordEncoder.encode(password));
+        UserProvider userProvider = getUserProviderByIdOrThrow(id);
+        userProvider.setPassword(password);
         updateUserProvider(userProvider);
     }
 
     public void updateUserProvider(UserProvider userProvider) {
         UserProviderValidator.validateUserProvider(userProvider);
+
+        String encodedPassword = bCryptPasswordEncoder.encode(userProvider.getPassword());
+        userProvider.setPassword(encodedPassword);
+
         userProviderRepository.save(userProvider);
     }
 
@@ -138,6 +138,17 @@ public class UserProviderService {
 
     private UserProvider createUserProvider(UserProvider userProvider) {
         UserProviderValidator.validateUserProvider(userProvider);
+
+        // Шифруем пароль только после всех валидаций и только для `внутренней` регистрации
+        if (userProvider.getProvider() == TypeProvider.INTERNAL) {
+            String encodedPassword = bCryptPasswordEncoder.encode(userProvider.getPassword());
+            userProvider.setPassword(encodedPassword);
+        }
+
+        // Политика доступа по умолчанию для новых пользователей.
+        var accessPolicy = accessPolicyService.getAccessPolicyByName("CLIENT");
+
+        userProvider.setAccessPolicy(accessPolicy);
         return userProviderRepository.save(userProvider);
     }
 }

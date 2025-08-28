@@ -6,7 +6,6 @@ import com.gearit.api.entity.actioncode.ActionType;
 import com.gearit.api.entity.notification.NotificationTemplate;
 import com.gearit.api.entity.user.TypeProvider;
 import com.gearit.api.entity.user.UserProvider;
-import com.gearit.api.exception.BadRequestException;
 import com.gearit.api.exception.WebClientException;
 import com.gearit.api.service.actioncode.ActionCodeService;
 import com.gearit.api.service.jwt.JwtTokenProvider;
@@ -50,11 +49,13 @@ public class AuthService {
 
     @Transactional
     public void register(String email, String password) {
-        var user = userProviderService.getUserProviderByEmailOrNull(email);
-
-        if (user != null) {
-            throw new BadRequestException("User with such data already exists");
+        if (userProviderService.isUserProviderByEmailExist(email)) {
+            throw new WebClientException(
+                    "Failed to register",
+                    "User with such data already exists"
+            );
         }
+
         UserProvider userProvider = new UserProvider();
 
         userProvider.setEmail(email);

@@ -32,7 +32,13 @@
         </createTable>
 
         <insert tableName="gearit_access_policies">
+            <column name="id" value="1"/>
             <column name="name" value="MANAGER"/>
+        </insert>
+
+        <insert tableName="gearit_access_policies">
+            <column name="id" value="2"/>
+            <column name="name" value="CLIENT"/>
         </insert>
 
         <addForeignKeyConstraint baseTableName="gearit_access_policies_endpoints"
@@ -47,6 +53,7 @@
                                  referencedTableName="gearit_endpoints"
                                  referencedColumnNames="id"/>
 
+        <!-- MANAGER -->
         <insert tableName="gearit_access_policies_endpoints">
             <column name="access_policy_id" value="1"/>
             <column name="endpoint_id" value="1"/>
@@ -81,6 +88,26 @@
             <column name="access_policy_id" value="1"/>
             <column name="endpoint_id" value="7"/>
         </insert>
+        <!-- ******* -->
+
+
+        <!-- CLIENT -->
+        <insert tableName="gearit_access_policies_endpoints">
+            <column name="access_policy_id" value="2"/>
+            <column name="endpoint_id" value="1"/>
+        </insert>
+
+        <insert tableName="gearit_access_policies_endpoints">
+            <column name="access_policy_id" value="2"/>
+            <column name="endpoint_id" value="2"/>
+        </insert>
+
+        <insert tableName="gearit_access_policies_endpoints">
+            <column name="access_policy_id" value="2"/>
+            <column name="endpoint_id" value="6"/>
+        </insert>
+
+        <!-- ****** -->
 
     </changeSet>
 
