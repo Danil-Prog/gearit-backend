@@ -25,15 +25,11 @@ public class PageableRequest<T> {
         this.size = size;
     }
 
-    public Integer getOffset() {
-        return (page - 1) * size;
-    }
-
     public PageRequest toPageable() {
         return PageRequest.of(page, size);
     }
 
-    public Specification<T> toSpecification() {
+    public Specification<T> getSpecification() {
         if (container == null) {
             return null;
         }

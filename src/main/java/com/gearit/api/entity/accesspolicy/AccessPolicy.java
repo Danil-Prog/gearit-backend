@@ -1,7 +1,7 @@
 package com.gearit.api.entity.accesspolicy;
 
 import com.gearit.api.constants.TableNames;
-import com.gearit.api.entity.enpoint.Endpoint;
+import com.gearit.api.entity.endpoint.Endpoint;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;

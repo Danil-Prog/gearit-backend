@@ -13,10 +13,14 @@ public class PageableResponse<T> {
     private int pages;
     private int page;
 
-    public PageableResponse(long total, List<T> items, PageableRequest<?> pageable) {
+    private PageableResponse(long total, List<T> items, PageableRequest<?> pageable) {
         this.total = total;
         this.items = items;
         this.pages = (int) Math.ceil((double) this.total / pageable.getSize());
         this.page = pageable.getPage();
+    }
+
+    public static <T> PageableResponse<T> of(Long total, List<T> items, PageableRequest<?> pageable) {
+        return new PageableResponse<T>(total, items, pageable);
     }
 }

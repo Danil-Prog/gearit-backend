@@ -1,6 +1,6 @@
 package com.gearit.api.config.filter;
 
-import com.gearit.api.entity.enpoint.Endpoint;
+import com.gearit.api.entity.endpoint.Endpoint;
 import com.gearit.api.service.accesspolicy.AccessPolicyService;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;

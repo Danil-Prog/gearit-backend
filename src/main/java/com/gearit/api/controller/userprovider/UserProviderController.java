@@ -29,7 +29,8 @@ public class UserProviderController {
             @RequestBody PageableRequest<UserProvider> request
     ) {
         var userViews = userProviderService.getUserProviders(request);
-        var response = new PageableResponse<>(userViews.getTotalElements(), userViews.getContent(), request);
+        var response = PageableResponse.of(userViews.getTotalElements(), userViews.getContent(), request);
+
         return ResponseEntity.ok(response);
     }
 

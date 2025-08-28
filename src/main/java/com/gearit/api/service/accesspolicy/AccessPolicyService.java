@@ -1,9 +1,8 @@
 package com.gearit.api.service.accesspolicy;
 
 import com.gearit.api.entity.accesspolicy.AccessPolicy;
-import com.gearit.api.entity.enpoint.Endpoint;
+import com.gearit.api.entity.endpoint.Endpoint;
 import com.gearit.api.repository.AccessPolicyRepository;
-import com.gearit.api.repository.EndpointRepository;
 import com.gearit.api.utils.http.PageableRequest;
 import jakarta.annotation.PostConstruct;
 import java.util.HashMap;
@@ -22,19 +21,14 @@ import org.springframework.stereotype.Service;
 public class AccessPolicyService {
 
     private final AccessPolicyRepository accessPolicyRepository;
-    private final EndpointRepository endpointRepository;
 
     private final Map<String, Set<Endpoint>> accessPolicyMap;
 
     private final Logger logger = LoggerFactory.getLogger(AccessPolicyService.class);
 
     @Autowired
-    public AccessPolicyService(
-            AccessPolicyRepository accessPolicyRepository,
-            EndpointRepository endpointRepository
-    ) {
+    public AccessPolicyService(AccessPolicyRepository accessPolicyRepository) {
         this.accessPolicyRepository = accessPolicyRepository;
-        this.endpointRepository = endpointRepository;
         this.accessPolicyMap = new HashMap<>();
     }
 
@@ -55,8 +49,8 @@ public class AccessPolicyService {
     }
 
     public Page<AccessPolicy> getAllAccessPolicies(PageableRequest<AccessPolicy> request) {
-        Specification<AccessPolicy> spec = request.toSpecification();
-        return accessPolicyRepository.findAll(spec, request.toPageable());
+        Specification<AccessPolicy> specification = request.getSpecification();
+        return accessPolicyRepository.findAll(specification, request.toPageable());
     }
 
     public AccessPolicy getAccessPolicyById(Long accessPolicyId) {

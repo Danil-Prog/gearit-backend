@@ -3,7 +3,7 @@ package com.gearit.api.controller.accesspolicy;
 
 import com.gearit.api.dto.response.GetAvailableResourcesResponse;
 import com.gearit.api.entity.accesspolicy.AccessPolicy;
-import com.gearit.api.entity.enpoint.Endpoint;
+import com.gearit.api.entity.endpoint.Endpoint;
 import com.gearit.api.entity.user.UserProvider;
 import com.gearit.api.service.accesspolicy.AccessPolicyService;
 import com.gearit.api.utils.http.PageableRequest;
@@ -33,13 +33,17 @@ public class AccessPolicyController {
     public ResponseEntity<PageableResponse<AccessPolicy>> getAccessPolicy(
             @RequestBody PageableRequest<AccessPolicy> request
     ) {
-        var response = accessPolicyService.getAllAccessPolicies(request);
-        return ResponseEntity.ok(new PageableResponse<>(response.getTotalElements(), response.getContent(), request));
+        var accessPolicies = accessPolicyService.getAllAccessPolicies(request);
+        var response = PageableResponse.of(accessPolicies.getTotalElements(), accessPolicies.getContent(), request);
+
+        return ResponseEntity.ok(response);
     }
 
     @GetMapping("/resources")
-    public ResponseEntity<GetAvailableResourcesResponse> getAvailableResources(Authentication auth) {
-        UserProvider userProvider = (UserProvider) auth.getPrincipal();
+    public ResponseEntity<GetAvailableResourcesResponse> getAvailableResources(
+            Authentication authentication
+    ) {
+        UserProvider userProvider = (UserProvider) authentication.getPrincipal();
         var endpoints = userProvider.getAccessPolicy()
                 .getEndpoints()
                 .stream()

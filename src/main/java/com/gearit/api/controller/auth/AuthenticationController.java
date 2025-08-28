@@ -3,7 +3,6 @@ package com.gearit.api.controller.auth;
 import com.gearit.api.constants.http.CookieObjects.RefreshCookie;
 import com.gearit.api.dto.request.LoginRequest;
 import com.gearit.api.dto.request.RegisterRequest;
-import com.gearit.api.dto.response.ConfirmResponse;
 import com.gearit.api.dto.response.LoginResponse;
 import com.gearit.api.dto.response.RefreshResponse;
 import com.gearit.api.dto.response.RegisterResponse;
@@ -38,9 +37,9 @@ public class AuthenticationController {
     }
 
     @GetMapping("/verify")
-    public ResponseEntity<ConfirmResponse> verify(@RequestParam String code) {
+    public ResponseEntity<Void> verify(@RequestParam String code) {
         authService.verifyUserProvider(code);
-        return ResponseEntity.ok(new ConfirmResponse());
+        return ResponseEntity.ok().build();
     }
 
     @PostMapping("/login")
@@ -50,7 +49,6 @@ public class AuthenticationController {
     ) {
         var tokenResponse = authService.login(loginRequest.email(), loginRequest.password());
         HttpCookieUtils.setHttpCookie(servletResponse, new RefreshCookie(tokenResponse.refreshToken()));
-
         return ResponseEntity.ok(new LoginResponse(tokenResponse.accessToken()));
     }
 

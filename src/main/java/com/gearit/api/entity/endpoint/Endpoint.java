@@ -1,4 +1,4 @@
-package com.gearit.api.entity.enpoint;
+package com.gearit.api.entity.endpoint;
 
 import com.gearit.api.constants.TableNames;
 import jakarta.persistence.Column;

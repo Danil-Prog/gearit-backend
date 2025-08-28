@@ -42,7 +42,7 @@ public class UserProviderService {
     }
 
     public Page<UserProviderView> getUserProviders(PageableRequest<UserProvider> request) {
-        Specification<UserProvider> spec = request.toSpecification();
+        Specification<UserProvider> spec = request.getSpecification();
         return userProviderRepository.findAll(spec, request.toPageable()).map(UserProviderView::from);
     }
 
