@@ -51,17 +51,18 @@ public class PageableRequest<T> {
         Predicate predicate;
         try {
             Path path = getPathFromField(root, filter.getField());
+            Object value = filter.getValue();
 
             predicate = switch (filter.getCondition()) {
-                case EQUALS -> criteriaBuilder.equal(path, filter.getValue());
+                case EQUALS -> criteriaBuilder.equal(path, value);
 
-                case NOT_EQUALS -> criteriaBuilder.notEqual(path, filter.getValue());
+                case NOT_EQUALS -> criteriaBuilder.notEqual(path, value);
 
-                case GREATER_THAN -> criteriaBuilder.greaterThan(path, (Integer) filter.getValue());
+                case GREATER_THAN -> criteriaBuilder.greaterThan(path, (Integer) value);
 
-                case LESS_THAN -> criteriaBuilder.lessThan(path, (Integer) filter.getValue());
+                case LESS_THAN -> criteriaBuilder.lessThan(path, (Integer) value);
 
-                case CONTAINS -> criteriaBuilder.like(path, "%" + filter.getValue() + "%");
+                case CONTAINS -> criteriaBuilder.like(path, "%" + value + "%");
             };
         } catch (Exception e) {
             throw asWebClientException(
