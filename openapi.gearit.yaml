@@ -453,35 +453,6 @@ paths:
               schema:
                 $ref: "#/components/schemas/ClientException"
 
-  /access-policy/create:
-    post:
-      tags:
-        - AccessPolicy
-      summary: Создание политики доступа.
-      operationId: accessPolicy/create
-      security:
-        - JWT: [ ]
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/CreateAccessPolicyRequest'
-      responses:
-        200:
-          description: Успешное создание политики доступа.
-        400:
-          description: Если были переданы некорректные данные.
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/ClientException"
-        500:
-          description: Ошибка сервера.
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/ClientException"
-
 components:
   securitySchemes:
     JWT:
@@ -720,19 +691,6 @@ components:
         accessPolicyId:
           type:
             - integer
-
-    CreateAccessPolicyRequest:
-      type:
-        - object
-      properties:
-        name:
-          type:
-            - string
-        resources:
-          type:
-            - array
-          description: Ключи WEB-ресурсов.
-          example: [ 'account:info', 'user-providers:info' ]
 
     UserProviderView:
       type:

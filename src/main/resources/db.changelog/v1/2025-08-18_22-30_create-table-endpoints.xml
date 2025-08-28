@@ -79,14 +79,6 @@
             <column name="resource" value="access-policy/resources:info"/>
         </insert>
 
-        <insert tableName="gearit_endpoints">
-            <column name="id" value="7"/>
-            <column name="method" value="POST"/>
-            <column name="path" value="/api/v1/access-policy/create"/>
-            <column name="description" value="Создание политики доступа"/>
-            <column name="resource" value="access-policy/create:set"/>
-        </insert>
-
     </changeSet>
 
 </databaseChangeLog>

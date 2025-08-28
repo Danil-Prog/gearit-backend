@@ -1,9 +1,7 @@
 package com.gearit.api.service.accesspolicy;
 
-import com.gearit.api.dto.request.CreateAccessPolicyRequest;
 import com.gearit.api.entity.accesspolicy.AccessPolicy;
 import com.gearit.api.entity.enpoint.Endpoint;
-import com.gearit.api.exception.WebClientException;
 import com.gearit.api.repository.AccessPolicyRepository;
 import com.gearit.api.repository.EndpointRepository;
 import com.gearit.api.utils.http.PageableRequest;
@@ -85,35 +83,5 @@ public class AccessPolicyService {
                                 AccessPolicy::getEndpoints
                         )
                 ));
-    }
-
-    public void createAccessPolicy(CreateAccessPolicyRequest request) {
-        String ERROR_MESSAGE = "Incorrect request parameters";
-        Set<Endpoint> endpoints = endpointRepository.findAllByResourceIn(request.resources());
-        Set<String> resources = endpoints.stream().map(Endpoint::getResource).collect(Collectors.toSet());
-
-        if (accessPolicyMap.containsKey(request.name())) {
-            throw new WebClientException(
-                    ERROR_MESSAGE,
-                    String.format("Access policy with name: [%s] already exists", request.name())
-            );
-        }
-
-        if (!resources.containsAll(request.resources())) {
-            throw new WebClientException(
-                    ERROR_MESSAGE,
-                    "Cannot get install resources to access policy"
-            );
-        }
-
-        AccessPolicy accessPolicy = new AccessPolicy();
-        accessPolicy.setName(request.name());
-        accessPolicy.setEndpoints(endpoints);
-
-        accessPolicyRepository.save(accessPolicy);
-
-        updateAccessPolicyInCacheInternal();
-
-        logger.info("Access policy with name {} has been successfully created", request.name());
     }
 }

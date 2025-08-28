@@ -54,7 +54,7 @@ public class AuthServiceTest {
 
     @Test
     void passRegisterIfSuccess() {
-        when(userProviderService.getUserProviderByEmailOrNull(email)).thenReturn(null);
+        when(userProviderService.isUserProviderByEmailExist(email)).thenReturn(false);
 
         UserProvider userProvider = new UserProvider();
         userProvider.setId(1L);
@@ -77,14 +77,14 @@ public class AuthServiceTest {
 
     @Test
     void failRegisterIfUserAlreadyExists() {
-        when(userProviderService.getUserProviderByEmailOrNull(email)).thenReturn(new UserProvider());
+        when(userProviderService.isUserProviderByEmailExist(email)).thenReturn(true);
 
-        BadRequestException exception = assertThrows(
-                BadRequestException.class,
+        WebClientException exception = assertThrows(
+                WebClientException.class,
                 () -> authService.register(email, password)
         );
 
-        assertEquals("User with such data already exists", exception.getMessage());
+        assertEquals("User with such data already exists", exception.getExtendedHelp());
     }
 
     @Test
