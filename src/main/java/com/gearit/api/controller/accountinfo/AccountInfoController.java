@@ -25,7 +25,7 @@ public class AccountInfoController {
         this.accountInfoService = accountInfoService;
     }
 
-    @GetMapping()
+    @GetMapping
     public ResponseEntity<GetAccountInfoResponse> getAccountInfo(Authentication auth) {
         UserProvider userProvider = (UserProvider) auth.getPrincipal();
         AccountInfo accountInfo = userProvider.getAccountInfo();
@@ -44,12 +44,12 @@ public class AccountInfoController {
         return ResponseEntity.ok().body(response);
     }
 
-    @PostMapping()
+    @PostMapping
     public ResponseEntity<Void> updateAccountInfo(
             @RequestBody UpdateAccountInfoRequest request,
-            Authentication auth
+            Authentication authentication
     ) {
-        AccountInfo accountInfo = ((UserProvider) auth.getPrincipal()).getAccountInfo();
+        AccountInfo accountInfo = ((UserProvider) authentication.getPrincipal()).getAccountInfo();
         accountInfoService.updateAccountInfo(accountInfo, request);
         return ResponseEntity.ok().build();
     }

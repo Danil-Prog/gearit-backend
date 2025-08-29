@@ -396,7 +396,7 @@ paths:
     post:
       tags:
         - AccessPolicy
-      summary: Получение списка политик доступа.
+      summary: Получение всех политик доступа.
       operationId: accessPolicy/get
       security:
         - JWT: [ ]
@@ -429,13 +429,13 @@ paths:
     get:
       tags:
         - AccessPolicy
-      summary: Получение списка доступных ресурсов.
+      summary: Получение доступных ресурсов текущему авторизованному пользователю.
       operationId: accessPolicyResources/get
       security:
         - JWT: [ ]
       responses:
         200:
-          description: Успешное получение списка доступных ресурсов.
+          description: Успешное получение доступных ресурсов.
           content:
             application/json:
               schema:
