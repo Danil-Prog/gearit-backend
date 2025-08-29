@@ -46,14 +46,21 @@ public class UserProviderService {
         return userProviderRepository.findAll(spec, request.toPageable()).map(UserProviderView::from);
     }
 
-    public UserProvider getUserProviderByEmailOrNull(String email) {
-        return userProviderRepository.findByEmail(email).orElse(null);
-    }
-
+    /**
+     * Проверяет, существует ли пользователь с такой почтой в системе
+     *
+     * @param email - почтовый адрес пользователя
+     */
     public Boolean isUserProviderByEmailExist(String email) {
         return userProviderRepository.findByEmail(email).isPresent();
     }
 
+    /**
+     * Возвращает пользователя по переданному email, иначе возвращает исключение
+     *
+     * @param email - почтовый адрес пользователя
+     * @return {@link UserProvider}
+     */
     public UserProvider getUserProviderByEmailOrThrow(String email) {
         return userProviderRepository.findByEmail(email).orElseThrow(() ->
                 new WebClientException(
@@ -63,17 +70,19 @@ public class UserProviderService {
         );
     }
 
+    /**
+     * Возвращает пользователя по переданному id, иначе возвращает исключение
+     *
+     * @param id - идентификатор пользователя
+     * @return {@link UserProvider}
+     */
     public UserProvider getUserProviderByIdOrThrow(Long id) {
         return userProviderRepository.findById(id).orElseThrow(() ->
                 new WebClientException(
-                        "Cannot get user by email address.",
-                        "User with this email address was not found."
+                        "Cannot get user by identifier.",
+                        "User with this identifier was not found."
                 )
         );
-    }
-
-    public UserProvider getUserProviderById(Long id) {
-        return userProviderRepository.findById(id).orElse(null);
     }
 
     @Transactional
@@ -84,6 +93,7 @@ public class UserProviderService {
         return createUserProvider(userProvider);
     }
 
+    @Transactional
     public void createUserProviderWithAccountInfo(UserProvider userProvider, AccountInfo accountInfo) {
         AccountInfo savedAccountInfo = accountInfoService.createAccount(accountInfo);
         userProvider.setAccountInfo(savedAccountInfo);

@@ -1,6 +1,8 @@
 package com.gearit.api.config.filter;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.gearit.api.entity.endpoint.Endpoint;
+import com.gearit.api.exception.WebClientException;
 import com.gearit.api.service.accesspolicy.AccessPolicyService;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
@@ -21,6 +23,7 @@ import org.springframework.web.filter.OncePerRequestFilter;
 @Component
 public class AccessPolicyAuthenticationFilter extends OncePerRequestFilter {
 
+    private final ObjectMapper mapper;
     private final AccessPolicyService accessPolicyService;
 
     private final Logger logger = LoggerFactory.getLogger(AccessPolicyAuthenticationFilter.class);
@@ -28,6 +31,7 @@ public class AccessPolicyAuthenticationFilter extends OncePerRequestFilter {
     @Autowired
     public AccessPolicyAuthenticationFilter(AccessPolicyService accessPolicyService) {
         this.accessPolicyService = accessPolicyService;
+        this.mapper = new ObjectMapper();
     }
 
     @Override
@@ -77,9 +81,16 @@ public class AccessPolicyAuthenticationFilter extends OncePerRequestFilter {
         filterChain.doFilter(request, response);
     }
 
-    private static void asResponseForbidden(HttpServletResponse response) throws IOException {
+    private void asResponseForbidden(HttpServletResponse response) throws IOException {
+        var exception = new WebClientException(
+                "Failed to authentication request",
+                "Insufficient rights to access the resource"
+        );
+
+        String error = mapper.writer().writeValueAsString(exception);
         response.setStatus(HttpServletResponse.SC_FORBIDDEN);
+
         response.setContentType("application/json");
-        response.getWriter().write("{\"error\": \"Insufficient rights to access the resource\"}");
+        response.getWriter().write(error);
     }
 }

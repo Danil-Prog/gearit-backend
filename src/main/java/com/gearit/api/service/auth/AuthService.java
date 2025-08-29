@@ -82,7 +82,7 @@ public class AuthService {
             throw new WebClientException("User confirmed failed", "Verification code sent is invalid.");
         }
 
-        UserProvider userProvider = userProviderService.getUserProviderById(actionCode.getUserProviderId());
+        UserProvider userProvider = userProviderService.getUserProviderByIdOrThrow(actionCode.getUserProviderId());
         userProvider.setIsConfirmed(true);
 
         // Подтверждаем аккаунт пользователя и удаляем код подтверждения из БД.

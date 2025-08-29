@@ -5,7 +5,6 @@ import com.gearit.api.entity.actioncode.ActionCode;
 import com.gearit.api.entity.actioncode.ActionType;
 import com.gearit.api.entity.notification.NotificationTemplate;
 import com.gearit.api.entity.user.UserProvider;
-import com.gearit.api.exception.BadRequestException;
 import com.gearit.api.exception.WebClientException;
 import com.gearit.api.service.actioncode.ActionCodeService;
 import com.gearit.api.service.jwt.JwtTokenProvider;
@@ -97,7 +96,7 @@ public class AuthServiceTest {
         userProvider.setEmail(email);
 
         when(actionCodeService.findByCode("action_code")).thenReturn(actionCode);
-        when(userProviderService.getUserProviderById(1L)).thenReturn(userProvider);
+        when(userProviderService.getUserProviderByIdOrThrow(1L)).thenReturn(userProvider);
 
         authService.verifyUserProvider("action_code");
 

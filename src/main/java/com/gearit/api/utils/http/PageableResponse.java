@@ -21,6 +21,6 @@ public class PageableResponse<T> {
     }
 
     public static <T> PageableResponse<T> of(Long total, List<T> items, PageableRequest<?> pageable) {
-        return new PageableResponse<T>(total, items, pageable);
+        return new PageableResponse<>(total, items, pageable);
     }
 }
