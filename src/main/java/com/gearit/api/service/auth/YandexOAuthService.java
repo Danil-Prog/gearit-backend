@@ -69,9 +69,7 @@ public class YandexOAuthService {
     }
 
     private void saveYandexUser(String email, AccountInfo accountInfo) {
-        UserProvider userProvider = userProviderService.getUserProviderByEmailOrNull(email);
-
-        if (userProvider != null) {
+        if (userProviderService.isUserProviderByEmailExist(email)) {
             logger.info("Yandex user provider already exists");
             return;
         }

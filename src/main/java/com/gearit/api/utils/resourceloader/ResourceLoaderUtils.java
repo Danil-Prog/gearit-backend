@@ -1,7 +1,8 @@
-package com.gearit.api.utils;
+package com.gearit.api.utils.resourceloader;
 
-import org.springframework.core.io.*;
-import org.springframework.stereotype.*;
+import org.springframework.core.io.Resource;
+import org.springframework.core.io.ResourceLoader;
+import org.springframework.stereotype.Component;
 
 @Component
 public class ResourceLoaderUtils {

@@ -25,7 +25,7 @@ public class YandexAuthController {
     private final YandexOAuthService yandexOAuthService;
     private final YandexProperties yandexProperties;
 
-    private final Logger logger = LoggerFactory.getLogger(this.getClass());
+    private final Logger logger = LoggerFactory.getLogger(YandexAuthController.class);
 
     @Autowired
     public YandexAuthController(
@@ -49,14 +49,16 @@ public class YandexAuthController {
     }
 
     @GetMapping("/callback")
-    public ResponseEntity<LoginResponse> callback(@RequestParam String code, HttpServletResponse servletResponse) {
+    public ResponseEntity<LoginResponse> callback(
+            @RequestParam String code, HttpServletResponse servletResponse
+    ) {
         try {
             TokenResponse tokenResponse = yandexOAuthService.callbackAuthentication(code);
             HttpCookieUtils.setHttpCookie(servletResponse, new RefreshCookie(tokenResponse.refreshToken()));
 
             return ResponseEntity.ok(new LoginResponse(tokenResponse.accessToken()));
         } catch (Exception exception) {
-            logger.error(exception.getMessage(), exception);
+            logger.error("Failed to authentication callback from yandex, error: {}", exception.getMessage());
         }
 
         return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();

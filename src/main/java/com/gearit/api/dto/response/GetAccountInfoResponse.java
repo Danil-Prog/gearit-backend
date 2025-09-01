@@ -10,7 +10,7 @@ public record GetAccountInfoResponse(
         String email,
         String phoneNumber,
         AccountGender gender,
-        Instant birthday,
+        Instant birthDate,
         String avatarId
 ) {
 }

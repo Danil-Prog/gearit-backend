@@ -10,7 +10,7 @@ import org.springframework.stereotype.Component;
 public class JwtTokenProvider {
 
     private static final String secret = "your-256-bit-secret-your-256-bit-secret";
-    private static final long accessValidity = 5 * 60 * 1000;
+    private static final long accessValidity = 800 * 60 * 1000;
     private static final long refreshValidity = 1400 * 60 * 1000;
 
     public String generateAccessToken(String email) {

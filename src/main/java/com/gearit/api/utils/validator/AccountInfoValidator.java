@@ -1,4 +1,4 @@
-package com.gearit.api.utils;
+package com.gearit.api.utils.validator;
 
 import com.gearit.api.entity.account.AccountInfo;
 import com.gearit.api.exception.WebClientException;

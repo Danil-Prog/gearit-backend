@@ -1,5 +1,6 @@
 package com.gearit.api.config;
 
+import com.gearit.api.config.filter.AccessPolicyAuthenticationFilter;
 import com.gearit.api.config.filter.JwtAuthenticationFilter;
 import com.gearit.api.config.properties.CorsProperties;
 import java.util.List;
@@ -47,6 +48,7 @@ public class SecurityConfig {
     public SecurityFilterChain securityFilterChain(
             HttpSecurity http,
             JwtAuthenticationFilter jwtAuthenticationFilter,
+            AccessPolicyAuthenticationFilter accessPolicyAuthenticationFilter,
             UserDetailsService userDetailsService
     ) throws Exception {
         http
@@ -58,7 +60,8 @@ public class SecurityConfig {
                         .authenticated()
                 )
                 .formLogin(AbstractHttpConfigurer::disable)
-                .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
+                .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class)
+                .addFilterAfter(accessPolicyAuthenticationFilter, JwtAuthenticationFilter.class);
 
         http.cors(corsConfig -> corsConfig.configurationSource(corsConfigurationSource()));
         http.csrf(AbstractHttpConfigurer::disable);

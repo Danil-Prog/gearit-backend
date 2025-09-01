@@ -5,7 +5,6 @@ import com.gearit.api.entity.actioncode.ActionCode;
 import com.gearit.api.entity.actioncode.ActionType;
 import com.gearit.api.entity.notification.NotificationTemplate;
 import com.gearit.api.entity.user.UserProvider;
-import com.gearit.api.exception.BadRequestException;
 import com.gearit.api.exception.WebClientException;
 import com.gearit.api.service.actioncode.ActionCodeService;
 import com.gearit.api.service.jwt.JwtTokenProvider;
@@ -54,7 +53,7 @@ public class AuthServiceTest {
 
     @Test
     void passRegisterIfSuccess() {
-        when(userProviderService.getUserProviderByEmailOrNull(email)).thenReturn(null);
+        when(userProviderService.isUserProviderByEmailExist(email)).thenReturn(false);
 
         UserProvider userProvider = new UserProvider();
         userProvider.setId(1L);
@@ -77,14 +76,14 @@ public class AuthServiceTest {
 
     @Test
     void failRegisterIfUserAlreadyExists() {
-        when(userProviderService.getUserProviderByEmailOrNull(email)).thenReturn(new UserProvider());
+        when(userProviderService.isUserProviderByEmailExist(email)).thenReturn(true);
 
-        BadRequestException exception = assertThrows(
-                BadRequestException.class,
+        WebClientException exception = assertThrows(
+                WebClientException.class,
                 () -> authService.register(email, password)
         );
 
-        assertEquals("User with such data already exists", exception.getMessage());
+        assertEquals("User with such data already exists", exception.getExtendedHelp());
     }
 
     @Test
@@ -97,7 +96,7 @@ public class AuthServiceTest {
         userProvider.setEmail(email);
 
         when(actionCodeService.findByCode("action_code")).thenReturn(actionCode);
-        when(userProviderService.getUserProviderById(1L)).thenReturn(userProvider);
+        when(userProviderService.getUserProviderByIdOrThrow(1L)).thenReturn(userProvider);
 
         authService.verifyUserProvider("action_code");
 

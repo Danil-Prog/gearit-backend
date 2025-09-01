@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                   https://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-latest.xsd">
+
+    <changeSet id="7" author="master">
+
+        <addColumn tableName="gearit_user_provider">
+
+            <column name="access_policy_id" type="BIGINT">
+                <constraints nullable="false"
+                             foreignKeyName="gearit_user_provider_access_policy_fk"
+                             referencedTableName="gearit_access_policies"
+                             referencedColumnNames="id"
+                             deleteCascade="false"/>
+            </column>
+
+        </addColumn>
+
+    </changeSet>
+
+</databaseChangeLog>
