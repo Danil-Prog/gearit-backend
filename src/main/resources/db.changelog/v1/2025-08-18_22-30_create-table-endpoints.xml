@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                   https://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-latest.xsd">
+
+    <changeSet id="5" author="master">
+
+        <createTable tableName="gearit_endpoints">
+
+            <column name="id" type="BIGSERIAL">
+                <constraints primaryKey="true"/>
+            </column>
+
+            <column name="method" type="VARCHAR">
+                <constraints unique="false" nullable="false"/>
+            </column>
+
+            <column name="path" type="VARCHAR">
+                <constraints unique="false" nullable="false"/>
+            </column>
+
+            <column name="description" type="VARCHAR">
+                <constraints unique="false" nullable="true"/>
+            </column>
+
+            <column name="resource" type="VARCHAR">
+                <constraints unique="false" nullable="true"/>
+            </column>
+
+        </createTable>
+
+        <insert tableName="gearit_endpoints">
+            <column name="id" value="1"/>
+            <column name="method" value="GET"/>
+            <column name="path" value="/api/v1/account"/>
+            <column name="description" value="Получение информации об аккаунте"/>
+            <column name="resource" value="account:info"/>
+        </insert>
+
+        <insert tableName="gearit_endpoints">
+            <column name="id" value="2"/>
+            <column name="method" value="POST"/>
+            <column name="path" value="/api/v1/account"/>
+            <column name="description" value="Обновление аккаунта"/>
+            <column name="resource" value="account:update"/>
+        </insert>
+
+        <insert tableName="gearit_endpoints">
+            <column name="id" value="3"/>
+            <column name="method" value="POST"/>
+            <column name="path" value="/api/v1/user-provider"/>
+            <column name="description" value="Получение списка пользователей"/>
+            <column name="resource" value="user-providers:info"/>
+        </insert>
+
+        <insert tableName="gearit_endpoints">
+            <column name="id" value="4"/>
+            <column name="method" value="POST"/>
+            <column name="path" value="/api/v1/user-provider/access-policy"/>
+            <column name="description" value="Назначение политики доступа для пользователя"/>
+            <column name="resource" value="user-providers/access-policy:set"/>
+        </insert>
+
+        <insert tableName="gearit_endpoints">
+            <column name="id" value="5"/>
+            <column name="method" value="POST"/>
+            <column name="path" value="/api/v1/access-policy"/>
+            <column name="description" value="Получение политик доступа и их ресурсов"/>
+            <column name="resource" value="access-policy:info"/>
+        </insert>
+
+        <insert tableName="gearit_endpoints">
+            <column name="id" value="6"/>
+            <column name="method" value="GET"/>
+            <column name="path" value="/api/v1/access-policy/resources"/>
+            <column name="description" value="Получение доступных ресурсов пользователю"/>
+            <column name="resource" value="access-policy/resources:info"/>
+        </insert>
+
+    </changeSet>
+
+</databaseChangeLog>

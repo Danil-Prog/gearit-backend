@@ -7,11 +7,15 @@ servers:
   - url: 'http://localhost:8080/api/v1'
 tags:
   - name: Auth
-    description: Аутентификация/Авторизация/Регистрация пользователей в системе
+    description: Аутентификация/Авторизация/Регистрация пользователей в системе.
   - name: Password
-    description: Восстановление/изменение пароля пользователя
+    description: Восстановление/изменение пароля пользователя.
   - name: Account
-    description: Операции с пользовательским аккаунтом
+    description: Операции с пользовательским аккаунтом.
+  - name: Users
+    description: Операции с пользователями.
+  - name: AccessPolicy
+    description: Управление привилегиями пользователя.
 paths:
   /auth/register:
     post:
@@ -19,7 +23,7 @@ paths:
         - Auth
       summary: Регистрация
       operationId: register
-      security: []
+      security: [ ]
       requestBody:
         content:
           application/json:
@@ -47,7 +51,7 @@ paths:
         - Auth
       summary: Подтверждение аккаунта пользователя.
       operationId: verify
-      security: []
+      security: [ ]
       parameters:
         - name: code
           in: query
@@ -78,7 +82,7 @@ paths:
         - Auth
       summary: Логин
       operationId: login
-      security: []
+      security: [ ]
       requestBody:
         content:
           application/json:
@@ -110,7 +114,7 @@ paths:
         - Auth
       summary: Обновление токена доступа
       operationId: refresh
-      security: []
+      security: [ ]
       parameters:
         - name: refreshToken
           in: cookie
@@ -199,7 +203,7 @@ paths:
         - Password
       summary: Обновление пароля пользователя
       operationId: passwordReset
-      security: []
+      security: [ ]
       requestBody:
         content:
           application/json:
@@ -227,7 +231,7 @@ paths:
         - Auth
       summary: Авторизация через сервер OAuth Yandex
       operationId: yandex/login
-      security: []
+      security: [ ]
       responses:
         200:
           description: Успешное получение редиректа
@@ -250,7 +254,7 @@ paths:
         - Auth
       summary: Авторизация через сервер OAuth Yandex
       operationId: yandex/callback
-      security: []
+      security: [ ]
       responses:
         200:
           description: Успешное добавление пользователя в БД и получение токенов доступа
@@ -278,7 +282,7 @@ paths:
       summary: Информация об аккаунте пользователя
       operationId: account
       security:
-        - JWT: []
+        - JWT: [ ]
       responses:
         200:
           description: Успешное получение информации об аккаунте пользователя
@@ -301,10 +305,10 @@ paths:
     post:
       tags:
         - Account
-      summary: Обновление аккаунта пользователя
+      summary: Обновление аккаунта пользователя.
       operationId: account/update
       security:
-        - JWT: []
+        - JWT: [ ]
       requestBody:
         content:
           application/json:
@@ -321,6 +325,129 @@ paths:
                 $ref: "#/components/schemas/ClientException"
         500:
           description: Ошибка сервера
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ClientException"
+
+  /user-provider:
+    post:
+      tags:
+        - Users
+      summary: Получение списка пользователей.
+      operationId: users/get
+      security:
+        - JWT: [ ]
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PageableRequest'
+      responses:
+        200:
+          description: Успешное получение списка пользователей.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/UserProviderView"
+        400:
+          description: Если был переданы некорректные данные фильтра.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ClientException"
+        500:
+          description: Ошибка сервера.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ClientException"
+
+  /user-provider/access-policy:
+    post:
+      tags:
+        - Users
+      summary: Назначение политики доступа пользователю.
+      operationId: users/access-policy
+      security:
+        - JWT: [ ]
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateAccessPolicyUserProviderRequest'
+      responses:
+        200:
+          description: Успешное получение списка пользователей.
+        400:
+          description: Если был переданы некорректные данные.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ClientException"
+        500:
+          description: Ошибка сервера.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ClientException"
+
+  /access-policy:
+    post:
+      tags:
+        - AccessPolicy
+      summary: Получение всех политик доступа.
+      operationId: accessPolicy/get
+      security:
+        - JWT: [ ]
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PageableRequest'
+      responses:
+        200:
+          description: Успешное получение списка политик доступа.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PageableResponse'
+        400:
+          description: Если были переданы некорректные данные.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ClientException"
+        500:
+          description: Ошибка сервера.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ClientException"
+
+  /access-policy/resources:
+    get:
+      tags:
+        - AccessPolicy
+      summary: Получение доступных ресурсов текущему авторизованному пользователю.
+      operationId: accessPolicyResources/get
+      security:
+        - JWT: [ ]
+      responses:
+        200:
+          description: Успешное получение доступных ресурсов.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetAvailableResourcesResponse'
+        400:
+          description: Если были переданы некорректные данные.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ClientException"
+        500:
+          description: Ошибка сервера.
           content:
             application/json:
               schema:
@@ -475,5 +602,167 @@ components:
             - string
           format: '2025-06-02 20:00:00.000000'
         avatarId:
+          type:
+            - string
+
+    PageableRequest:
+      type:
+        - object
+      description: Запрос на получение данных с пагинацией, фильтрацией, сортировкой.
+      properties:
+        page:
+          type:
+            - integer
+          description: Текущая запрашиваемая страница.
+        size:
+          type:
+            - integer
+          description: Необходимое количество получаемых элементов.
+        container:
+          type:
+            - array
+          description: Контейнер с фильтрами.
+          $ref: "#/components/schemas/Filter"
+
+    PageableResponse:
+      type:
+        - object
+      properties:
+        page:
+          type:
+            - integer
+          description: Номер текущей страницы.
+        pages:
+          type:
+            - integer
+          description: Количество страниц.
+        items:
+          type:
+            - array
+        total:
+          type:
+            - integer
+          description:
+            Всего элементов.
+
+    Filter:
+      type:
+        - object
+      description:
+        Фильтр, используется для формирования выборки по условиям.
+      properties:
+        field:
+          type:
+            - string
+          description: Наименование поля, по которому предполагается фильтрация
+        condition:
+          $ref: "#/components/schemas/FilterCondition"
+        value:
+          type:
+            - object
+          description: Значение, по которому фильтруются данные.
+
+    FilterCondition:
+      type: string
+      description:
+        Условие фильтрации.
+      enum:
+        - EQUALS
+        - NOT_EQUALS
+        - GREATER_THAN
+        - LESS_THAN
+        - CONTAINS
+
+    GetAvailableResourcesResponse:
+      type:
+        - object
+      properties:
+        availableResources:
+          type:
+            - array
+
+    UpdateAccessPolicyUserProviderRequest:
+      type:
+        - object
+      properties:
+        userProviderId:
+          type:
+            - integer
+        accessPolicyId:
+          type:
+            - integer
+
+    UserProviderView:
+      type:
+        - object
+      properties:
+        id:
+          type:
+            - integer
+        email:
+          type:
+            - string
+        provider:
+          type:
+            - string
+          enum:
+            - INTERNAL
+            - OAUTH
+          description: Тип регистрации.
+        accessPolicy:
+          type:
+            - object
+          $ref: "#/components/schemas/AccessPolicy"
+        accountInfo:
+          type:
+            - object
+          description: Детальная информация пользователя.
+          properties:
+            firstName:
+              type:
+                - string
+            lastName:
+              type:
+                - string
+            avatarId:
+              type:
+                - string
+            birthDate:
+              type:
+                - string
+              format: '2025-06-02 20:00:00.000000'
+
+    AccessPolicy:
+      type:
+        - object
+      properties:
+        id:
+          type:
+            - integer
+        name:
+          type:
+            - string
+        endpoints:
+          type:
+            - array
+          $ref: "#/components/schemas/Endpoint"
+
+    Endpoint:
+      type:
+        - object
+      properties:
+        id:
+          type:
+            - integer
+        method:
+          type:
+            - string
+        path:
+          type:
+            - string
+        description:
+          type:
+            - string
+        resource:
           type:
             - string

@@ -1,5 +1,7 @@
 package com.gearit.api.config.filter;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.gearit.api.exception.WebClientException;
 import com.gearit.api.service.jwt.JwtTokenProvider;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
@@ -22,6 +24,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
     private static final String BEARER_PREFIX = "Bearer ";
 
+    private final ObjectMapper mapper;
     private final JwtTokenProvider tokenProvider;
     private final UserDetailsService userDetailsService;
 
@@ -33,6 +36,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
     ) {
         this.tokenProvider = tokenProvider;
         this.userDetailsService = userDetailsService;
+        this.mapper = new ObjectMapper();
     }
 
     @Override
@@ -79,9 +83,12 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         return token;
     }
 
-    private static void asResponseUnauthorized(HttpServletResponse response) throws IOException {
+    private void asResponseUnauthorized(HttpServletResponse response) throws IOException {
+        var exception = new WebClientException("Failed to authentication request", "Invalid or expired token");
+        String error = mapper.writer().writeValueAsString(exception);
+
         response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
         response.setContentType("application/json");
-        response.getWriter().write("{\"error\": \"Invalid or expired token\"}");
+        response.getWriter().write(error);
     }
 }

@@ -3,7 +3,7 @@ package com.gearit.api.service.profile;
 import com.gearit.api.dto.request.UpdateAccountInfoRequest;
 import com.gearit.api.entity.account.AccountInfo;
 import com.gearit.api.repository.AccountInfoRepository;
-import com.gearit.api.utils.AccountInfoValidator;
+import com.gearit.api.utils.validator.AccountInfoValidator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

@@ -1,7 +1,7 @@
 package com.gearit.api.service.notification;
 
 import com.gearit.api.entity.notification.NotificationTemplate;
-import com.gearit.api.utils.ResourceLoaderUtils;
+import com.gearit.api.utils.resourceloader.ResourceLoaderUtils;
 import jakarta.annotation.PostConstruct;
 import java.io.IOException;
 import java.nio.file.Files;

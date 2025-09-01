@@ -2,6 +2,7 @@ package com.gearit.api.utils;
 
 import com.gearit.api.entity.user.*;
 import com.gearit.api.exception.*;
+import com.gearit.api.utils.validator.UserProviderValidator;
 import org.junit.jupiter.api.*;
 import static org.junit.jupiter.api.Assertions.*;
 

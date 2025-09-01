@@ -7,3 +7,9 @@ databaseChangeLog:
       file: db.changelog/v1/2025-07-21_14-45_create-table-notifications.xml
   - include:
       file: db.changelog/v1/2025-08-02_22-00_create-table-account-info.xml
+  - include:
+      file: db.changelog/v1/2025-08-18_22-30_create-table-endpoints.xml
+  - include:
+      file: db.changelog/v1/2025-08-18_23-00_create-table-access-policy.xml
+  - include:
+      file: db.changelog/v1/2025-08-18_23-30_update-user-provider-table.xml
