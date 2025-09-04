@@ -12,7 +12,6 @@ import com.gearit.api.service.accesspolicy.AccessPolicyService;
 import com.gearit.api.service.profile.AccountInfoService;
 import com.gearit.api.utils.http.PageableRequest;
 import com.gearit.api.utils.validator.UserProviderValidator;
-import java.util.Objects;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.jpa.domain.Specification;
@@ -122,12 +121,12 @@ public class UserProviderService {
      * @param request - Идентификаторы пользователя и политики доступа.
      */
     public void updateAccessPolicyUserProvider(UpdateAccessPolicyUserProviderRequest request) {
-        final String ERROR_MESSAGE = "Failed to assign user access policy";
+        final String errorMessage = "Failed to assign user access policy";
         UserProvider userProvider = getUserProviderByIdOrThrow(request.userProviderId());
 
-        if (Objects.equals(userProvider.getAccessPolicy().getId(), request.accessPolicyId())) {
+        if (userProvider.getAccessPolicy().getId().equals(request.accessPolicyId())) {
             throw new WebClientException(
-                    ERROR_MESSAGE,
+                    errorMessage,
                     "User is already assigned such an access policy"
             );
         }
@@ -136,7 +135,7 @@ public class UserProviderService {
 
         if (accessPolicy == null) {
             throw new WebClientException(
-                    ERROR_MESSAGE,
+                    errorMessage,
                     String.format("Access policy with this id: [%s] does not exist", request.accessPolicyId())
             );
         }

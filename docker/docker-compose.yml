@@ -44,38 +44,16 @@ services:
     networks:
       - gearit-network
 
-  victoria-metrics:
-    container_name: gearit-victoria
-    image: ghcr.io/danil-prog/victoriametrics:v1.123.0
+  dozzle:
+    container_name: dozzle
+    image: ghcr.io/danil-prog/dozzle:latest
     environment:
-      TZ: "Asia/Novosibirsk"
-    ports:
-      - "8428:8428"
-    command:
-      - '-retentionPeriod=1'
-    networks:
-      - gearit-network
-
-  vmagent:
-    container_name: gearit-vmagent
-    image: ghcr.io/danil-prog/victoriametrics-vmagent:v.1.123.0
-    command:
-      - '-promscrape.config=/etc/prometheus/scrape.yml'
-      - '-remoteWrite.url=http://gearit-victoria:8428/api/v1/write'
+      - DOZZLE_AUTH_PROVIDER=simple
     volumes:
-      - ./prometheus/:/etc/prometheus/
-    networks:
-      - gearit-network
-
-  grafana:
-    container_name: gearit-grafana
-    image: ghcr.io/danil-prog/grafana:12.2.0
-    environment:
-      TZ: "Asia/Novosibirsk"
+      - /var/run/docker.sock:/var/run/docker.sock
+      - ./data:/data
     ports:
-      - "8008:3000"
-    networks:
-      - gearit-network
+      - "8008:8080"
 
 networks:
   gearit-network:
