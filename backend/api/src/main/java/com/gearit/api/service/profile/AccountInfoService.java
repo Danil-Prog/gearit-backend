@@ -1,6 +1,6 @@
 package com.gearit.api.service.profile;
 
-import com.gearit.api.dto.request.UpdateAccountInfoRequest;
+import com.gearit.common.http.request.UpdateAccountInfoRequest;
 import com.gearit.api.entity.account.AccountInfo;
 import com.gearit.api.repository.AccountInfoRepository;
 import com.gearit.api.utils.validator.AccountInfoValidator;

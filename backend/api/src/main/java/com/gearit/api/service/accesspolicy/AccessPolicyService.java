@@ -3,7 +3,7 @@ package com.gearit.api.service.accesspolicy;
 import com.gearit.api.entity.accesspolicy.AccessPolicy;
 import com.gearit.api.entity.endpoint.Endpoint;
 import com.gearit.api.repository.AccessPolicyRepository;
-import com.gearit.api.utils.http.PageableRequest;
+import com.gearit.common.http.filter.PageableRequest;
 import jakarta.annotation.PostConstruct;
 import java.util.HashMap;
 import java.util.List;

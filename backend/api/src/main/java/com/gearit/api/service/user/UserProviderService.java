@@ -1,16 +1,16 @@
 package com.gearit.api.service.user;
 
-import com.gearit.api.dto.request.UpdateAccessPolicyUserProviderRequest;
+import com.gearit.common.http.request.UpdateAccessPolicyUserProviderRequest;
 import com.gearit.api.dto.view.UserProviderView;
 import com.gearit.api.entity.accesspolicy.AccessPolicy;
 import com.gearit.api.entity.account.AccountInfo;
 import com.gearit.api.entity.user.TypeProvider;
 import com.gearit.api.entity.user.UserProvider;
-import com.gearit.api.exception.WebClientException;
+import com.gearit.common.exception.WebClientException;
 import com.gearit.api.repository.UserProviderRepository;
 import com.gearit.api.service.accesspolicy.AccessPolicyService;
 import com.gearit.api.service.profile.AccountInfoService;
-import com.gearit.api.utils.http.PageableRequest;
+import com.gearit.common.http.filter.PageableRequest;
 import com.gearit.api.utils.validator.UserProviderValidator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;

@@ -1,13 +1,13 @@
 package com.gearit.api.service.auth;
 
 import com.gearit.api.config.properties.YandexProperties;
-import com.gearit.api.dto.YandexPassport;
-import com.gearit.api.dto.YandexToken;
-import com.gearit.api.dto.response.TokenResponse;
+import com.gearit.api.dto.yandex.YandexPassport;
+import com.gearit.api.dto.yandex.YandexToken;
+import com.gearit.common.http.response.TokenResponse;
 import com.gearit.api.entity.account.AccountInfo;
 import com.gearit.api.entity.user.TypeProvider;
 import com.gearit.api.entity.user.UserProvider;
-import com.gearit.api.exception.WebClientException;
+import com.gearit.common.exception.WebClientException;
 import com.gearit.api.service.jwt.JwtTokenProvider;
 import com.gearit.api.service.user.UserProviderService;
 import org.slf4j.Logger;

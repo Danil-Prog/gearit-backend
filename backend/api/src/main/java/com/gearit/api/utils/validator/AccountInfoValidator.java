@@ -1,7 +1,7 @@
 package com.gearit.api.utils.validator;
 
 import com.gearit.api.entity.account.AccountInfo;
-import com.gearit.api.exception.WebClientException;
+import com.gearit.common.exception.WebClientException;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 

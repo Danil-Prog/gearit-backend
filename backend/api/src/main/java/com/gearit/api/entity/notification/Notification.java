@@ -1,6 +1,6 @@
 package com.gearit.api.entity.notification;
 
-import com.gearit.api.constants.TableNames;
+import com.gearit.common.constants.TableNames;
 import com.gearit.api.converter.JsonConverter;
 import com.gearit.api.entity.user.UserProvider;
 import jakarta.persistence.Column;

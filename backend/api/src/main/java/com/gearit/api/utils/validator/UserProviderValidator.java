@@ -2,7 +2,7 @@ package com.gearit.api.utils.validator;
 
 import com.gearit.api.entity.user.TypeProvider;
 import com.gearit.api.entity.user.UserProvider;
-import com.gearit.api.exception.WebClientException;
+import com.gearit.common.exception.WebClientException;
 
 /**
  * Валидация пользовательских данных при регистрации.

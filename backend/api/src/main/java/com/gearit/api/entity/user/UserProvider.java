@@ -1,6 +1,6 @@
 package com.gearit.api.entity.user;
 
-import com.gearit.api.constants.TableNames;
+import com.gearit.common.constants.TableNames;
 import com.gearit.api.entity.accesspolicy.AccessPolicy;
 import com.gearit.api.entity.account.AccountInfo;
 import jakarta.persistence.Column;

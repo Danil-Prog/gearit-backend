@@ -1,13 +1,13 @@
 package com.gearit.api.controller.accesspolicy;
 
 
-import com.gearit.api.dto.response.GetAvailableResourcesResponse;
+import com.gearit.common.http.response.GetAvailableResourcesResponse;
 import com.gearit.api.entity.accesspolicy.AccessPolicy;
 import com.gearit.api.entity.endpoint.Endpoint;
 import com.gearit.api.entity.user.UserProvider;
 import com.gearit.api.service.accesspolicy.AccessPolicyService;
-import com.gearit.api.utils.http.PageableRequest;
-import com.gearit.api.utils.http.PageableResponse;
+import com.gearit.common.http.filter.PageableRequest;
+import com.gearit.common.http.filter.PageableResponse;
 import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;

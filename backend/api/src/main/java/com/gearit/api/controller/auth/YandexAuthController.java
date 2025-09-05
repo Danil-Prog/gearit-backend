@@ -1,11 +1,11 @@
 package com.gearit.api.controller.auth;
 
 import com.gearit.api.config.properties.YandexProperties;
-import com.gearit.api.constants.http.CookieObjects.RefreshCookie;
-import com.gearit.api.dto.response.LoginResponse;
-import com.gearit.api.dto.response.TokenResponse;
+import com.gearit.common.cookie.CookieObjects.RefreshCookie;
+import com.gearit.common.http.response.LoginResponse;
+import com.gearit.common.http.response.TokenResponse;
 import com.gearit.api.service.auth.YandexOAuthService;
-import com.gearit.api.utils.http.HttpCookieUtils;
+import com.gearit.common.cookie.HttpCookieUtils;
 import jakarta.servlet.http.HttpServletResponse;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

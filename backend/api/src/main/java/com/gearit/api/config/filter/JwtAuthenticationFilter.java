@@ -1,7 +1,7 @@
 package com.gearit.api.config.filter;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.gearit.api.exception.WebClientException;
+import com.gearit.common.exception.WebClientException;
 import com.gearit.api.service.jwt.JwtTokenProvider;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;

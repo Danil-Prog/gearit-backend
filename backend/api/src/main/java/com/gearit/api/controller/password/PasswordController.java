@@ -1,8 +1,8 @@
 package com.gearit.api.controller.password;
 
-import com.gearit.api.dto.request.ForgotRequest;
-import com.gearit.api.dto.request.ResetPasswordRequest;
-import com.gearit.api.dto.request.VerifyCodeRequest;
+import com.gearit.common.http.request.ForgotRequest;
+import com.gearit.common.http.request.ResetPasswordRequest;
+import com.gearit.common.http.request.VerifyCodeRequest;
 import com.gearit.api.service.password.PasswordService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;

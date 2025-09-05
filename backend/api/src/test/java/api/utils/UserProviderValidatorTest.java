@@ -2,7 +2,7 @@ package api.utils;
 
 import com.gearit.api.entity.user.TypeProvider;
 import com.gearit.api.entity.user.UserProvider;
-import com.gearit.api.exception.WebClientException;
+import com.gearit.common.exception.WebClientException;
 import com.gearit.api.utils.validator.UserProviderValidator;
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;

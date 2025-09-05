@@ -2,6 +2,8 @@ package com.gearit.api.exception;
 
 import com.gearit.api.exception.violation.ValidationErrorResponse;
 import com.gearit.api.exception.violation.Violation;
+import com.gearit.common.exception.WebClientException;
+import com.gearit.common.http.response.WebClientExceptionResponse;
 import jakarta.validation.ConstraintViolationException;
 import java.util.List;
 import java.util.stream.Collectors;

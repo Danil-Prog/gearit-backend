@@ -4,7 +4,7 @@ import com.gearit.api.entity.actioncode.ActionCode;
 import com.gearit.api.entity.actioncode.ActionType;
 import com.gearit.api.entity.notification.NotificationTemplate;
 import com.gearit.api.entity.user.UserProvider;
-import com.gearit.api.exception.WebClientException;
+import com.gearit.common.exception.WebClientException;
 import com.gearit.api.service.actioncode.ActionCodeService;
 import com.gearit.api.service.notification.NotificationService;
 import com.gearit.api.service.user.UserProviderService;

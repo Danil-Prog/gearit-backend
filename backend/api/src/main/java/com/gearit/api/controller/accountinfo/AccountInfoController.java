@@ -1,7 +1,7 @@
 package com.gearit.api.controller.accountinfo;
 
-import com.gearit.api.dto.request.UpdateAccountInfoRequest;
-import com.gearit.api.dto.response.GetAccountInfoResponse;
+import com.gearit.common.http.request.UpdateAccountInfoRequest;
+import com.gearit.common.http.response.GetAccountInfoResponse;
 import com.gearit.api.entity.account.AccountInfo;
 import com.gearit.api.entity.user.UserProvider;
 import com.gearit.api.service.profile.AccountInfoService;
