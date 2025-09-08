@@ -64,7 +64,10 @@ public class PageableRequest<T> {
             };
         } catch (Exception e) {
             throw asWebClientException(
-                    String.format("Filter mapping error. Field: [%s], value: [%s]", filter.getField(), filter.getValue()),
+                    String.format(
+                            "Filter mapping error. Field: [%s], value: [%s]",
+                            filter.getField(),
+                            filter.getValue()),
                     e.getMessage()
             );
         }
@@ -84,9 +87,6 @@ public class PageableRequest<T> {
     }
 
     private WebClientException asWebClientException(String message, String extendedHelp) {
-        return new WebClientException(
-                message,
-                extendedHelp
-        );
+        return new WebClientException(message, extendedHelp);
     }
 }

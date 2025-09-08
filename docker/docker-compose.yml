@@ -44,16 +44,5 @@ services:
     networks:
       - gearit-network
 
-  dozzle:
-    container_name: dozzle
-    image: ghcr.io/danil-prog/dozzle:latest
-    environment:
-      - DOZZLE_AUTH_PROVIDER=simple
-    volumes:
-      - /var/run/docker.sock:/var/run/docker.sock
-      - ./data:/data
-    ports:
-      - "8008:8080"
-
 networks:
   gearit-network:

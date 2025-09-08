@@ -1,6 +1,0 @@
-users:
-  admin:
-    email: admin@mgearit.ru
-    name: Admin
-    password: $2a$11$1aTj0nxnB7hD7NVLFFnYWe5znNhY2GOyqsX8vgqEWEuda3L9SSZ8y
-    filter: ""
