@@ -1,9 +1,11 @@
 package com.gearit.api.service.profile;
 
-import com.gearit.common.http.request.UpdateAccountInfoRequest;
+import com.gearit.api.entity.account.AccountGender;
 import com.gearit.api.entity.account.AccountInfo;
 import com.gearit.api.repository.AccountInfoRepository;
 import com.gearit.api.utils.validator.AccountInfoValidator;
+import com.gearit.common.http.request.UpdateAccountInfoRequest;
+import com.gearit.common.utils.EnumConverter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -18,10 +20,12 @@ public class AccountInfoService {
     }
 
     public void updateAccountInfo(AccountInfo accountInfo, UpdateAccountInfoRequest request) {
+        AccountGender gender = EnumConverter.fromEnum(AccountGender.class, request.gender());
+
         accountInfo.setFirstName(request.firstName());
         accountInfo.setMiddleName(request.middleName());
         accountInfo.setLastName(request.lastName());
-        accountInfo.setGender(request.gender());
+        accountInfo.setGender(gender);
         accountInfo.setPhoneNumber(request.phoneNumber());
         accountInfo.setBirthDate(request.birthDate());
 

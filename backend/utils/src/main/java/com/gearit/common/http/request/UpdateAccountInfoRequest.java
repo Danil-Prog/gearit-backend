@@ -1,6 +1,6 @@
 package com.gearit.common.http.request;
 
-import com.gearit.api.entity.account.AccountGender;
+import com.gearit.common.dto.AccountGenderDto;
 import java.time.Instant;
 
 public record UpdateAccountInfoRequest(
@@ -8,7 +8,7 @@ public record UpdateAccountInfoRequest(
         String middleName,
         String lastName,
         String phoneNumber,
-        AccountGender gender,
+        AccountGenderDto gender,
         Instant birthDate
 ) {
 }

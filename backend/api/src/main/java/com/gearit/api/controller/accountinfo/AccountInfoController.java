@@ -1,10 +1,12 @@
 package com.gearit.api.controller.accountinfo;
 
-import com.gearit.common.http.request.UpdateAccountInfoRequest;
-import com.gearit.common.http.response.GetAccountInfoResponse;
 import com.gearit.api.entity.account.AccountInfo;
 import com.gearit.api.entity.user.UserProvider;
 import com.gearit.api.service.profile.AccountInfoService;
+import com.gearit.common.dto.AccountGenderDto;
+import com.gearit.common.http.request.UpdateAccountInfoRequest;
+import com.gearit.common.http.response.GetAccountInfoResponse;
+import com.gearit.common.utils.EnumConverter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
@@ -29,6 +31,7 @@ public class AccountInfoController {
     public ResponseEntity<GetAccountInfoResponse> getAccountInfo(Authentication auth) {
         UserProvider userProvider = (UserProvider) auth.getPrincipal();
         AccountInfo accountInfo = userProvider.getAccountInfo();
+        AccountGenderDto genderEnum = EnumConverter.fromEnum(AccountGenderDto.class, accountInfo.getGender());
 
         var response = new GetAccountInfoResponse(
                 accountInfo.getFirstName(),
@@ -36,7 +39,7 @@ public class AccountInfoController {
                 accountInfo.getLastName(),
                 userProvider.getEmail(),
                 accountInfo.getPhoneNumber(),
-                accountInfo.getGender(),
+                genderEnum,
                 accountInfo.getBirthDate(),
                 accountInfo.getAvatarId()
         );

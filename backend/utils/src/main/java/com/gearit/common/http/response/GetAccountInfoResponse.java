@@ -1,6 +1,6 @@
 package com.gearit.common.http.response;
 
-import com.gearit.api.entity.account.AccountGender;
+import com.gearit.common.dto.AccountGenderDto;
 import java.time.Instant;
 
 public record GetAccountInfoResponse(
@@ -9,7 +9,7 @@ public record GetAccountInfoResponse(
         String lastName,
         String email,
         String phoneNumber,
-        AccountGender gender,
+        AccountGenderDto gender,
         Instant birthDate,
         String avatarId
 ) {
