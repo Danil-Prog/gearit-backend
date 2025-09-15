@@ -20,6 +20,7 @@ jobs:
 
       - name: Run tests
         run: |
+          cd backend
           ./gradlew test
 
   build:
@@ -44,6 +45,7 @@ jobs:
 
       - name: Build and push docker image
         run: |
+          cd backend
           ./gradlew jib
 
   deploy:
