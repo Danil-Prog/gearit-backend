@@ -1,0 +1,57 @@
+import java.time.Instant
+
+plugins {
+    id 'java'
+
+    id 'org.springframework.boot' version '3.5.3'
+    id 'io.spring.dependency-management' version '1.1.7'
+
+    id 'com.google.cloud.tools.jib' version '3.4.5'
+}
+
+dependencies {
+
+    implementation(
+            project(':utils'),
+
+            /* Email sender */
+            'com.resend:resend-java:3.1.0'
+    )
+
+    /* Testing */
+    testImplementation 'org.springframework.boot:spring-boot-starter-test'
+    testImplementation 'org.springframework.security:spring-security-test'
+    testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
+
+    /* JWT Utils */
+    implementation 'io.jsonwebtoken:jjwt-api:0.11.5'
+    runtimeOnly 'io.jsonwebtoken:jjwt-impl:0.11.5'
+    runtimeOnly 'io.jsonwebtoken:jjwt-jackson:0.11.5'
+
+    /* Lombok */
+    compileOnly 'org.projectlombok:lombok:1.18.38'
+    annotationProcessor 'org.projectlombok:lombok:1.18.38'
+
+    /* Database */
+    runtimeOnly 'org.postgresql:postgresql'
+    implementation 'org.liquibase:liquibase-core'
+}
+
+jib {
+    from {
+        image = "eclipse-temurin:21-jre"
+    }
+
+    to {
+        image = "ghcr.io/danil-prog/gearit-backend:latest"
+
+        auth {
+            username = providers.environmentVariable('DOCKER_USERNAME')
+            password = providers.environmentVariable('DOCKER_PASSWORD')
+        }
+    }
+
+    container {
+        creationTime = Instant.now().toString()
+    }
+}
