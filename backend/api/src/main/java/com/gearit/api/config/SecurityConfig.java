@@ -36,7 +36,6 @@ public class SecurityConfig {
             "/api/v1/yandex/login",
             "/api/v1/yandex/callback",
             "/api/v1/password/**",
-            "/actuator/**",
     };
 
     @Autowired

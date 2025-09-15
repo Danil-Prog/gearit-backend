@@ -56,7 +56,7 @@ public class YandexPassport {
         AccountInfo accountInfo = new AccountInfo();
 
         AccountGender accountGender = Arrays.stream(AccountGender.values())
-                .filter(gender -> gender.getName().equals(getSex()))
+                .filter(gender -> gender.getName().equals(sex))
                 .findFirst()
                 .orElse(null);
 
