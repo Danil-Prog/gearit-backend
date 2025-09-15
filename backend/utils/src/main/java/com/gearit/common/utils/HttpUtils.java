@@ -1,12 +1,21 @@
 package com.gearit.common.utils;
 
 import jakarta.servlet.http.HttpServletRequest;
-import java.util.Optional;
 import org.springframework.http.HttpHeaders;
 
 public class HttpUtils {
 
-    public static Optional<String> getBearerAccessTokenFromHeader(HttpServletRequest request) {
-        return Optional.of(request.getHeader(HttpHeaders.AUTHORIZATION));
+    private static final String BEARER_PREFIX = "Bearer ";
+
+    public static String getBearerAccessTokenFromHeader(HttpServletRequest request) {
+        String header = request.getHeader(HttpHeaders.AUTHORIZATION);
+
+        String token = null;
+
+        if (header != null && !header.isBlank() && header.startsWith(BEARER_PREFIX)) {
+            token = header.substring(BEARER_PREFIX.length());
+        }
+
+        return token;
     }
 }
