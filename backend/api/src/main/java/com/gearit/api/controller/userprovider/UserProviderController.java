@@ -1,11 +1,10 @@
 package com.gearit.api.controller.userprovider;
 
-import com.gearit.common.http.request.UpdateAccessPolicyUserProviderRequest;
-import com.gearit.api.dto.view.UserProviderView;
 import com.gearit.api.entity.user.UserProvider;
 import com.gearit.api.service.user.UserProviderService;
 import com.gearit.common.http.filter.PageableRequest;
 import com.gearit.common.http.filter.PageableResponse;
+import com.gearit.common.http.request.UpdateAccessPolicyUserProviderRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -25,13 +24,11 @@ public class UserProviderController {
     }
 
     @PostMapping
-    public ResponseEntity<PageableResponse<UserProviderView>> getUserProviders(
+    public ResponseEntity<?> getUserProviders(
             @RequestBody PageableRequest<UserProvider> request
     ) {
         var userViews = userProviderService.getUserProviders(request);
-        var response = PageableResponse.of(userViews.getTotalElements(), userViews.getContent(), request);
-
-        return ResponseEntity.ok(response);
+        return PageableResponse.toResponseEntity(userViews, request);
     }
 
     @PostMapping("/access-policy")

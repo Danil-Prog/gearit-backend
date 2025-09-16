@@ -3,6 +3,8 @@ package com.gearit.common.http.filter;
 import java.util.List;
 import lombok.Getter;
 import lombok.Setter;
+import org.springframework.data.domain.Page;
+import org.springframework.http.ResponseEntity;
 
 @Getter
 @Setter
@@ -20,7 +22,11 @@ public class PageableResponse<T> {
         this.page = pageable.getPage();
     }
 
-    public static <T> PageableResponse<T> of(Long total, List<T> items, PageableRequest<?> pageable) {
-        return new PageableResponse<>(total, items, pageable);
+    public static ResponseEntity<PageableResponse<?>> toResponseEntity(Page<?> page, PageableRequest<?> pageable) {
+        return ResponseEntity.ok(of(page, pageable));
+    }
+
+    private static PageableResponse<?> of(Page<?> page, PageableRequest<?> pageable) {
+        return new PageableResponse<>(page.getTotalElements(), page.getContent(), pageable);
     }
 }
