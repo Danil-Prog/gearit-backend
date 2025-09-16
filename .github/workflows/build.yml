@@ -1,7 +1,7 @@
 name: Публикация docker образа backend-a. Деплой.
 on:
   push:
-    branches: [ develop ]
+    branches: [ master ]
 
 jobs:
 
