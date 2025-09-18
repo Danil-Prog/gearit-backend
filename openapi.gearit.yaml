@@ -736,7 +736,7 @@ components:
           format: '2025-06-02 20:00:00.000000'
           description: Дата последнего обновления пароля.
         isBlocked:
-          type: bool
+          type: boolean
           description: Заблокирован ли пользователь в системе.
 
     AccessPolicy:
