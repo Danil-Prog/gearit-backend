@@ -1,8 +1,8 @@
 package com.gearit.api.entity.user;
 
-import com.gearit.common.constants.TableNames;
 import com.gearit.api.entity.accesspolicy.AccessPolicy;
 import com.gearit.api.entity.account.AccountInfo;
+import com.gearit.common.constants.TableNames;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
@@ -14,6 +14,7 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
+import java.time.Instant;
 import java.util.Collection;
 import java.util.List;
 import lombok.Data;
@@ -50,6 +51,18 @@ public class UserProvider implements UserDetails {
     @JoinColumn(name = "access_policy_id", nullable = false)
     private AccessPolicy accessPolicy;
 
+    @Column(name = "created_at", nullable = false)
+    private Instant createdAt;
+
+    @Column(name = "updated_at")
+    private Instant updatedAt;
+
+    @Column(name = "password_updated_at")
+    private Instant passwordUpdatedAt;
+
+    @Column(name = "is_blocked")
+    private Boolean isBlocked;
+
     @Override
     public String getUsername() {
         return email;
@@ -82,6 +95,6 @@ public class UserProvider implements UserDetails {
 
     @Override
     public boolean isEnabled() {
-        return UserDetails.super.isEnabled();
+        return !isBlocked;
     }
 }

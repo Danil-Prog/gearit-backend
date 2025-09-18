@@ -1,16 +1,16 @@
 package com.gearit.api.service.auth;
 
-import com.gearit.common.http.response.TokenResponse;
 import com.gearit.api.entity.actioncode.ActionCode;
 import com.gearit.api.entity.actioncode.ActionType;
 import com.gearit.api.entity.notification.NotificationTemplate;
 import com.gearit.api.entity.user.TypeProvider;
 import com.gearit.api.entity.user.UserProvider;
-import com.gearit.common.exception.WebClientException;
 import com.gearit.api.service.actioncode.ActionCodeService;
 import com.gearit.api.service.jwt.JwtTokenProvider;
 import com.gearit.api.service.notification.NotificationService;
 import com.gearit.api.service.user.UserProviderService;
+import com.gearit.common.exception.WebClientException;
+import com.gearit.common.http.response.TokenResponse;
 import java.util.Map;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -96,8 +96,8 @@ public class AuthService {
         var errorMessage = "User authentication failed";
         var user = userProviderService.getUserProviderByEmailOrThrow(email);
 
-        if (user.getIsConfirmed() == false) {
-            throw new WebClientException(errorMessage, "User is not confirmed");
+        if (!user.getIsConfirmed() && user.isEnabled()) {
+            throw new WebClientException(errorMessage, "User is not confirmed or blocked");
         }
 
         try {
