@@ -11,6 +11,9 @@ public record GetAccountInfoResponse(
         String phoneNumber,
         AccountGenderDto gender,
         Instant birthDate,
-        String avatarId
+        String avatarId,
+        Instant createdAt,
+        Instant updatedAt,
+        Instant passwordUpdatedAt
 ) {
 }
