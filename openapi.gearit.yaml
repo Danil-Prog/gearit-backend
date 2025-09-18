@@ -495,12 +495,10 @@ components:
         - object
       properties:
         message:
-          type:
-            - string
+          type: string
           example: 'Incorrect user data'
         extendedHelp:
-          type:
-            - string
+          type: string
           example: 'Password cannot be null or empty'
 
     RegisterRequest:
@@ -508,94 +506,77 @@ components:
         - object
       properties:
         password:
-          type:
-            - string
+          type: string
         email:
-          type:
-            - string
+          type: string
 
     LoginRequest:
       type:
         - object
       properties:
         email:
-          type:
-            - string
+          type: string
         password:
-          type:
-            - string
+          type: string
 
     LoginResponse:
       type:
         - object
       properties:
         accessToken:
-          type:
-            - string
+          type: string
 
     RefreshResponse:
       type:
         - object
       properties:
         accessToken:
-          type:
-            - string
+          type: string
 
     ForgotRequest:
       type:
         - object
       properties:
         email:
-          type:
-            - string
+          type: string
 
     VerifyCodeRequest:
       type:
         - object
       properties:
         code:
-          type:
-            - string
+          type: string
 
     ResetPasswordRequest:
       type:
         - object
       properties:
         code:
-          type:
-            - string
+          type: string
         newPassword:
-          type:
-            - string
+          type: string
 
     UpdateAccountInfoRequest:
       type:
         - object
       properties:
         id:
-          type:
-            - integer
+          type: integer
         firstName:
-          type:
-            - string
+          type: string
         middleName:
-          type:
-            - string
+          type: string
         lastName:
-          type:
-            - string
+          type: string
         phoneNumber:
-          type:
-            - string
+          type: string
         gender:
-          type:
-            - string
+          type: string
           enum:
             - MALE
             - FEMALE
         birthDate:
-          type:
-            - string
+          type: string
           format: '2025-06-02 20:00:00.000000'
 
     GetAccountInfoResponse:
@@ -603,36 +584,39 @@ components:
         - object
       properties:
         id:
-          type:
-            - integer
+          type: integer
         firstName:
-          type:
-            - string
+          type: string
         middleName:
-          type:
-            - string
+          type: string
         lastName:
-          type:
-            - string
+          type: string
         email:
-          type:
-            - string
+          type: string
         phoneNumber:
-          type:
-            - string
+          type: string
         gender:
-          type:
-            - string
+          type: string
           enum:
             - MALE
             - FEMALE
         birthDate:
-          type:
-            - string
+          type: string
           format: '2025-06-02 20:00:00.000000'
         avatarId:
-          type:
-            - string
+          type: string
+        createdAt:
+          type: string
+          description: Дата регистрации пользователя.
+          format: '2025-06-02 20:00:00.000000'
+        updatedAt:
+          type: string
+          description: Дата последнего обновления информации об аккаунте.
+          format: '2025-06-02 20:00:00.000000'
+        passwordUpdatedAt:
+          type: string
+          format: '2025-06-02 20:00:00.000000'
+          description: Дата последнего обновления пароля.
 
     PageableRequest:
       type:
@@ -640,16 +624,13 @@ components:
       description: Запрос на получение данных с пагинацией, фильтрацией, сортировкой.
       properties:
         page:
-          type:
-            - integer
+          type: integer
           description: Текущая запрашиваемая страница.
         size:
-          type:
-            - integer
+          type: integer
           description: Необходимое количество получаемых элементов.
         container:
-          type:
-            - array
+          type: array
           description: Контейнер с фильтрами.
           $ref: "#/components/schemas/Filter"
 
@@ -658,19 +639,15 @@ components:
         - object
       properties:
         page:
-          type:
-            - integer
+          type: integer
           description: Номер текущей страницы.
         pages:
-          type:
-            - integer
+          type: integer
           description: Количество страниц.
         items:
-          type:
-            - array
+          type: array
         total:
-          type:
-            - integer
+          type: integer
           description:
             Всего элементов.
 
@@ -681,14 +658,12 @@ components:
         Фильтр, используется для формирования выборки по условиям.
       properties:
         field:
-          type:
-            - string
+          type: string
           description: Наименование поля, по которому предполагается фильтрация
         condition:
           $ref: "#/components/schemas/FilterCondition"
         value:
-          type:
-            - object
+          type: object
           description: Значение, по которому фильтруются данные.
 
     FilterCondition:
@@ -707,73 +682,73 @@ components:
         - object
       properties:
         availableResources:
-          type:
-            - array
+          type: array
 
     UpdateAccessPolicyUserProviderRequest:
       type:
         - object
       properties:
         userProviderId:
-          type:
-            - integer
+          type: integer
         accessPolicyId:
-          type:
-            - integer
+          type: integer
 
     UserProviderView:
       type:
         - object
       properties:
         id:
-          type:
-            - integer
+          type: integer
         email:
-          type:
-            - string
+          type: string
         provider:
-          type:
-            - string
+          type: string
           enum:
             - INTERNAL
             - OAUTH
           description: Тип регистрации.
         accessPolicy:
-          type:
-            - object
+          type: object
           $ref: "#/components/schemas/AccessPolicy"
         accountInfo:
-          type:
-            - object
+          type: object
           description: Детальная информация пользователя.
           properties:
             firstName:
-              type:
-                - string
+              type: string
             lastName:
-              type:
-                - string
+              type: string
             avatarId:
-              type:
-                - string
+              type: string
             birthDate:
-              type:
-                - string
+              type: string
               format: '2025-06-02 20:00:00.000000'
+        createdAt:
+          type: string
+          description: Дата регистрации пользователя.
+          format: '2025-06-02 20:00:00.000000'
+        updatedAt:
+          type: string
+          description: Дата последнего обновления информации об аккаунте.
+          format: '2025-06-02 20:00:00.000000'
+        passwordUpdatedAt:
+          type: string
+          format: '2025-06-02 20:00:00.000000'
+          description: Дата последнего обновления пароля.
+        isBlocked:
+          type: bool
+          description: Заблокирован ли пользователь в системе.
 
     AccessPolicy:
       type:
         - object
       properties:
         id:
-          type:
-            - integer
+          type: integer
         name:
-          type:
-            - string
+          type: string
         endpoints:
-          type:
-            - array
+          type: array
           $ref: "#/components/schemas/Endpoint"
 
     Endpoint:
@@ -781,28 +756,22 @@ components:
         - object
       properties:
         id:
-          type:
-            - integer
+          type: integer
         method:
-          type:
-            - string
+          type: string
         path:
-          type:
-            - string
+          type: string
         description:
-          type:
-            - string
+          type: string
         resource:
-          type:
-            - string
+          type: string
 
     BlockUserProvidersRequest:
       type:
         - object
       properties:
         ids:
-          type:
-            - array
+          type: array
           items:
             type: integer
             format: int64

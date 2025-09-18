@@ -41,7 +41,10 @@ public class AccountInfoController {
                 accountInfo.getPhoneNumber(),
                 genderEnum,
                 accountInfo.getBirthDate(),
-                accountInfo.getAvatarId()
+                accountInfo.getAvatarId(),
+                userProvider.getCreatedAt(),
+                userProvider.getUpdatedAt(),
+                userProvider.getPasswordUpdatedAt()
         );
 
         return ResponseEntity.ok().body(response);
