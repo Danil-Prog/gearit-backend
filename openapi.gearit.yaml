@@ -392,6 +392,35 @@ paths:
               schema:
                 $ref: "#/components/schemas/ClientException"
 
+  /user-provider/block:
+    post:
+      tags:
+        - Users
+      summary: Блокировка пользователей по ID.
+      operationId: users/block
+      security:
+        - JWT: [ ]
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/BlockUserProvidersRequest'
+      responses:
+        200:
+          description: Успешная блокировка пользователей.
+        400:
+          description: Если был переданы некорректные данные.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ClientException"
+        500:
+          description: Ошибка сервера.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ClientException"
+
   /access-policy:
     post:
       tags:
@@ -766,3 +795,15 @@ components:
         resource:
           type:
             - string
+
+    BlockUserProvidersRequest:
+      type:
+        - object
+      properties:
+        ids:
+          type:
+            - array
+          items:
+            type: integer
+            format: int64
+          description: Идентификаторы пользователей.

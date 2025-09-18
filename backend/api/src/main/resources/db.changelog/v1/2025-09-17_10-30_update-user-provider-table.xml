@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                   https://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-latest.xsd">
+
+    <changeSet id="8" author="master">
+
+        <addColumn tableName="gearit_user_provider">
+
+            <column name="created_at" type="JAVA.SQL.TYPES.TIMESTAMP_WITH_TIMEZONE">
+                <constraints unique="false" nullable="false"/>
+            </column>
+
+            <column name="updated_at" type="JAVA.SQL.TYPES.TIMESTAMP_WITH_TIMEZONE">
+                <constraints nullable="true"/>
+            </column>
+
+            <column name="password_updated_at" type="JAVA.SQL.TYPES.TIMESTAMP_WITH_TIMEZONE">
+                <constraints nullable="true"/>
+            </column>
+
+            <column name="is_blocked" type="BOOLEAN" defaultValueBoolean="false">
+                <constraints nullable="false"/>
+            </column>
+
+        </addColumn>
+
+        <insert tableName="gearit_account_info">
+            <column name="id" value="1"/>
+            <column name="firstname" value="Administrator"/>
+            <column name="middlename" value="Administrator"/>
+            <column name="lastname" value="Administrator"/>
+            <column name="phone_number" value="89501709942"/>
+            <column name="gender" value="MALE"/>
+            <column name="birth_date" value="1975-01-01 12:00:00.000000"/>
+        </insert>
+
+        <insert tableName="gearit_user_provider">
+            <column name="password" value="$2a$10$Sm84Sv55ksAup6AIH/zoW.WGX4VxrkoSKjncJTgcaqxqAg60d/fQq"/>
+            <column name="provider" value="INTERNAL"/>
+            <column name="default_email" value="administrator@gearit.ru"/>
+            <column name="is_confirmed" value="TRUE"/>
+            <column name="account_id" value="1"/>
+            <column name="access_policy_id" value="1"/>
+            <column name="created_at" value="2025-08-02 12:00:00.000000"/>
+            <column name="updated_at" value="2025-09-18 10:00:00.000000"/>
+            <column name="is_blocked" value="FALSE"/>
+        </insert>
+
+        <insert tableName="gearit_endpoints">
+            <column name="id" value="7"/>
+            <column name="method" value="POST"/>
+            <column name="path" value="/api/v1/user-provider/block"/>
+            <column name="description" value="Блокировка пользователя"/>
+            <column name="resource" value="user-providers/block:set"/>
+        </insert>
+
+        <!-- MANAGER -->
+        <insert tableName="gearit_access_policies_endpoints">
+            <column name="access_policy_id" value="1"/>
+            <column name="endpoint_id" value="7"/>
+        </insert>
+
+    </changeSet>
+
+</databaseChangeLog>

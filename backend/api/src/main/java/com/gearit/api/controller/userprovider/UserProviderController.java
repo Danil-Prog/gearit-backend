@@ -1,9 +1,11 @@
 package com.gearit.api.controller.userprovider;
 
+import com.gearit.api.dto.view.UserProviderView;
 import com.gearit.api.entity.user.UserProvider;
 import com.gearit.api.service.user.UserProviderService;
 import com.gearit.common.http.filter.PageableRequest;
 import com.gearit.common.http.filter.PageableResponse;
+import com.gearit.common.http.request.BlockUserProvidersRequest;
 import com.gearit.common.http.request.UpdateAccessPolicyUserProviderRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -23,6 +25,9 @@ public class UserProviderController {
         this.userProviderService = userProviderService;
     }
 
+    /**
+     * @see UserProviderView
+     */
     @PostMapping
     public ResponseEntity<?> getUserProviders(
             @RequestBody PageableRequest<UserProvider> request
@@ -36,6 +41,14 @@ public class UserProviderController {
             @RequestBody UpdateAccessPolicyUserProviderRequest request
     ) {
         userProviderService.updateAccessPolicyUserProvider(request);
+        return ResponseEntity.ok().build();
+    }
+
+    @PostMapping("/block")
+    public ResponseEntity<Void> blockUserProviders(
+            @RequestBody BlockUserProvidersRequest request
+    ) {
+        userProviderService.blockUserProviders(request);
         return ResponseEntity.ok().build();
     }
 }

@@ -18,6 +18,8 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
+import static jakarta.servlet.http.HttpServletResponse.SC_FORBIDDEN;
+import static jakarta.servlet.http.HttpServletResponse.SC_UNAUTHORIZED;
 
 @Component
 public class JwtAuthenticationFilter extends OncePerRequestFilter {
@@ -51,36 +53,38 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         }
 
         if (tokenProvider.validateToken(token)) {
-            authenticateUserProvider(token, request);
+            String username = tokenProvider.getEmailFromToken(token);
+            UserDetails userDetails = userDetailsService.loadUserByUsername(username);
+
+            if (!userDetails.isEnabled()) {
+                String extendedHelp = "User is blocked, please contact the site administrator";
+                asResponseUnauthorized(response, extendedHelp, SC_FORBIDDEN);
+                return;
+            }
+
+            var auth = new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
+            auth.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
+
+            SecurityContextHolder.getContext().setAuthentication(auth);
         } else {
-            asResponseUnauthorized(response);
+            asResponseUnauthorized(response, "Invalid or expired token", SC_UNAUTHORIZED);
             return;
         }
 
         filterChain.doFilter(request, response);
     }
 
-    private void authenticateUserProvider(String token, HttpServletRequest request) {
-        String username = tokenProvider.getEmailFromToken(token);
-        UserDetails userDetails = userDetailsService.loadUserByUsername(username);
-
-        var auth = new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
-        auth.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
-
-        SecurityContextHolder.getContext().setAuthentication(auth);
-    }
-
-    private void asResponseUnauthorized(HttpServletResponse response) {
-        var exception = new WebClientException("Failed to authentication request", "Invalid or expired token");
+    private void asResponseUnauthorized(HttpServletResponse response, String extendedHelp, int statusCode) {
+        var exception = new WebClientException("Failed to authentication request", extendedHelp);
 
         try {
             String error = mapper.writer().writeValueAsString(exception);
 
-            response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+            response.setStatus(statusCode);
             response.setContentType("application/json");
             response.getWriter().write(error);
         } catch (Exception e) {
-            response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+            response.setStatus(SC_UNAUTHORIZED);
         }
     }
 }
