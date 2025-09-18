@@ -61,7 +61,7 @@ public class UserProvider implements UserDetails {
     private Instant passwordUpdatedAt;
 
     @Column(name = "is_blocked")
-    private Boolean isBlocked;
+    private Boolean isBlocked = false;
 
     @Override
     public String getUsername() {
