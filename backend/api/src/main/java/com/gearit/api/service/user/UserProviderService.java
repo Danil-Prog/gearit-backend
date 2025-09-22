@@ -98,6 +98,7 @@ public class UserProviderService {
     @Transactional
     public void createUserProviderWithAccountInfo(UserProvider userProvider, AccountInfo accountInfo) {
         AccountInfo savedAccountInfo = accountInfoService.createAccount(accountInfo);
+        System.out.println("Сохранил аккаунт с инфой: " + accountInfo);
         userProvider.setAccountInfo(savedAccountInfo);
 
         createUserProvider(userProvider);

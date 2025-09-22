@@ -3,13 +3,13 @@ package com.gearit.api.service.auth;
 import com.gearit.api.config.properties.YandexProperties;
 import com.gearit.api.dto.yandex.YandexPassport;
 import com.gearit.api.dto.yandex.YandexToken;
-import com.gearit.common.http.response.TokenResponse;
 import com.gearit.api.entity.account.AccountInfo;
 import com.gearit.api.entity.user.TypeProvider;
 import com.gearit.api.entity.user.UserProvider;
-import com.gearit.common.exception.WebClientException;
 import com.gearit.api.service.jwt.JwtTokenProvider;
 import com.gearit.api.service.user.UserProviderService;
+import com.gearit.common.exception.WebClientException;
+import com.gearit.common.http.response.TokenResponse;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpEntity;
@@ -27,11 +27,7 @@ public class YandexOAuthService {
     private final JwtTokenProvider jwtTokenProvider;
     private final UserProviderService userProviderService;
     private final RestTemplate restTemplate;
-
-    private final String clientId;
-    private final String clientSecret;
-    private final String tokenUri;
-    private final String userInfoUri;
+    private final YandexProperties yandexProperties;
 
     private final Logger logger = LoggerFactory.getLogger(YandexOAuthService.class);
 
@@ -42,18 +38,14 @@ public class YandexOAuthService {
     ) {
         this.jwtTokenProvider = jwtTokenProvider;
         this.userProviderService = userProviderService;
-
-        this.clientId = yandexProperties.getClientId();
-        this.clientSecret = yandexProperties.getClientSecret();
-        this.tokenUri = yandexProperties.getTokenUri();
-        this.userInfoUri = yandexProperties.getUserInfoUri();
-
+        this.yandexProperties = yandexProperties;
         this.restTemplate = new RestTemplate();
     }
 
     public TokenResponse callbackAuthentication(String code) {
         String token = authorizeYandexRequest(code);
         YandexPassport yandexPassport = getYandexPassport(token);
+        System.out.println("Получил яндекс паспорт: " + yandexPassport);
 
         String email = yandexPassport.getDefaultEmail();
         AccountInfo accountInfo = yandexPassport.toAccountInfo();
@@ -93,7 +85,7 @@ public class YandexOAuthService {
 
         HttpEntity<String> userInfoRequest = new HttpEntity<>(userInfoHeaders);
         ResponseEntity<YandexPassport> userInfoResponse = restTemplate.exchange(
-                userInfoUri,
+                yandexProperties.getUserInfoUri(),
                 HttpMethod.GET,
                 userInfoRequest,
                 YandexPassport.class
@@ -110,11 +102,14 @@ public class YandexOAuthService {
     private String authorizeYandexRequest(String code) {
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_FORM_URLENCODED);
+        String tokenUri = yandexProperties.getTokenUri();
 
-        String requestBody = "grant_type=authorization_code"
-                + "&code=" + code
-                + "&client_id=" + clientId
-                + "&client_secret=" + clientSecret;
+        String requestBody = String.format(
+                "grant_type=authorization_code&code=%s&client_id=%s&client_secret=%s",
+                code,
+                yandexProperties.getClientId(),
+                yandexProperties.getClientSecret()
+        );
 
         HttpEntity<String> request = new HttpEntity<>(requestBody, headers);
 

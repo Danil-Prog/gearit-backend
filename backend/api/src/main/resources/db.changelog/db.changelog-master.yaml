@@ -15,3 +15,5 @@ databaseChangeLog:
       file: db.changelog/v1/2025-08-18_23-30_update-user-provider-table.xml
   - include:
       file: db.changelog/v1/2025-09-17_10-30_update-user-provider-table.xml
+  - include:
+      file: db.changelog/v1/2025-09-22_22-30_change-sequence-id-account-info.xml
