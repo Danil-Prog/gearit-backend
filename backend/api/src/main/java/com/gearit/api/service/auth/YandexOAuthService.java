@@ -45,7 +45,6 @@ public class YandexOAuthService {
     public TokenResponse callbackAuthentication(String code) {
         String token = authorizeYandexRequest(code);
         YandexPassport yandexPassport = getYandexPassport(token);
-        System.out.println("Получил яндекс паспорт: " + yandexPassport);
 
         String email = yandexPassport.getDefaultEmail();
         AccountInfo accountInfo = yandexPassport.toAccountInfo();

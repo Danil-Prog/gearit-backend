@@ -98,12 +98,18 @@ public class UserProviderService {
     @Transactional
     public void createUserProviderWithAccountInfo(UserProvider userProvider, AccountInfo accountInfo) {
         AccountInfo savedAccountInfo = accountInfoService.createAccount(accountInfo);
-        System.out.println("Сохранил аккаунт с инфой: " + accountInfo);
         userProvider.setAccountInfo(savedAccountInfo);
 
         createUserProvider(userProvider);
     }
 
+    /**
+     * Валидирует, шифрует и обновляет пароль пользователя.
+     * Обновляет время последнего обновления пароля.
+     *
+     * @param id - идентификатор пользователя.
+     * @param newPassword - новый пароль.
+     */
     public void updateUserProviderPassword(Long id, String newPassword) {
         UserProvider userProvider = getUserProviderByIdOrThrow(id);
 
