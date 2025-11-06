@@ -4,7 +4,7 @@ info:
   description: gearit-api
   version: 0.1.1
 servers:
-  - url: 'http://localhost:8080/api/v1'
+  - url: 'http://localhost:8080'
 tags:
   - name: Auth
     description: Аутентификация/Авторизация/Регистрация пользователей в системе.
@@ -16,8 +16,10 @@ tags:
     description: Операции с пользователями.
   - name: AccessPolicy
     description: Управление привилегиями пользователя.
+  - name: Application
+    description: Служебная информация о приложении
 paths:
-  /auth/register:
+  /api/v1/auth/register:
     post:
       tags:
         - Auth
@@ -45,7 +47,7 @@ paths:
               schema:
                 $ref: "#/components/schemas/ClientException"
 
-  /auth/verify:
+  /api/v1/auth/verify:
     get:
       tags:
         - Auth
@@ -76,7 +78,7 @@ paths:
               schema:
                 $ref: "#/components/schemas/ClientException"
 
-  /auth/login:
+  /api/v1/auth/login:
     post:
       tags:
         - Auth
@@ -108,7 +110,7 @@ paths:
               schema:
                 $ref: "#/components/schemas/ClientException"
 
-  /auth/token/refresh:
+  /api/v1/auth/token/refresh:
     post:
       tags:
         - Auth
@@ -141,7 +143,7 @@ paths:
               schema:
                 $ref: "#/components/schemas/ClientException"
 
-  /password/forgot:
+  /api/v1/password/forgot:
     post:
       tags:
         - Password
@@ -169,7 +171,7 @@ paths:
               schema:
                 $ref: "#/components/schemas/ClientException"
 
-  /password/verify-code:
+  /api/v1/password/verify-code:
     post:
       tags:
         - Password
@@ -197,7 +199,7 @@ paths:
               schema:
                 $ref: "#/components/schemas/ClientException"
 
-  /password/reset:
+  /api/v1/password/reset:
     post:
       tags:
         - Password
@@ -225,7 +227,7 @@ paths:
               schema:
                 $ref: "#/components/schemas/ClientException"
 
-  /yandex/login:
+  /api/v1/yandex/login:
     get:
       tags:
         - Auth
@@ -248,7 +250,7 @@ paths:
               schema:
                 $ref: "#/components/schemas/ClientException"
 
-  /yandex/callback:
+  /api/v1/yandex/callback:
     get:
       tags:
         - Auth
@@ -275,7 +277,7 @@ paths:
               schema:
                 $ref: "#/components/schemas/ClientException"
 
-  /account:
+  /api/v1/account:
     get:
       tags:
         - Account
@@ -330,7 +332,7 @@ paths:
               schema:
                 $ref: "#/components/schemas/ClientException"
 
-  /user-provider:
+  /api/v1/user-provider:
     post:
       tags:
         - Users
@@ -363,7 +365,7 @@ paths:
               schema:
                 $ref: "#/components/schemas/ClientException"
 
-  /user-provider/access-policy:
+  /api/v1/user-provider/access-policy:
     post:
       tags:
         - Users
@@ -392,7 +394,7 @@ paths:
               schema:
                 $ref: "#/components/schemas/ClientException"
 
-  /user-provider/block:
+  /api/v1/user-provider/block:
     post:
       tags:
         - Users
@@ -421,7 +423,7 @@ paths:
               schema:
                 $ref: "#/components/schemas/ClientException"
 
-  /access-policy:
+  /api/v1/access-policy:
     post:
       tags:
         - AccessPolicy
@@ -454,7 +456,7 @@ paths:
               schema:
                 $ref: "#/components/schemas/ClientException"
 
-  /access-policy/resources:
+  /api/v1/access-policy/resources:
     get:
       tags:
         - AccessPolicy
@@ -475,6 +477,27 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/ClientException"
+        500:
+          description: Ошибка сервера.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ClientException"
+
+  /application/version:
+    get:
+      tags:
+        - Application
+      summary: Получение актуальной версии backend-a.
+      operationId: getApplicationVersion
+      security: [ ]
+      responses:
+        200:
+          description: Успешное получение текущей версии backend-a.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetApplicationVersion'
         500:
           description: Ошибка сервера.
           content:
@@ -776,3 +799,12 @@ components:
             type: integer
             format: int64
           description: Идентификаторы пользователей.
+
+    GetApplicationVersion:
+      type:
+        - object
+      properties:
+        version:
+          type: string
+      required:
+        - version
