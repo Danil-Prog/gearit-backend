@@ -32,7 +32,7 @@ jobs:
     env:
       DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
       DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
-      APP_VERSION: ${{ GITHUB_RUN_ID }}
+      APP_VERSION: ${{ github.run_id }}
 
     steps:
       - uses: actions/checkout@v4
