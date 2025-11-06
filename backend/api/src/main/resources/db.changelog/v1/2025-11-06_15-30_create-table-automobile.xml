@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                   https://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-latest.xsd">
+
+    <changeSet id="10" author="master">
+
+        <createTable tableName="gearit_automobile_models">
+
+            <column name="id" type="BIGSERIAL">
+                <constraints primaryKey="true"/>
+            </column>
+
+            <column name="name" type="VARCHAR">
+                <constraints nullable="false"/>
+            </column>
+
+        </createTable>
+
+        <createTable tableName="gearit_automobile_factories">
+
+            <column name="id" type="BIGSERIAL">
+                <constraints primaryKey="true"/>
+            </column>
+
+            <column name="name" type="VARCHAR">
+                <constraints nullable="false"/>
+            </column>
+
+        </createTable>
+
+        <createTable tableName="gearit_automobile_factories_models">
+
+            <column name="automobile_factory_id" type="BIGINT">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+
+            <column name="automobile_model_id" type="BIGINT">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+
+        </createTable>
+
+        <addForeignKeyConstraint baseTableName="gearit_automobile_factories_models"
+                                 baseColumnNames="automobile_factory_id"
+                                 constraintName="gearit_automobile_factories_models_automobile_factory_id_fk"
+                                 referencedTableName="gearit_automobile_factories"
+                                 referencedColumnNames="id"/>
+
+        <addForeignKeyConstraint baseTableName="gearit_automobile_factories_models"
+                                 baseColumnNames="automobile_model_id"
+                                 constraintName="gearit_automobile_factories_automobile_model_id_fk"
+                                 referencedTableName="gearit_automobile_models"
+                                 referencedColumnNames="id"/>
+
+        <insert tableName="gearit_endpoints">
+            <column name="id" value="8"/>
+            <column name="method" value="POST"/>
+            <column name="path" value="/api/v1/automobile/factories-models"/>
+            <column name="description" value="Получение списка автомобильных производителей и их модели"/>
+            <column name="resource" value="factories-models/block:get"/>
+        </insert>
+
+        <!-- MANAGER -->
+        <insert tableName="gearit_access_policies_endpoints">
+            <column name="access_policy_id" value="1"/>
+            <column name="endpoint_id" value="8"/>
+        </insert>
+
+    </changeSet>
+
+</databaseChangeLog>

@@ -17,7 +17,9 @@ tags:
   - name: AccessPolicy
     description: Управление привилегиями пользователя.
   - name: Application
-    description: Служебная информация о приложении
+    description: Служебная информация о приложении.
+  - name: Automobile
+    description: Операции с автомобилями.
 paths:
   /api/v1/auth/register:
     post:
@@ -498,6 +500,39 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/GetApplicationVersion'
+        500:
+          description: Ошибка сервера.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ClientException"
+
+  /api/v1/automobile/factories-models:
+    post:
+      tags:
+        - Automobile
+      summary: Получение списка автомобильных производителей и их модели.
+      operationId: automobileFactoryModels/get
+      security:
+        - JWT: [ ]
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PageableRequest'
+      responses:
+        200:
+          description: Успешное получение списка всех автомобильных производителей и их модели.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PageableResponse'
+        400:
+          description: Если были переданы некорректные данные.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ClientException"
         500:
           description: Ошибка сервера.
           content:
