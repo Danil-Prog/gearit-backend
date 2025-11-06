@@ -11,9 +11,11 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.JoinTable;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
+import lombok.Data;
 
 import java.util.Set;
 
+@Data
 @Entity
 @Table(name = TableNames.AUTOMOBILE_FACTORIES)
 public class AutomobileFactory {

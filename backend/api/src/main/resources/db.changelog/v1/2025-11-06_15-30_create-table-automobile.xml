@@ -69,6 +69,81 @@
             <column name="endpoint_id" value="8"/>
         </insert>
 
+        <insert tableName="gearit_automobile_factories">
+            <column name="id" value="1"/>
+            <column name="name" value="Toyota"/>
+        </insert>
+
+        <insert tableName="gearit_automobile_factories">
+            <column name="id" value="2"/>
+            <column name="name" value="BMW"/>
+        </insert>
+
+        <insert tableName="gearit_automobile_factories">
+            <column name="id" value="3"/>
+            <column name="name" value="Tesla"/>
+        </insert>
+
+        <insert tableName="gearit_automobile_models">
+            <column name="id" value="1"/>
+            <column name="name" value="Corolla"/>
+        </insert>
+
+        <insert tableName="gearit_automobile_models">
+            <column name="id" value="2"/>
+            <column name="name" value="Camry"/>
+        </insert>
+
+        <insert tableName="gearit_automobile_models">
+            <column name="id" value="3"/>
+            <column name="name" value="Model S"/>
+        </insert>
+
+        <insert tableName="gearit_automobile_models">
+            <column name="id" value="4"/>
+            <column name="name" value="Model 3"/>
+        </insert>
+
+        <insert tableName="gearit_automobile_models">
+            <column name="id" value="5"/>
+            <column name="name" value="X3"/>
+        </insert>
+
+        <insert tableName="gearit_automobile_models">
+            <column name="id" value="6"/>
+            <column name="name" value="X5"/>
+        </insert>
+
+        <insert tableName="gearit_automobile_factories_models">
+            <column name="automobile_factory_id" value="1"/> <!-- Toyota -->
+            <column name="automobile_model_id" value="1"/>   <!-- Corolla -->
+        </insert>
+
+        <insert tableName="gearit_automobile_factories_models">
+            <column name="automobile_factory_id" value="1"/> <!-- Toyota -->
+            <column name="automobile_model_id" value="2"/>   <!-- Camry -->
+        </insert>
+
+        <insert tableName="gearit_automobile_factories_models">
+            <column name="automobile_factory_id" value="3"/> <!-- Tesla -->
+            <column name="automobile_model_id" value="3"/>   <!-- Model S -->
+        </insert>
+
+        <insert tableName="gearit_automobile_factories_models">
+            <column name="automobile_factory_id" value="3"/> <!-- Tesla -->
+            <column name="automobile_model_id" value="4"/>   <!-- Model 3 -->
+        </insert>
+
+        <insert tableName="gearit_automobile_factories_models">
+            <column name="automobile_factory_id" value="2"/> <!-- Tesla -->
+            <column name="automobile_model_id" value="5"/>
+        </insert>
+
+        <insert tableName="gearit_automobile_factories_models">
+            <column name="automobile_factory_id" value="2"/>
+            <column name="automobile_model_id" value="6"/>
+        </insert>
+
     </changeSet>
 
 </databaseChangeLog>
