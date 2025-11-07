@@ -530,7 +530,7 @@ paths:
                 license:
                   type: string
                 bodyType:
-                  type: object
+                  type: string
                   enum:
                     - SEDAN
                     - HATCHBACK
