@@ -507,6 +507,122 @@ paths:
               schema:
                 $ref: "#/components/schemas/ClientException"
 
+  /api/v1/automobile:
+    post:
+      tags:
+        - Automobile
+      summary: Добавление авто текущего авторизованного пользователя.
+      operationId: automobile/add
+      security:
+        - JWT: [ ]
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                factoryId:
+                  type: integer
+                modelId:
+                  type: integer
+                color:
+                  type: string
+                license:
+                  type: string
+                bodyType:
+                  type: object
+                  enum:
+                    - SEDAN
+                    - HATCHBACK
+                    - COUPE
+                    - PICKUP
+                    - VAN
+                    - CROSSOVER
+                    - CABRIOLET
+      responses:
+        200:
+          description: Успешное добавление авто для текущего авторизованного пользователя.
+        400:
+          description: Если были переданы некорректные данные.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ClientException"
+        500:
+          description: Ошибка сервера.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ClientException"
+
+  /api/v1/automobile/my:
+    post:
+      tags:
+        - Automobile
+      summary: Получение списка всех авто текущего авторизованного пользователя.
+      operationId: automobile/block:get
+      security:
+        - JWT: [ ]
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PageableRequest'
+      responses:
+        200:
+          description: Успешное получение списка всех авто текущего авторизованного пользователя.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PageableResponse'
+        400:
+          description: Если были переданы некорректные данные.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ClientException"
+        500:
+          description: Ошибка сервера.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ClientException"
+
+  /api/v1/automobile/delete:
+    post:
+      tags:
+        - Automobile
+      summary: Удаление автомобилей текущего авторизованного пользователя.
+      operationId: automobile/block:delete
+      security:
+        - JWT: [ ]
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                automobileIds:
+                  type: array
+                  items:
+                    type: integer
+                    format: int64
+      responses:
+        200:
+          description: Успешное удаление автомобилей текущего авторизованного пользователя.
+        400:
+          description: Если были переданы некорректные данные.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ClientException"
+        500:
+          description: Ошибка сервера.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ClientException"
+
   /api/v1/automobile/factories-models:
     post:
       tags:

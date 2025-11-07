@@ -10,6 +10,8 @@ import lombok.Setter;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.jpa.domain.Specification;
 
+import java.util.List;
+
 @Getter
 @Setter
 public class PageableRequest<T> {
@@ -40,6 +42,14 @@ public class PageableRequest<T> {
 
             return criteriaBuilder.and(predicates);
         };
+    }
+
+    public void addFilter(Filter filter) {
+        if (container != null) {
+            container.getFilters().add(filter);
+        } else {
+            container = new FilterContainer(List.of(filter));
+        }
     }
 
     /**

@@ -1,11 +1,16 @@
 package com.gearit.api.controller.automobile;
 
+import com.gearit.api.entity.auto.Automobile;
 import com.gearit.api.entity.auto.AutomobileFactory;
+import com.gearit.api.entity.user.UserProvider;
 import com.gearit.api.service.automobile.AutomobileService;
 import com.gearit.common.http.filter.PageableRequest;
 import com.gearit.common.http.filter.PageableResponse;
+import com.gearit.common.http.request.CreateAutomobileRequest;
+import com.gearit.common.http.request.DeleteAutomobileCurrentUserProviderRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -20,6 +25,36 @@ public class AutomobileController {
     @Autowired
     public AutomobileController(AutomobileService automobileService) {
         this.automobileService = automobileService;
+    }
+
+    @PostMapping
+    public ResponseEntity<Void> createAutomobile(
+            @RequestBody CreateAutomobileRequest request,
+            Authentication auth
+    ) {
+        UserProvider userProvider = (UserProvider) auth.getPrincipal();
+        automobileService.createAutomobile(request, userProvider);
+        return ResponseEntity.ok().build();
+    }
+
+    @PostMapping("/my")
+    public ResponseEntity<?> getAutomobileCurrentUserProvider(
+            @RequestBody PageableRequest<Automobile> request,
+            Authentication auth
+    ) {
+        UserProvider userProvider = (UserProvider) auth.getPrincipal();
+        var automobilesView = automobileService.getAutomobilesAuthUser(request, userProvider.getId());
+        return PageableResponse.toResponseEntity(automobilesView, request);
+    }
+
+    @PostMapping("/delete")
+    public ResponseEntity<Void> deleteAutomobileCurrentUserProvider(
+            @RequestBody DeleteAutomobileCurrentUserProviderRequest request,
+            Authentication auth
+    ) {
+        UserProvider userProvider = (UserProvider) auth.getPrincipal();
+        automobileService.deleteAutomobileById(request.automobileIds(), userProvider.getId());
+        return ResponseEntity.ok().build();
     }
 
     @PostMapping("/factories-models")

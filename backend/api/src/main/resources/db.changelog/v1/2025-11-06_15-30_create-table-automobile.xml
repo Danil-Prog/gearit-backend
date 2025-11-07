@@ -75,12 +75,82 @@
                                  referencedTableName="gearit_automobile_models"
                                  referencedColumnNames="id"/>
 
+        <createTable tableName="gearit_automobiles">
+
+            <column name="id" type="BIGSERIAL">
+                <constraints primaryKey="true"/>
+            </column>
+
+            <column name="user_provider_id" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+
+            <column name="factory_id" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+
+            <column name="model_id" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+
+            <column name="color" type="VARCHAR">
+                <constraints nullable="false"/>
+            </column>
+
+            <column name="license" type="VARCHAR">
+                <constraints nullable="false"/>
+            </column>
+
+            <column name="body_type" type="VARCHAR">
+                <constraints unique="false" nullable="false"/>
+            </column>
+
+        </createTable>
+
+        <addForeignKeyConstraint
+                baseTableName="gearit_automobiles"
+                baseColumnNames="factory_id"
+                referencedTableName="gearit_automobile_factories"
+                referencedColumnNames="id"
+                constraintName="fk_gearit_automobiles_factories"/>
+
+        <addForeignKeyConstraint
+                baseTableName="gearit_automobiles"
+                baseColumnNames="factory_id"
+                referencedTableName="gearit_automobile_models"
+                referencedColumnNames="id"
+                constraintName="fk_gearit_automobiles_models"/>
+
         <insert tableName="gearit_endpoints">
             <column name="id" value="8"/>
             <column name="method" value="POST"/>
             <column name="path" value="/api/v1/automobile/factories-models"/>
             <column name="description" value="Получение списка автомобильных производителей и их модели"/>
-            <column name="resource" value="factories-models/block:get"/>
+            <column name="resource" value="automobile/factories-models/block:get"/>
+        </insert>
+
+        <insert tableName="gearit_endpoints">
+            <column name="id" value="9"/>
+            <column name="method" value="POST"/>
+            <column name="path" value="/api/v1/automobile/my"/>
+            <column name="description" value="Получение всех автомобилей текущего авторизованного пользователя"/>
+            <column name="resource" value="automobile/block:get"/>
+        </insert>
+
+        <insert tableName="gearit_endpoints">
+            <column name="id" value="10"/>
+            <column name="method" value="POST"/>
+            <column name="path" value="/api/v1/automobile"/>
+            <column name="description" value="Добавление автомобиля текущего авторизованного пользователя"/>
+            <column name="resource" value="automobile/block:add"/>
+        </insert>
+
+        <insert tableName="gearit_endpoints">
+            <column name="id" value="11"/>
+            <column name="method" value="POST"/>
+            <column name="path" value="/api/v1/automobile/delete"/>
+            <column name="description" value="Удаление автомобилей текущего авторизованного пользователя"/>
+            <column name="resource" value="automobile/block:delete"/>
         </insert>
 
         <!-- MANAGER -->
@@ -89,6 +159,49 @@
             <column name="endpoint_id" value="8"/>
         </insert>
 
+        <!-- MANAGER -->
+        <insert tableName="gearit_access_policies_endpoints">
+            <column name="access_policy_id" value="1"/>
+            <column name="endpoint_id" value="9"/>
+        </insert>
+
+        <!-- MANAGER -->
+        <insert tableName="gearit_access_policies_endpoints">
+            <column name="access_policy_id" value="1"/>
+            <column name="endpoint_id" value="10"/>
+        </insert>
+
+        <!-- MANAGER -->
+        <insert tableName="gearit_access_policies_endpoints">
+            <column name="access_policy_id" value="1"/>
+            <column name="endpoint_id" value="11"/>
+        </insert>
+
+        <!-- CLIENT -->
+        <insert tableName="gearit_access_policies_endpoints">
+            <column name="access_policy_id" value="2"/>
+            <column name="endpoint_id" value="8"/>
+        </insert>
+
+        <!-- CLIENT -->
+        <insert tableName="gearit_access_policies_endpoints">
+            <column name="access_policy_id" value="2"/>
+            <column name="endpoint_id" value="9"/>
+        </insert>
+
+        <!-- CLIENT -->
+        <insert tableName="gearit_access_policies_endpoints">
+            <column name="access_policy_id" value="2"/>
+            <column name="endpoint_id" value="10"/>
+        </insert>
+
+        <!-- CLIENT -->
+        <insert tableName="gearit_access_policies_endpoints">
+            <column name="access_policy_id" value="2"/>
+            <column name="endpoint_id" value="11"/>
+        </insert>
+
+        <!-- Загрузка данных о всех марках автомобилей -->
         <loadData tableName="gearit_automobile_factories"
                   file="data/2025-11-06_15-30_factories.csv"
                   relativeToChangelogFile="true"
