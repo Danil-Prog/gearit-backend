@@ -20,4 +20,10 @@ public class AutomobileModel {
 
     @Column(name = "name")
     private String name;
+
+    @Column(name = "year_from")
+    private Long yearFrom;
+
+    @Column(name = "year_to")
+    private Long yearTo;
 }

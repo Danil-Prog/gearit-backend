@@ -34,4 +34,13 @@ public class AutomobileFactory {
             inverseJoinColumns = @JoinColumn(name = "automobile_model_id")
     )
     private Set<AutomobileModel> models;
+
+    @Column(name = "country")
+    private String country;
+
+    @Column(name = "year_from")
+    private Long yearFrom;
+
+    @Column(name = "year_to")
+    private Long yearTo;
 }

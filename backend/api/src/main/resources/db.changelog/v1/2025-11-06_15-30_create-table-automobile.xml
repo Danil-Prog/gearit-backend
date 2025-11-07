@@ -17,6 +17,14 @@
                 <constraints nullable="false"/>
             </column>
 
+            <column name="year_from" type="BIGINT">
+                <constraints unique="false" nullable="false"/>
+            </column>
+
+            <column name="year_to" type="BIGINT">
+                <constraints unique="false" nullable="false"/>
+            </column>
+
         </createTable>
 
         <createTable tableName="gearit_automobile_factories">
@@ -27,6 +35,18 @@
 
             <column name="name" type="VARCHAR">
                 <constraints nullable="false"/>
+            </column>
+
+            <column name="country" type="VARCHAR">
+                <constraints nullable="true"/>
+            </column>
+
+            <column name="year_from" type="BIGINT">
+                <constraints unique="false" nullable="false"/>
+            </column>
+
+            <column name="year_to" type="BIGINT">
+                <constraints unique="false" nullable="false"/>
             </column>
 
         </createTable>
@@ -69,80 +89,37 @@
             <column name="endpoint_id" value="8"/>
         </insert>
 
-        <insert tableName="gearit_automobile_factories">
-            <column name="id" value="1"/>
-            <column name="name" value="Toyota"/>
-        </insert>
+        <loadData tableName="gearit_automobile_factories"
+                  file="data/2025-11-06_15-30_factories.csv"
+                  relativeToChangelogFile="true"
+                  schemaName="public"
+                  separator=";">
+            <column name="id" type="BIGSERIAL"/>
+            <column name="name" type="VARCHAR"/>
+            <column name="year_from" type="BIGINT"/>
+            <column name="year_to" type="BIGINT"/>
+            <column name="country" type="VARCHAR"/>
+        </loadData>
 
-        <insert tableName="gearit_automobile_factories">
-            <column name="id" value="2"/>
-            <column name="name" value="BMW"/>
-        </insert>
+        <loadData tableName="gearit_automobile_models"
+                  file="data/2025-11-06_15-30_models.csv"
+                  relativeToChangelogFile="true"
+                  schemaName="public"
+                  separator=";">
+            <column name="id" type="BIGSERIAL"/>
+            <column name="name" type="VARCHAR"/>
+            <column name="year_from" type="BIGINT"/>
+            <column name="year_to" type="BIGINT"/>
+        </loadData>
 
-        <insert tableName="gearit_automobile_factories">
-            <column name="id" value="3"/>
-            <column name="name" value="Tesla"/>
-        </insert>
-
-        <insert tableName="gearit_automobile_models">
-            <column name="id" value="1"/>
-            <column name="name" value="Corolla"/>
-        </insert>
-
-        <insert tableName="gearit_automobile_models">
-            <column name="id" value="2"/>
-            <column name="name" value="Camry"/>
-        </insert>
-
-        <insert tableName="gearit_automobile_models">
-            <column name="id" value="3"/>
-            <column name="name" value="Model S"/>
-        </insert>
-
-        <insert tableName="gearit_automobile_models">
-            <column name="id" value="4"/>
-            <column name="name" value="Model 3"/>
-        </insert>
-
-        <insert tableName="gearit_automobile_models">
-            <column name="id" value="5"/>
-            <column name="name" value="X3"/>
-        </insert>
-
-        <insert tableName="gearit_automobile_models">
-            <column name="id" value="6"/>
-            <column name="name" value="X5"/>
-        </insert>
-
-        <insert tableName="gearit_automobile_factories_models">
-            <column name="automobile_factory_id" value="1"/> <!-- Toyota -->
-            <column name="automobile_model_id" value="1"/>   <!-- Corolla -->
-        </insert>
-
-        <insert tableName="gearit_automobile_factories_models">
-            <column name="automobile_factory_id" value="1"/> <!-- Toyota -->
-            <column name="automobile_model_id" value="2"/>   <!-- Camry -->
-        </insert>
-
-        <insert tableName="gearit_automobile_factories_models">
-            <column name="automobile_factory_id" value="3"/> <!-- Tesla -->
-            <column name="automobile_model_id" value="3"/>   <!-- Model S -->
-        </insert>
-
-        <insert tableName="gearit_automobile_factories_models">
-            <column name="automobile_factory_id" value="3"/> <!-- Tesla -->
-            <column name="automobile_model_id" value="4"/>   <!-- Model 3 -->
-        </insert>
-
-        <insert tableName="gearit_automobile_factories_models">
-            <column name="automobile_factory_id" value="2"/> <!-- Tesla -->
-            <column name="automobile_model_id" value="5"/>
-        </insert>
-
-        <insert tableName="gearit_automobile_factories_models">
-            <column name="automobile_factory_id" value="2"/>
-            <column name="automobile_model_id" value="6"/>
-        </insert>
+        <loadData tableName="gearit_automobile_factories_models"
+                  file="data/2025-11-06_15-30_factories_models.csv"
+                  relativeToChangelogFile="true"
+                  schemaName="public"
+                  separator=";">
+            <column name="automobile_factory_id" type="BIGSERIAL"/>
+            <column name="automobile_model_id" type="BIGSERIAL"/>
+        </loadData>
 
     </changeSet>
 
