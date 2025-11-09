@@ -67,7 +67,7 @@ public class AccessPolicyAuthenticationFilter extends OncePerRequestFilter {
                 .anyMatch(endpoint -> endpoint.getPath().equals(requestURI));
 
         if (!isPathAllowed) {
-            logger.info(
+            logger.warn(
                     "User with name: [{}] requested access to a protected resource: [{}: {}] and was denied",
                     authentication.getName(),
                     httpMethod,

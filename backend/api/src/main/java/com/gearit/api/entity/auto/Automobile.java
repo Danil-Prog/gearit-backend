@@ -44,6 +44,12 @@ public class Automobile {
     @Column(name = "body_type")
     @Enumerated(EnumType.STRING)
     private AutomobileBodyType type;
+
+    @Column(name = "year")
+    private Long year;
+
+    @Column(name = "odometer")
+    private Long odometer;
 }
 
 

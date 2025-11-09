@@ -529,6 +529,7 @@ paths:
                   type: string
                 license:
                   type: string
+                  description: Гос. номер авто.
                 bodyType:
                   type: string
                   enum:
@@ -539,6 +540,12 @@ paths:
                     - VAN
                     - CROSSOVER
                     - CABRIOLET
+                year:
+                  type: integer
+                  description: Год выпуска.
+                odometer:
+                  type: integer
+                  description: Пробег авто.
       responses:
         200:
           description: Успешное добавление авто для текущего авторизованного пользователя.

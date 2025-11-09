@@ -81,6 +81,8 @@ public class AutomobileService {
         auto.setLicense(request.license());
         auto.setColor(request.color());
         auto.setUserProviderId(userProvider.getId());
+        auto.setYear(request.year());
+        auto.setOdometer(request.odometer());
 
         automobileRepository.save(auto);
     }

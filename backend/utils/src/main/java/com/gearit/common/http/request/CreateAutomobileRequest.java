@@ -7,6 +7,8 @@ public record CreateAutomobileRequest(
         Long modelId,
         String color,
         String license,
-        AutomobileBodyTypeDto bodyType
+        AutomobileBodyTypeDto bodyType,
+        Long year,
+        Long odometer
 ) {
 }

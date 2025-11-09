@@ -105,6 +105,14 @@
                 <constraints unique="false" nullable="false"/>
             </column>
 
+            <column name="year" type="BIGINT">
+                <constraints unique="false" nullable="false"/>
+            </column>
+
+            <column name="odometer" type="BIGINT">
+                <constraints unique="false" nullable="true"/>
+            </column>
+
         </createTable>
 
         <addForeignKeyConstraint

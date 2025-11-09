@@ -8,7 +8,9 @@ public record AutomobileView(
         String model,
         String color,
         String license,
-        String bodyType
+        String bodyType,
+        Long year,
+        Long odometer
 ) {
 
     public static AutomobileView from(Automobile automobile) {
@@ -18,7 +20,9 @@ public record AutomobileView(
                 automobile.getModel().getName(),
                 automobile.getColor(),
                 automobile.getLicense(),
-                automobile.getType().name()
+                automobile.getType().name(),
+                automobile.getYear(),
+                automobile.getOdometer()
         );
 
     }

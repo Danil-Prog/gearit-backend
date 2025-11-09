@@ -1,5 +1,6 @@
 package com.gearit.api.controller.automobile;
 
+import com.gearit.api.dto.view.AutomobileView;
 import com.gearit.api.entity.auto.Automobile;
 import com.gearit.api.entity.auto.AutomobileFactory;
 import com.gearit.api.entity.user.UserProvider;
@@ -7,7 +8,7 @@ import com.gearit.api.service.automobile.AutomobileService;
 import com.gearit.common.http.filter.PageableRequest;
 import com.gearit.common.http.filter.PageableResponse;
 import com.gearit.common.http.request.CreateAutomobileRequest;
-import com.gearit.common.http.request.DeleteAutomobileCurrentUserProviderRequest;
+import com.gearit.common.http.request.DeleteAutomobilesAuthUserRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
@@ -37,8 +38,11 @@ public class AutomobileController {
         return ResponseEntity.ok().build();
     }
 
+    /**
+     * @see AutomobileView
+     */
     @PostMapping("/my")
-    public ResponseEntity<?> getAutomobileCurrentUserProvider(
+    public ResponseEntity<?> getAutomobilesAuthUser(
             @RequestBody PageableRequest<Automobile> request,
             Authentication auth
     ) {
@@ -48,8 +52,8 @@ public class AutomobileController {
     }
 
     @PostMapping("/delete")
-    public ResponseEntity<Void> deleteAutomobileCurrentUserProvider(
-            @RequestBody DeleteAutomobileCurrentUserProviderRequest request,
+    public ResponseEntity<Void> deleteAutomobilesAuthUser(
+            @RequestBody DeleteAutomobilesAuthUserRequest request,
             Authentication auth
     ) {
         UserProvider userProvider = (UserProvider) auth.getPrincipal();
