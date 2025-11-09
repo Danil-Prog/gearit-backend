@@ -3,7 +3,6 @@ package com.gearit.api.config;
 import com.gearit.api.config.filter.AccessPolicyAuthenticationFilter;
 import com.gearit.api.config.filter.JwtAuthenticationFilter;
 import com.gearit.api.config.properties.CorsProperties;
-import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -22,13 +21,13 @@ import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
+import java.util.List;
+
 @Configuration
 @EnableWebSecurity
 public class SecurityConfig {
 
-    private final CorsProperties corsProperties;
-
-    private final String[] PERMIT_ALL_ENDPOINTS = {
+    public static final String[] PERMIT_ALL_ENDPOINTS = {
             "/api/v1/auth/login",
             "/api/v1/auth/token/refresh",
             "/api/v1/auth/register",
@@ -38,6 +37,8 @@ public class SecurityConfig {
             "/api/v1/password/**",
             "/application/**"
     };
+
+    private final CorsProperties corsProperties;
 
     @Autowired
     public SecurityConfig(CorsProperties corsProperties) {

@@ -1,15 +1,14 @@
 package com.gearit.api.config.filter;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.gearit.api.config.SecurityConfig;
 import com.gearit.api.entity.endpoint.Endpoint;
-import com.gearit.common.exception.WebClientException;
 import com.gearit.api.service.accesspolicy.AccessPolicyService;
+import com.gearit.common.exception.WebClientException;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import java.io.IOException;
-import java.util.Set;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,6 +18,10 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
+
+import java.io.IOException;
+import java.util.Arrays;
+import java.util.Set;
 
 @Component
 public class AccessPolicyAuthenticationFilter extends OncePerRequestFilter {
@@ -49,6 +52,12 @@ public class AccessPolicyAuthenticationFilter extends OncePerRequestFilter {
 
         String httpMethod = request.getMethod();
         String requestURI = request.getRequestURI();
+
+        // Если текущий URL является публичным и разрешенным для всех - пропускаем.
+        if (Arrays.asList(SecurityConfig.PERMIT_ALL_ENDPOINTS).contains(httpMethod)) {
+            filterChain.doFilter(request, response);
+            return;
+        }
 
         boolean isPathAllowed;
 
