@@ -29,7 +29,7 @@ public class AccountInfoService {
         accountInfo.setPhoneNumber(request.phoneNumber());
         accountInfo.setBirthDate(request.birthDate());
 
-        AccountInfoValidator.validateAccountInfo(accountInfo);
+        AccountInfoValidator.validate(accountInfo);
 
         accountInfoRepository.save(accountInfo);
     }

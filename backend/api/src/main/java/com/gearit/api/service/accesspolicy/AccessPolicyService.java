@@ -51,7 +51,7 @@ public class AccessPolicyService {
 
     public Page<AccessPolicy> getAllAccessPolicies(PageableRequest<AccessPolicy> request) {
         Specification<AccessPolicy> specification = request.getSpecification();
-        return accessPolicyRepository.findAll(specification, request.toPageable());
+        return accessPolicyRepository.findAll(specification, request.getPageRequest());
     }
 
     public AccessPolicy getAccessPolicyById(Long accessPolicyId) {

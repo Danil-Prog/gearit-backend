@@ -42,12 +42,6 @@ public class AdviceExceptionHandler {
         return new ValidationErrorResponse(violations);
     }
 
-    @ExceptionHandler(BadRequestException.class)
-    public ResponseEntity<BadRequestResponseException> badRequestException(BadRequestException ex) {
-        BadRequestResponseException badRequestResponseException = new BadRequestResponseException(ex.getMessage());
-        return new ResponseEntity<>(badRequestResponseException, HttpStatus.BAD_REQUEST);
-    }
-
     @ExceptionHandler(WebClientException.class)
     public ResponseEntity<WebClientExceptionResponse> webClientException(WebClientException ex) {
         WebClientExceptionResponse webClientExceptionResponse = new WebClientExceptionResponse(ex.getMessage(), ex.getExtendedHelp());

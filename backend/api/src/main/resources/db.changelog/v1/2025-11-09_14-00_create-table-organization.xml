@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                   https://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-latest.xsd">
+
+    <changeSet id="10" author="master">
+
+        <createTable tableName="gearit_organizations">
+
+            <column name="id" type="BIGSERIAL">
+                <constraints primaryKey="true"/>
+            </column>
+
+            <column name="full_name" type="VARCHAR">
+                <constraints nullable="false"/>
+            </column>
+
+            <column name="abbreviated_name" type="VARCHAR">
+                <constraints nullable="false"/>
+            </column>
+
+            <column name="description" type="VARCHAR">
+                <constraints nullable="false"/>
+            </column>
+
+            <column name="registered_address" type="VARCHAR">
+                <constraints nullable="false"/>
+            </column>
+
+            <column name="current_address" type="VARCHAR">
+                <constraints nullable="false"/>
+            </column>
+
+            <column name="phone_number" type="VARCHAR">
+                <constraints nullable="false"/>
+            </column>
+
+            <column name="inn" type="VARCHAR">
+                <constraints nullable="false"/>
+            </column>
+
+            <column name="kpp" type="VARCHAR">
+                <constraints nullable="false"/>
+            </column>
+
+            <column name="year" type="BIGINT">
+                <constraints unique="false" nullable="false"/>
+            </column>
+
+            <column name="user_provider_id" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+
+        </createTable>
+
+<!--        <insert tableName="gearit_endpoints">-->
+<!--            <column name="id" value="8"/>-->
+<!--            <column name="method" value="POST"/>-->
+<!--            <column name="path" value="/api/v1/organization"/>-->
+<!--            <column name="description"-->
+<!--                    value="Получение списка организаций пользователя, введенные в эксплуатацию (прошедшие проверку администратора)"/>-->
+<!--            <column name="resource" value="organization-register/block:add"/>-->
+<!--        </insert>-->
+
+<!--        &lt;!&ndash; MANAGER &ndash;&gt;-->
+<!--        <insert tableName="gearit_access_policies_endpoints">-->
+<!--            <column name="access_policy_id" value="1"/>-->
+<!--            <column name="endpoint_id" value="8"/>-->
+<!--        </insert>-->
+
+<!--        &lt;!&ndash; CLIENT &ndash;&gt;-->
+<!--        <insert tableName="gearit_access_policies_endpoints">-->
+<!--            <column name="access_policy_id" value="2"/>-->
+<!--            <column name="endpoint_id" value="8"/>-->
+<!--        </insert>-->
+
+    </changeSet>
+
+</databaseChangeLog>

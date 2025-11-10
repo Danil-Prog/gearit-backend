@@ -1,17 +1,22 @@
 package com.gearit.api.utils.validator;
 
+import com.gearit.api.entity.account.AccountGender;
 import com.gearit.api.entity.account.AccountInfo;
 import com.gearit.common.exception.WebClientException;
+
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+
+import static com.gearit.common.utils.StringUtils.stringNullOrBlank;
 
 public class AccountInfoValidator {
 
     private static final String ERROR_MESSAGE = "Incorrect account details";
 
-    public static void validateAccountInfo(AccountInfo accountInfo) {
+    public static void validate(AccountInfo accountInfo) {
         isValidaFullName(accountInfo.getFirstName(), accountInfo.getMiddleName(), accountInfo.getLastName());
         isValidPhoneNumber(accountInfo.getPhoneNumber());
+        isValidGender(accountInfo.getGender());
     }
 
     private static void isValidaFullName(String firstName, String middleName, String lastName) {
@@ -41,8 +46,10 @@ public class AccountInfoValidator {
         }
     }
 
-    private static boolean stringNullOrBlank(String string) {
-        return string == null || string.isBlank();
+    private static void isValidGender(AccountGender gender) {
+        if (gender == null) {
+            throw asWebClientException("Gender cannot be empty");
+        }
     }
 
     private static WebClientException asWebClientException(String extendedHelp) {

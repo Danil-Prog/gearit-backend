@@ -38,7 +38,7 @@ public class AutomobileService {
 
     public Page<AutomobileFactory> getAutomobileFactories(PageableRequest<AutomobileFactory> request) {
         Specification<AutomobileFactory> specification = request.getSpecification();
-        return automobileFactoryRepository.findAll(specification, request.toPageable());
+        return automobileFactoryRepository.findAll(specification, request.getPageRequest());
     }
 
     public Page<AutomobileView> getAutomobilesAuthUser(PageableRequest<Automobile> request, Long userProviderId) {
@@ -49,7 +49,7 @@ public class AutomobileService {
         ));
 
         Specification<Automobile> specification = request.getSpecification();
-        return automobileRepository.findAll(specification, request.toPageable()).map(AutomobileView::from);
+        return automobileRepository.findAll(specification, request.getPageRequest()).map(AutomobileView::from);
     }
 
     public void createAutomobile(

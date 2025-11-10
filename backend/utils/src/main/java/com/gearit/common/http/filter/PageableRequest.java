@@ -25,7 +25,7 @@ public class PageableRequest<T> {
         this.size = size;
     }
 
-    public PageRequest toPageable() {
+    public PageRequest getPageRequest() {
         return PageRequest.of(page, size);
     }
 
