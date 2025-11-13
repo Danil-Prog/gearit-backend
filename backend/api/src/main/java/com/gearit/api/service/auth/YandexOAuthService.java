@@ -12,6 +12,7 @@ import com.gearit.common.exception.WebClientException;
 import com.gearit.common.http.response.TokenResponse;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
@@ -31,6 +32,7 @@ public class YandexOAuthService {
 
     private final Logger logger = LoggerFactory.getLogger(YandexOAuthService.class);
 
+    @Autowired
     public YandexOAuthService(
             JwtTokenProvider jwtTokenProvider,
             YandexProperties yandexProperties,
@@ -61,7 +63,6 @@ public class YandexOAuthService {
 
     private void saveYandexUser(String email, AccountInfo accountInfo) {
         if (userProviderService.isUserProviderByEmailExist(email)) {
-            logger.info("Yandex user provider already exists");
             return;
         }
 
@@ -75,7 +76,7 @@ public class YandexOAuthService {
 
         userProviderService.createUserProviderWithAccountInfo(newUserProvider, accountInfo);
 
-        logger.info("Created new user provider from Yandex oauth2");
+        logger.info("New user registered using Yandex");
     }
 
     private YandexPassport getYandexPassport(String accessToken) {
