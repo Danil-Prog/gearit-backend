@@ -3,6 +3,7 @@ package com.gearit.api.service.accesspolicy;
 import com.gearit.api.entity.accesspolicy.AccessPolicy;
 import com.gearit.api.entity.endpoint.Endpoint;
 import com.gearit.api.repository.AccessPolicyRepository;
+import com.gearit.common.exception.WebClientException;
 import com.gearit.common.http.filter.PageableRequest;
 import jakarta.annotation.PostConstruct;
 import org.slf4j.Logger;
@@ -54,12 +55,16 @@ public class AccessPolicyService {
         return accessPolicyRepository.findAll(specification, request.getPageRequest());
     }
 
-    public AccessPolicy getAccessPolicyById(Long accessPolicyId) {
-        return accessPolicyRepository.findById(accessPolicyId).orElse(null);
-    }
-
     public AccessPolicy getAccessPolicyByName(String name) {
         return accessPolicyRepository.findByName(name);
+    }
+
+    public AccessPolicy getAccessPolicyByIdOrThrow(Long accessPolicyId) {
+        return accessPolicyRepository.findById(accessPolicyId)
+                .orElseThrow(() ->  new WebClientException(
+                        "Failed to get access policy",
+                        String.format("Access policy with this id: [%s] does not exist", accessPolicyId)
+                ));
     }
 
     /**

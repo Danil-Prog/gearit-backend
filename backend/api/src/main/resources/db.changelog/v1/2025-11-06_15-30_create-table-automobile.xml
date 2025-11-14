@@ -161,6 +161,14 @@
             <column name="resource" value="automobile/block:delete"/>
         </insert>
 
+        <insert tableName="gearit_endpoints">
+            <column name="id" value="12"/>
+            <column name="method" value="POST"/>
+            <column name="path" value="/api/v1/automobile/\d+"/>
+            <column name="description" value="Обновление авто по ID текущего авторизованного пользователя"/>
+            <column name="resource" value="automobile/block:update"/>
+        </insert>
+
         <!-- MANAGER -->
         <insert tableName="gearit_access_policies_endpoints">
             <column name="access_policy_id" value="1"/>
@@ -185,6 +193,12 @@
             <column name="endpoint_id" value="11"/>
         </insert>
 
+        <!-- MANAGER -->
+        <insert tableName="gearit_access_policies_endpoints">
+            <column name="access_policy_id" value="1"/>
+            <column name="endpoint_id" value="12"/>
+        </insert>
+
         <!-- CLIENT -->
         <insert tableName="gearit_access_policies_endpoints">
             <column name="access_policy_id" value="2"/>
@@ -207,6 +221,12 @@
         <insert tableName="gearit_access_policies_endpoints">
             <column name="access_policy_id" value="2"/>
             <column name="endpoint_id" value="11"/>
+        </insert>
+
+        <!-- CLIENT -->
+        <insert tableName="gearit_access_policies_endpoints">
+            <column name="access_policy_id" value="2"/>
+            <column name="endpoint_id" value="12"/>
         </insert>
 
         <!-- Загрузка данных о всех марках автомобилей -->

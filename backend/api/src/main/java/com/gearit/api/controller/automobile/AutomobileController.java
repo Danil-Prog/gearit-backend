@@ -9,9 +9,11 @@ import com.gearit.common.http.filter.PageableRequest;
 import com.gearit.common.http.filter.PageableResponse;
 import com.gearit.common.http.request.CreateAutomobileRequest;
 import com.gearit.common.http.request.DeleteAutomobilesAuthUserRequest;
+import com.gearit.common.http.request.UpdateAutomobileRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -67,5 +69,16 @@ public class AutomobileController {
     ) {
         var automobileFactories = automobileService.getAutomobileFactories(request);
         return PageableResponse.toResponseEntity(automobileFactories, request);
+    }
+
+    @PostMapping("/{id}")
+    public ResponseEntity<Void> updateAutomobile(
+            @RequestBody UpdateAutomobileRequest request,
+            @PathVariable("id") Long automobileId,
+            Authentication auth
+    ) {
+        UserProvider userProvider = (UserProvider) auth.getPrincipal();
+        automobileService.updateAutomobileById(automobileId, request, userProvider);
+        return ResponseEntity.ok().build();
     }
 }

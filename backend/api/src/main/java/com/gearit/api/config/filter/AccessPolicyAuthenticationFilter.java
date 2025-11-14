@@ -73,7 +73,7 @@ public class AccessPolicyAuthenticationFilter extends OncePerRequestFilter {
 
         isPathAllowed = endpoints.stream()
                 .filter(endpoint -> endpoint.getMethod().equals(httpMethod))
-                .anyMatch(endpoint -> endpoint.getPath().equals(requestURI));
+                .anyMatch(endpoint -> requestURI.matches(endpoint.getPath()));
 
         if (!isPathAllowed) {
             logger.warn(

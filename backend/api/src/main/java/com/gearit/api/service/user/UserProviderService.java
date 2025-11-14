@@ -13,14 +13,15 @@ import com.gearit.common.exception.WebClientException;
 import com.gearit.common.http.filter.PageableRequest;
 import com.gearit.common.http.request.BlockUserProvidersRequest;
 import com.gearit.common.http.request.UpdateAccessPolicyUserProviderRequest;
-import java.time.Instant;
-import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.time.Instant;
+import java.util.List;
 
 @Service
 public class UserProviderService {
@@ -107,7 +108,7 @@ public class UserProviderService {
      * Валидирует, шифрует и обновляет пароль пользователя.
      * Обновляет время последнего обновления пароля.
      *
-     * @param id - идентификатор пользователя.
+     * @param id          - идентификатор пользователя.
      * @param newPassword - новый пароль.
      */
     public void updateUserProviderPassword(Long id, String newPassword) {
@@ -147,14 +148,7 @@ public class UserProviderService {
             );
         }
 
-        AccessPolicy accessPolicy = accessPolicyService.getAccessPolicyById(request.accessPolicyId());
-
-        if (accessPolicy == null) {
-            throw new WebClientException(
-                    errorMessage,
-                    String.format("Access policy with this id: [%s] does not exist", request.accessPolicyId())
-            );
-        }
+        AccessPolicy accessPolicy = accessPolicyService.getAccessPolicyByIdOrThrow(request.accessPolicyId());
 
         userProvider.setAccessPolicy(accessPolicy);
 

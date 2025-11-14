@@ -13,6 +13,7 @@ import com.gearit.common.http.filter.Filter;
 import com.gearit.common.http.filter.FilterCondition;
 import com.gearit.common.http.filter.PageableRequest;
 import com.gearit.common.http.request.CreateAutomobileRequest;
+import com.gearit.common.http.request.UpdateAutomobileRequest;
 import com.gearit.common.utils.EnumConverter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -63,15 +64,7 @@ public class AutomobileService {
 
         AutomobileFactory automobileFactory = getAutomobileFactoryByIdOrThrow(factoryId);
 
-        AutomobileModel automobileModel = automobileFactory.getModels()
-                .stream()
-                .filter(model -> model.getId().equals(modelId))
-                .findFirst()
-                .orElseThrow(() ->
-                        new WebClientException(
-                                "Error when getting the automobile model",
-                                "Couldn't find automobile model in the specified manufacturer"
-                        ));
+        AutomobileModel automobileModel = getModelFromFactoryById(automobileFactory, modelId);
 
         var auto = new Automobile();
 
@@ -102,6 +95,35 @@ public class AutomobileService {
         automobileRepository.deleteAll(automobiles);
     }
 
+    public void updateAutomobileById(Long automobileId, UpdateAutomobileRequest request, UserProvider userProvider) {
+        var auto = getAutomobileByIdOrThrow(automobileId);
+
+        if (!auto.getUserProviderId().equals(userProvider.getId())) {
+            throw new WebClientException(
+                    "Failed to update automobile",
+                    "Automobile being updated is not the property of the current user"
+            );
+        }
+
+        if (request.factoryId() != null) {
+            var factory = getAutomobileFactoryByIdOrThrow(request.factoryId());
+            var model = getModelFromFactoryById(factory, request.modelId());
+
+            auto.setFactory(factory);
+            auto.setModel(model);
+        }
+
+        if (request.color() != null) {
+            auto.setColor(request.color());
+        }
+
+        if (request.odometer() != null) {
+            auto.setOdometer(request.odometer());
+        }
+
+        automobileRepository.save(auto);
+    }
+
     private AutomobileFactory getAutomobileFactoryByIdOrThrow(Long id) {
         return automobileFactoryRepository.findById(id).orElseThrow(() ->
                 new WebClientException(
@@ -116,5 +138,17 @@ public class AutomobileService {
                         "Error when getting car",
                         "Automobile with ID: " + id + " not found"
                 ));
+    }
+
+    private AutomobileModel getModelFromFactoryById(AutomobileFactory factory, Long modelId) {
+        return factory.getModels()
+                .stream()
+                .filter(model -> model.getId().equals(modelId))
+                .findFirst()
+                .orElseThrow(() ->
+                        new WebClientException(
+                                "Error when getting the automobile model",
+                                "Couldn't find automobile model in the specified manufacturer"
+                        ));
     }
 }

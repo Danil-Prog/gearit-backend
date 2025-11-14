@@ -10,6 +10,7 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.JoinTable;
 import jakarta.persistence.OneToMany;
+import jakarta.persistence.OrderBy;
 import jakarta.persistence.Table;
 import lombok.Data;
 
@@ -28,6 +29,7 @@ public class AutomobileFactory {
     private String name;
 
     @OneToMany(fetch = FetchType.EAGER)
+    @OrderBy("name ASC")
     @JoinTable(
             name = TableNames.AUTOMOBILE_FACTORIES_MODELS,
             joinColumns = @JoinColumn(name = "automobile_factory_id"),
