@@ -31,7 +31,7 @@ public class AccountInfoController {
     public ResponseEntity<GetAccountInfoResponse> getAccountInfo(Authentication auth) {
         UserProvider userProvider = (UserProvider) auth.getPrincipal();
         AccountInfo accountInfo = userProvider.getAccountInfo();
-        AccountGenderDto genderEnum = EnumConverter.fromEnum(AccountGenderDto.class, accountInfo.getGender());
+        AccountGenderDto genderEnum = EnumConverter.toEnum(AccountGenderDto.class, accountInfo.getGender());
 
         var response = new GetAccountInfoResponse(
                 accountInfo.getFirstName(),

@@ -60,7 +60,7 @@ public class AutomobileService {
         Long factoryId = request.factoryId();
         Long modelId = request.modelId();
 
-        AutomobileBodyType automobileBodyType = EnumConverter.fromEnum(AutomobileBodyType.class, request.bodyType());
+        AutomobileBodyType automobileBodyType = EnumConverter.toEnum(AutomobileBodyType.class, request.bodyType());
 
         AutomobileFactory automobileFactory = getAutomobileFactoryByIdOrThrow(factoryId);
 
@@ -127,6 +127,11 @@ public class AutomobileService {
 
         if (request.license() != null) {
             auto.setLicense(request.license());
+        }
+
+        if (request.bodyType() != null) {
+            var bodyType = EnumConverter.toEnum(AutomobileBodyType.class, request.bodyType());
+            auto.setType(bodyType);
         }
 
         automobileRepository.save(auto);

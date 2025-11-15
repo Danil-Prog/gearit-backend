@@ -20,7 +20,7 @@ public class AccountInfoService {
     }
 
     public void updateAccountInfo(AccountInfo accountInfo, UpdateAccountInfoRequest request) {
-        AccountGender gender = EnumConverter.fromEnum(AccountGender.class, request.gender());
+        AccountGender gender = EnumConverter.toEnum(AccountGender.class, request.gender());
 
         accountInfo.setFirstName(request.firstName());
         accountInfo.setMiddleName(request.middleName());
