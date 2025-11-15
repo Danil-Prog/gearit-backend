@@ -970,6 +970,23 @@ components:
           type: array
           description: Контейнер с фильтрами.
           $ref: "#/components/schemas/Filter"
+        sort:
+          type: object
+          properties:
+            field:
+              type: string
+              description: Поле, по которому требуется сортировка.
+            direction:
+              type: string
+              description:
+                Направление сортировки.
+              enum:
+                - ASC
+                - DESC
+      required:
+        - page
+        - size
+
 
     PageableResponse:
       type:

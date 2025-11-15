@@ -5,14 +5,16 @@ import com.gearit.api.exception.violation.Violation;
 import com.gearit.common.exception.WebClientException;
 import com.gearit.common.http.response.WebClientExceptionResponse;
 import jakarta.validation.ConstraintViolationException;
-import java.util.List;
-import java.util.stream.Collectors;
+import org.springframework.data.mapping.PropertyReferenceException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
+
+import java.util.List;
+import java.util.stream.Collectors;
 
 @RestControllerAdvice
 public class AdviceExceptionHandler {
@@ -45,6 +47,12 @@ public class AdviceExceptionHandler {
     @ExceptionHandler(WebClientException.class)
     public ResponseEntity<WebClientExceptionResponse> webClientException(WebClientException ex) {
         WebClientExceptionResponse webClientExceptionResponse = new WebClientExceptionResponse(ex.getMessage(), ex.getExtendedHelp());
+        return new ResponseEntity<>(webClientExceptionResponse, HttpStatus.BAD_REQUEST);
+    }
+
+    @ExceptionHandler(PropertyReferenceException.class)
+    public ResponseEntity<WebClientExceptionResponse> propertyReferenceException(PropertyReferenceException ex) {
+        WebClientExceptionResponse webClientExceptionResponse = new WebClientExceptionResponse("Failed to get property", ex.getMessage());
         return new ResponseEntity<>(webClientExceptionResponse, HttpStatus.BAD_REQUEST);
     }
 }

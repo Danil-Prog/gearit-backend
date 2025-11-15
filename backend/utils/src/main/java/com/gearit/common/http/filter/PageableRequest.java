@@ -19,14 +19,10 @@ public class PageableRequest<T> {
     private Integer page;
     private Integer size;
     private FilterContainer container;
-
-    public PageableRequest(Integer page, Integer size) {
-        this.page = page;
-        this.size = size;
-    }
+    private SortEntry sort;
 
     public PageRequest getPageRequest() {
-        return PageRequest.of(page, size);
+        return sort == null ? PageRequest.of(page, size) : PageRequest.of(page, size, sort.toSort());
     }
 
     public Specification<T> getSpecification() {
