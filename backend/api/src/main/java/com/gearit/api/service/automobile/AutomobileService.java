@@ -121,6 +121,14 @@ public class AutomobileService {
             auto.setOdometer(request.odometer());
         }
 
+        if (request.year() != null) {
+            auto.setYear(request.year());
+        }
+
+        if (request.license() != null) {
+            auto.setLicense(request.license());
+        }
+
         automobileRepository.save(auto);
     }
 
