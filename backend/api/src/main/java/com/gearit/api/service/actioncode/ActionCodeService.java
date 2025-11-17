@@ -21,6 +21,7 @@ public class ActionCodeService {
         var randomCode = UUID.randomUUID().toString();
 
         var actionCode = new ActionCode();
+
         actionCode.setUserProviderId(userProviderId);
         actionCode.setCode(randomCode);
         actionCode.setActionType(actionType);

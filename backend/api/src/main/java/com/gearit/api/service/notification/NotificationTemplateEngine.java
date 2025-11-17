@@ -3,16 +3,17 @@ package com.gearit.api.service.notification;
 import com.gearit.api.entity.notification.NotificationTemplate;
 import com.gearit.api.utils.resourceloader.ResourceLoaderUtils;
 import jakarta.annotation.PostConstruct;
-import java.io.IOException;
-import java.nio.file.Files;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.Map;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.Resource;
 import org.springframework.stereotype.Service;
+
+import java.io.IOException;
+import java.nio.file.Files;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Подгружает в память список шаблонов, для уведомлений

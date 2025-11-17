@@ -17,3 +17,7 @@ databaseChangeLog:
       file: db.changelog/v1/2025-09-17_10-30_update-user-provider-table.xml
   - include:
       file: db.changelog/v1/2025-09-22_22-30_change-sequence-id-account-info.xml
+  - include:
+      file: db.changelog/v1/2025-11-06_15-30_create-table-automobile.xml
+  - include:
+      file: db.changelog/v1/2025-11-09_14-00_create-table-organization.xml

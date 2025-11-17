@@ -1,4 +1,4 @@
-package com.gearit.api.converter;
+package com.gearit.common.converter;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;

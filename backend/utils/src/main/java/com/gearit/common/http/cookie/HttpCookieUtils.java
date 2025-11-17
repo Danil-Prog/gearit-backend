@@ -1,4 +1,4 @@
-package com.gearit.common.cookie;
+package com.gearit.common.http.cookie;
 
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletResponse;

@@ -20,7 +20,7 @@ public class AccountInfoService {
     }
 
     public void updateAccountInfo(AccountInfo accountInfo, UpdateAccountInfoRequest request) {
-        AccountGender gender = EnumConverter.fromEnum(AccountGender.class, request.gender());
+        AccountGender gender = EnumConverter.toEnum(AccountGender.class, request.gender());
 
         accountInfo.setFirstName(request.firstName());
         accountInfo.setMiddleName(request.middleName());
@@ -29,7 +29,7 @@ public class AccountInfoService {
         accountInfo.setPhoneNumber(request.phoneNumber());
         accountInfo.setBirthDate(request.birthDate());
 
-        AccountInfoValidator.validateAccountInfo(accountInfo);
+        AccountInfoValidator.validate(accountInfo);
 
         accountInfoRepository.save(accountInfo);
     }

@@ -11,5 +11,9 @@ public class TableNames {
     public static final String ACCESS_POLICIES = PREFIX + "access_policies";
     public static final String ACCESS_POLICIES_ENDPOINTS = PREFIX + "access_policies_endpoints";
     public static final String ENDPOINTS = PREFIX + "endpoints";
-
+    public static final String AUTOMOBILE_MODELS = PREFIX + "automobile_models";
+    public static final String AUTOMOBILE_FACTORIES = PREFIX + "automobile_factories";
+    public static final String AUTOMOBILE_FACTORIES_MODELS = PREFIX + "automobile_factories_models";
+    public static final String AUTOMOBILES = PREFIX + "automobiles";
+    public static final String ORGANIZATIONS = PREFIX + "organizations";
 }

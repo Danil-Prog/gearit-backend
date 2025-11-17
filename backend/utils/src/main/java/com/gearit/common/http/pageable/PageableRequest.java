@@ -1,6 +1,9 @@
-package com.gearit.common.http.filter;
+package com.gearit.common.http.pageable;
 
 import com.gearit.common.exception.WebClientException;
+import com.gearit.common.http.pageable.filter.Filter;
+import com.gearit.common.http.pageable.filter.FilterContainer;
+import com.gearit.common.http.pageable.sort.SortEntry;
 import jakarta.persistence.criteria.CriteriaBuilder;
 import jakarta.persistence.criteria.Path;
 import jakarta.persistence.criteria.Predicate;
@@ -10,6 +13,8 @@ import lombok.Setter;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.jpa.domain.Specification;
 
+import java.util.List;
+
 @Getter
 @Setter
 public class PageableRequest<T> {
@@ -17,14 +22,10 @@ public class PageableRequest<T> {
     private Integer page;
     private Integer size;
     private FilterContainer container;
+    private SortEntry sort;
 
-    public PageableRequest(Integer page, Integer size) {
-        this.page = page;
-        this.size = size;
-    }
-
-    public PageRequest toPageable() {
-        return PageRequest.of(page, size);
+    public PageRequest getPageRequest() {
+        return sort == null ? PageRequest.of(page, size) : PageRequest.of(page, size, sort.toSort());
     }
 
     public Specification<T> getSpecification() {
@@ -40,6 +41,14 @@ public class PageableRequest<T> {
 
             return criteriaBuilder.and(predicates);
         };
+    }
+
+    public void addFilter(Filter filter) {
+        if (container != null) {
+            container.getFilters().add(filter);
+        } else {
+            container = new FilterContainer(List.of(filter));
+        }
     }
 
     /**

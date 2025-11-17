@@ -3,19 +3,21 @@ package com.gearit.api.service.accesspolicy;
 import com.gearit.api.entity.accesspolicy.AccessPolicy;
 import com.gearit.api.entity.endpoint.Endpoint;
 import com.gearit.api.repository.AccessPolicyRepository;
-import com.gearit.common.http.filter.PageableRequest;
+import com.gearit.common.exception.WebClientException;
+import com.gearit.common.http.pageable.PageableRequest;
 import jakarta.annotation.PostConstruct;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-import java.util.stream.Collectors;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
+
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 @Service
 public class AccessPolicyService {
@@ -50,15 +52,19 @@ public class AccessPolicyService {
 
     public Page<AccessPolicy> getAllAccessPolicies(PageableRequest<AccessPolicy> request) {
         Specification<AccessPolicy> specification = request.getSpecification();
-        return accessPolicyRepository.findAll(specification, request.toPageable());
-    }
-
-    public AccessPolicy getAccessPolicyById(Long accessPolicyId) {
-        return accessPolicyRepository.findById(accessPolicyId).orElse(null);
+        return accessPolicyRepository.findAll(specification, request.getPageRequest());
     }
 
     public AccessPolicy getAccessPolicyByName(String name) {
         return accessPolicyRepository.findByName(name);
+    }
+
+    public AccessPolicy getAccessPolicyByIdOrThrow(Long accessPolicyId) {
+        return accessPolicyRepository.findById(accessPolicyId)
+                .orElseThrow(() ->  new WebClientException(
+                        "Failed to get access policy",
+                        String.format("Access policy with this id: [%s] does not exist", accessPolicyId)
+                ));
     }
 
     /**

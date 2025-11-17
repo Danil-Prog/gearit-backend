@@ -2,11 +2,11 @@ openapi: 3.1.0
 info:
   title: gearit-api
   description: gearit-api
-  version: 0.1.1
+  version: 1.0.0
 servers:
   - url: 'http://localhost:8080'
 tags:
-  - name: Auth
+  - name: Authentication
     description: Аутентификация/Авторизация/Регистрация пользователей в системе.
   - name: Password
     description: Восстановление/изменение пароля пользователя.
@@ -14,15 +14,19 @@ tags:
     description: Операции с пользовательским аккаунтом.
   - name: Users
     description: Операции с пользователями.
-  - name: AccessPolicy
+  - name: Access policy
     description: Управление привилегиями пользователя.
   - name: Application
-    description: Служебная информация о приложении
+    description: Служебная информация о приложении.
+  - name: Automobile
+    description: Операции с автомобилями.
+  - name: Organization
+    description: Операции с организациями пользователя.
 paths:
   /api/v1/auth/register:
     post:
       tags:
-        - Auth
+        - Authentication
       summary: Регистрация
       operationId: register
       security: [ ]
@@ -30,7 +34,13 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/RegisterRequest'
+              type:
+                - object
+              properties:
+                password:
+                  type: string
+                email:
+                  type: string
       responses:
         200:
           description: Успешная регистрация.
@@ -50,7 +60,7 @@ paths:
   /api/v1/auth/verify:
     get:
       tags:
-        - Auth
+        - Authentication
       summary: Подтверждение аккаунта пользователя.
       operationId: verify
       security: [ ]
@@ -81,15 +91,21 @@ paths:
   /api/v1/auth/login:
     post:
       tags:
-        - Auth
-      summary: Логин
+        - Authentication
+      summary: Аутентификация пользователя
       operationId: login
       security: [ ]
       requestBody:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/LoginRequest'
+              type:
+                - object
+              properties:
+                email:
+                  type: string
+                password:
+                  type: string
       responses:
         200:
           description: Успешная аутентификация.
@@ -113,8 +129,8 @@ paths:
   /api/v1/auth/token/refresh:
     post:
       tags:
-        - Auth
-      summary: Обновление токена доступа
+        - Authentication
+      summary: Обновление access токена.
       operationId: refresh
       security: [ ]
       parameters:
@@ -129,7 +145,11 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/RefreshResponse'
+                type:
+                  - object
+                properties:
+                  accessToken:
+                    type: string
         400:
           description: Если были переданы некорректные данные
           content:
@@ -154,12 +174,16 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/ForgotRequest'
+              type:
+                - object
+              properties:
+                email:
+                  type: string
       responses:
         200:
           description: Успешная отправка уведомления.
         400:
-          description: Если были переданы некорректные данные
+          description: Если были переданы некорректные данные.
           content:
             application/json:
               schema:
@@ -175,19 +199,23 @@ paths:
     post:
       tags:
         - Password
-      summary: Проверка на валидность отправленного кода для восстановления пароля
+      summary: Проверка на валидность отправленного кода для восстановления пароля.
       operationId: passwordVerifyCode
       security: [ ]
       requestBody:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/VerifyCodeRequest'
+              type:
+                - object
+              properties:
+                code:
+                  type: string
       responses:
         200:
           description: Успешная отправка уведомления.
         400:
-          description: Если были переданы некорректные данные
+          description: Если были переданы некорректные данные.
           content:
             application/json:
               schema:
@@ -210,18 +238,24 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/ResetPasswordRequest'
+              type:
+                - object
+              properties:
+                code:
+                  type: string
+                newPassword:
+                  type: string
       responses:
         200:
           description: Успешная отправка уведомления.
         400:
-          description: Если были переданы некорректные данные
+          description: Если были переданы некорректные данные.
           content:
             application/json:
               schema:
                 $ref: "#/components/schemas/ClientException"
         500:
-          description: Ошибка сервера
+          description: Ошибка сервера.
           content:
             application/json:
               schema:
@@ -230,21 +264,21 @@ paths:
   /api/v1/yandex/login:
     get:
       tags:
-        - Auth
-      summary: Авторизация через сервер OAuth Yandex
+        - Authentication
+      summary: Авторизация через сервер OAuth Yandex.
       operationId: yandex/login
       security: [ ]
       responses:
         200:
-          description: Успешное получение редиректа
+          description: Успешное получение редиректа.
         400:
-          description: Если были переданы некорректные данные
+          description: Если были переданы некорректные данные.
           content:
             application/json:
               schema:
                 $ref: "#/components/schemas/ClientException"
         500:
-          description: Ошибка сервера
+          description: Ошибка сервера.
           content:
             application/json:
               schema:
@@ -253,25 +287,25 @@ paths:
   /api/v1/yandex/callback:
     get:
       tags:
-        - Auth
-      summary: Авторизация через сервер OAuth Yandex
+        - Authentication
+      summary: Авторизация через сервер OAuth Yandex.
       operationId: yandex/callback
       security: [ ]
       responses:
         200:
-          description: Успешное добавление пользователя в БД и получение токенов доступа
+          description: Успешное добавление пользователя в БД и получение токенов доступа.
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/LoginResponse'
         400:
-          description: Если были переданы некорректные данные
+          description: Если были переданы некорректные данные.
           content:
             application/json:
               schema:
                 $ref: "#/components/schemas/ClientException"
         500:
-          description: Ошибка сервера
+          description: Ошибка сервера.
           content:
             application/json:
               schema:
@@ -281,17 +315,53 @@ paths:
     get:
       tags:
         - Account
-      summary: Информация об аккаунте пользователя
+      summary: Информация об аккаунте пользователя.
       operationId: account
       security:
         - JWT: [ ]
       responses:
         200:
-          description: Успешное получение информации об аккаунте пользователя
+          description: Успешное получение информации об аккаунте пользователя.
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/GetAccountInfoResponse'
+                type:
+                  - object
+                properties:
+                  id:
+                    type: integer
+                  firstName:
+                    type: string
+                  middleName:
+                    type: string
+                  lastName:
+                    type: string
+                  email:
+                    type: string
+                  phoneNumber:
+                    type: string
+                  gender:
+                    type: string
+                    enum:
+                      - MALE
+                      - FEMALE
+                  birthDate:
+                    type: string
+                    format: '2025-06-02 20:00:00.000000'
+                  avatarId:
+                    type: string
+                  createdAt:
+                    type: string
+                    description: Дата регистрации пользователя.
+                    format: '2025-06-02 20:00:00.000000'
+                  updatedAt:
+                    type: string
+                    description: Дата последнего обновления информации об аккаунте.
+                    format: '2025-06-02 20:00:00.000000'
+                  passwordUpdatedAt:
+                    type: string
+                    format: '2025-06-02 20:00:00.000000'
+                    description: Дата последнего обновления пароля.
         403:
           description: Если был передан некорректный accessToken
           content:
@@ -315,12 +385,32 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/UpdateAccountInfoRequest'
+              type:
+                - object
+              properties:
+                id:
+                  type: integer
+                firstName:
+                  type: string
+                middleName:
+                  type: string
+                lastName:
+                  type: string
+                phoneNumber:
+                  type: string
+                gender:
+                  type: string
+                  enum:
+                    - MALE
+                    - FEMALE
+                birthDate:
+                  type: string
+                  format: '2025-06-02 20:00:00.000000'
       responses:
         200:
-          description: Успешное обновление аккаунта пользователя
+          description: Успешное обновление аккаунта пользователя.
         400:
-          description: Если был переданы некорректные данные
+          description: Если был переданы некорректные данные.
           content:
             application/json:
               schema:
@@ -377,7 +467,13 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/UpdateAccessPolicyUserProviderRequest'
+              type:
+                - object
+              properties:
+                userProviderId:
+                  type: integer
+                accessPolicyId:
+                  type: integer
       responses:
         200:
           description: Успешное получение списка пользователей.
@@ -406,7 +502,15 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/BlockUserProvidersRequest'
+              type:
+                - object
+              properties:
+                ids:
+                  type: array
+                  items:
+                    type: integer
+                    format: int64
+                  description: Идентификаторы пользователей.
       responses:
         200:
           description: Успешная блокировка пользователей.
@@ -426,7 +530,7 @@ paths:
   /api/v1/access-policy:
     post:
       tags:
-        - AccessPolicy
+        - Access policy
       summary: Получение всех политик доступа.
       operationId: accessPolicy/get
       security:
@@ -442,7 +546,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/PageableResponse'
+                $ref: "#/components/schemas/AccessPolicy"
         400:
           description: Если были переданы некорректные данные.
           content:
@@ -459,7 +563,7 @@ paths:
   /api/v1/access-policy/resources:
     get:
       tags:
-        - AccessPolicy
+        - Access policy
       summary: Получение доступных ресурсов текущему авторизованному пользователю.
       operationId: accessPolicyResources/get
       security:
@@ -470,7 +574,11 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/GetAvailableResourcesResponse'
+                type:
+                  - object
+                properties:
+                  availableResources:
+                    type: array
         400:
           description: Если были переданы некорректные данные.
           content:
@@ -497,7 +605,326 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/GetApplicationVersion'
+                type:
+                  - object
+                properties:
+                  version:
+                    type: string
+        500:
+          description: Ошибка сервера.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ClientException"
+
+  /api/v1/automobile:
+    post:
+      tags:
+        - Automobile
+      summary: Добавление авто текущего авторизованного пользователя.
+      operationId: automobile/add
+      security:
+        - JWT: [ ]
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                factoryId:
+                  type: integer
+                modelId:
+                  type: integer
+                color:
+                  type: string
+                license:
+                  type: string
+                  description: Гос. номер авто.
+                bodyType:
+                  type: string
+                  enum:
+                    - SEDAN
+                    - HATCHBACK
+                    - COUPE
+                    - PICKUP
+                    - VAN
+                    - CROSSOVER
+                    - CABRIOLET
+                year:
+                  type: integer
+                  description: Год выпуска.
+                odometer:
+                  type: integer
+                  description: Пробег авто.
+      responses:
+        200:
+          description: Успешное добавление авто для текущего авторизованного пользователя.
+        400:
+          description: Если были переданы некорректные данные.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ClientException"
+        500:
+          description: Ошибка сервера.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ClientException"
+
+  /api/v1/automobile/my:
+    post:
+      tags:
+        - Automobile
+      summary: Получение списка всех авто текущего авторизованного пользователя.
+      operationId: automobile/block:get
+      security:
+        - JWT: [ ]
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PageableRequest'
+      responses:
+        200:
+          description: Успешное получение списка всех авто текущего авторизованного пользователя.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PageableResponse'
+        400:
+          description: Если были переданы некорректные данные.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ClientException"
+        500:
+          description: Ошибка сервера.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ClientException"
+
+  /api/v1/automobile/delete:
+    post:
+      tags:
+        - Automobile
+      summary: Удаление автомобилей текущего авторизованного пользователя.
+      operationId: automobile/block:delete
+      security:
+        - JWT: [ ]
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                automobileIds:
+                  type: array
+                  items:
+                    type: integer
+                    format: int64
+      responses:
+        200:
+          description: Успешное удаление автомобилей текущего авторизованного пользователя.
+        400:
+          description: Если были переданы некорректные данные.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ClientException"
+        500:
+          description: Ошибка сервера.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ClientException"
+
+  /api/v1/automobile/factories-models:
+    post:
+      tags:
+        - Automobile
+      summary: Получение списка автомобильных производителей и их модели.
+      operationId: automobileFactoryModels/get
+      security:
+        - JWT: [ ]
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PageableRequest'
+      responses:
+        200:
+          description: Успешное получение списка всех автомобильных производителей и их модели.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PageableResponse'
+        400:
+          description: Если были переданы некорректные данные.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ClientException"
+        500:
+          description: Ошибка сервера.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ClientException"
+
+  /api/v1/automobile/{automobileId}:
+    post:
+      tags:
+        - Automobile
+      summary: Обновление авто по ID текущего авторизованного пользователя.
+      operationId: automobile/update
+      security:
+        - JWT: [ ]
+      parameters:
+        - in: path
+          name: automobileId
+          schema:
+            type: integer
+          required: true
+          description: Идентификатор автомобиля пользователя, который необходимо обновить.
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                factoryId:
+                  type: integer
+                modelId:
+                  type: integer
+                color:
+                  type: string
+                license:
+                  type: string
+                  description: Гос. номер авто.
+                bodyType:
+                  type: string
+                  enum:
+                    - SEDAN
+                    - HATCHBACK
+                    - COUPE
+                    - PICKUP
+                    - VAN
+                    - CROSSOVER
+                    - CABRIOLET
+                year:
+                  type: integer
+                  description: Год выпуска.
+                odometer:
+                  type: integer
+                  description: Пробег авто.
+      responses:
+        200:
+          description: Успешное обновление авто для текущего авторизованного пользователя.
+        400:
+          description: Если были переданы некорректные данные.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ClientException"
+        500:
+          description: Ошибка сервера.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ClientException"
+
+  /api/v1/organization:
+    post:
+      tags:
+        - Organization
+      summary: Получение списка организаций пользователя, введенные в эксплуатацию (прошедшие проверку администратора).
+      operationId: organizations/get
+      security:
+        - JWT: [ ]
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PageableRequest'
+      responses:
+        200:
+          description: Успешное получение списка организаций пользователя, введенные в эксплуатацию.
+          content:
+            application/json:
+              schema:
+                type:
+                  - array
+                items:
+                  $ref: '#/components/schemas/AutomobileFactory'
+        400:
+          description: Если были переданы некорректные данные.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ClientException"
+        500:
+          description: Ошибка сервера.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ClientException"
+
+  /api/v1/organization/register:
+    post:
+      tags:
+        - Organization
+      summary: Создание запроса на регистрацию новой организации.
+      operationId: organizationRequest/add
+      security:
+        - JWT: [ ]
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                fullname:
+                  type: string
+                  description: Полное наименование организации.
+                abbreviatedName:
+                  type: string
+                  description: Сокращенное название.
+                description:
+                  type: string
+                  description: Вид деятельности.
+                registeredAddress:
+                  type: string
+                  description: Юридический адрес регистрации.
+                currentAddress:
+                  type: string
+                  description: Фактический адрес.
+                phone:
+                  type: string
+                  description: Телефон руководителя.
+                inn:
+                  type: string
+                  description: ИНН (12 цифр).
+                kpp:
+                  type: string
+                  description: КПП (9 цифр).
+                year:
+                  type: integer
+                  description: Год регистрации организации.
+      responses:
+        200:
+          description: Успешное создание запроса на регистрацию организации.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PageableResponse'
+        400:
+          description: Если были переданы некорректные данные.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ClientException"
         500:
           description: Ошибка сервера.
           content:
@@ -524,122 +951,12 @@ components:
           type: string
           example: 'Password cannot be null or empty'
 
-    RegisterRequest:
-      type:
-        - object
-      properties:
-        password:
-          type: string
-        email:
-          type: string
-
-    LoginRequest:
-      type:
-        - object
-      properties:
-        email:
-          type: string
-        password:
-          type: string
-
     LoginResponse:
       type:
         - object
       properties:
         accessToken:
           type: string
-
-    RefreshResponse:
-      type:
-        - object
-      properties:
-        accessToken:
-          type: string
-
-    ForgotRequest:
-      type:
-        - object
-      properties:
-        email:
-          type: string
-
-    VerifyCodeRequest:
-      type:
-        - object
-      properties:
-        code:
-          type: string
-
-    ResetPasswordRequest:
-      type:
-        - object
-      properties:
-        code:
-          type: string
-        newPassword:
-          type: string
-
-    UpdateAccountInfoRequest:
-      type:
-        - object
-      properties:
-        id:
-          type: integer
-        firstName:
-          type: string
-        middleName:
-          type: string
-        lastName:
-          type: string
-        phoneNumber:
-          type: string
-        gender:
-          type: string
-          enum:
-            - MALE
-            - FEMALE
-        birthDate:
-          type: string
-          format: '2025-06-02 20:00:00.000000'
-
-    GetAccountInfoResponse:
-      type:
-        - object
-      properties:
-        id:
-          type: integer
-        firstName:
-          type: string
-        middleName:
-          type: string
-        lastName:
-          type: string
-        email:
-          type: string
-        phoneNumber:
-          type: string
-        gender:
-          type: string
-          enum:
-            - MALE
-            - FEMALE
-        birthDate:
-          type: string
-          format: '2025-06-02 20:00:00.000000'
-        avatarId:
-          type: string
-        createdAt:
-          type: string
-          description: Дата регистрации пользователя.
-          format: '2025-06-02 20:00:00.000000'
-        updatedAt:
-          type: string
-          description: Дата последнего обновления информации об аккаунте.
-          format: '2025-06-02 20:00:00.000000'
-        passwordUpdatedAt:
-          type: string
-          format: '2025-06-02 20:00:00.000000'
-          description: Дата последнего обновления пароля.
 
     PageableRequest:
       type:
@@ -656,6 +973,23 @@ components:
           type: array
           description: Контейнер с фильтрами.
           $ref: "#/components/schemas/Filter"
+        sort:
+          type: object
+          properties:
+            field:
+              type: string
+              description: Поле, по которому требуется сортировка.
+            direction:
+              type: string
+              description:
+                Направление сортировки.
+              enum:
+                - ASC
+                - DESC
+      required:
+        - page
+        - size
+
 
     PageableResponse:
       type:
@@ -699,22 +1033,6 @@ components:
         - GREATER_THAN
         - LESS_THAN
         - CONTAINS
-
-    GetAvailableResourcesResponse:
-      type:
-        - object
-      properties:
-        availableResources:
-          type: array
-
-    UpdateAccessPolicyUserProviderRequest:
-      type:
-        - object
-      properties:
-        userProviderId:
-          type: integer
-        accessPolicyId:
-          type: integer
 
     UserProviderView:
       type:
@@ -789,22 +1107,33 @@ components:
         resource:
           type: string
 
-    BlockUserProvidersRequest:
+    AutomobileModel:
       type:
         - object
       properties:
-        ids:
+        id:
+          type: integer
+        name:
+          type: string
+        yearFrom:
+          type: integer
+        yearTo:
+          type: integer
+
+    AutomobileFactory:
+      type: object
+      properties:
+        id:
+          type: integer
+        name:
+          type: string
+        models:
           type: array
           items:
-            type: integer
-            format: int64
-          description: Идентификаторы пользователей.
-
-    GetApplicationVersion:
-      type:
-        - object
-      properties:
-        version:
+            $ref: "#/components/schemas/AutomobileModel"
+        country:
           type: string
-      required:
-        - version
+        yearFrom:
+          type: integer
+        yearTo:
+          type: integer

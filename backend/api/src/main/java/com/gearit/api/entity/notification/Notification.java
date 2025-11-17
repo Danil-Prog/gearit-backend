@@ -1,8 +1,8 @@
 package com.gearit.api.entity.notification;
 
-import com.gearit.common.constants.TableNames;
-import com.gearit.api.converter.JsonConverter;
 import com.gearit.api.entity.user.UserProvider;
+import com.gearit.common.constants.TableNames;
+import com.gearit.common.converter.JsonConverter;
 import jakarta.persistence.Column;
 import jakarta.persistence.Convert;
 import jakarta.persistence.Entity;
@@ -15,8 +15,9 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
-import java.util.Map;
 import lombok.Data;
+
+import java.util.Map;
 
 @Data
 @Entity

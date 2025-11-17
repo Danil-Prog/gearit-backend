@@ -1,4 +1,4 @@
-package com.gearit.common.cookie;
+package com.gearit.common.http.cookie;
 
 public class CookieObjects {
 

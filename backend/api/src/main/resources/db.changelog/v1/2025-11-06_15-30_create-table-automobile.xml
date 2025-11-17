@@ -1,0 +1,267 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                   https://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-latest.xsd">
+
+    <changeSet id="10" author="master">
+
+        <createTable tableName="gearit_automobile_models">
+
+            <column name="id" type="BIGSERIAL">
+                <constraints primaryKey="true"/>
+            </column>
+
+            <column name="name" type="VARCHAR">
+                <constraints nullable="false"/>
+            </column>
+
+            <column name="year_from" type="BIGINT">
+                <constraints unique="false" nullable="false"/>
+            </column>
+
+            <column name="year_to" type="BIGINT">
+                <constraints unique="false" nullable="false"/>
+            </column>
+
+        </createTable>
+
+        <createTable tableName="gearit_automobile_factories">
+
+            <column name="id" type="BIGSERIAL">
+                <constraints primaryKey="true"/>
+            </column>
+
+            <column name="name" type="VARCHAR">
+                <constraints nullable="false"/>
+            </column>
+
+            <column name="country" type="VARCHAR">
+                <constraints nullable="true"/>
+            </column>
+
+            <column name="year_from" type="BIGINT">
+                <constraints unique="false" nullable="false"/>
+            </column>
+
+            <column name="year_to" type="BIGINT">
+                <constraints unique="false" nullable="false"/>
+            </column>
+
+        </createTable>
+
+        <createTable tableName="gearit_automobile_factories_models">
+
+            <column name="automobile_factory_id" type="BIGINT">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+
+            <column name="automobile_model_id" type="BIGINT">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+
+        </createTable>
+
+        <addForeignKeyConstraint baseTableName="gearit_automobile_factories_models"
+                                 baseColumnNames="automobile_factory_id"
+                                 constraintName="gearit_automobile_factories_models_automobile_factory_id_fk"
+                                 referencedTableName="gearit_automobile_factories"
+                                 referencedColumnNames="id"/>
+
+        <addForeignKeyConstraint baseTableName="gearit_automobile_factories_models"
+                                 baseColumnNames="automobile_model_id"
+                                 constraintName="gearit_automobile_factories_automobile_model_id_fk"
+                                 referencedTableName="gearit_automobile_models"
+                                 referencedColumnNames="id"/>
+
+        <createTable tableName="gearit_automobiles">
+
+            <column name="id" type="BIGSERIAL">
+                <constraints primaryKey="true"/>
+            </column>
+
+            <column name="user_provider_id" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+
+            <column name="factory_id" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+
+            <column name="model_id" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+
+            <column name="color" type="VARCHAR">
+                <constraints nullable="false"/>
+            </column>
+
+            <column name="license" type="VARCHAR">
+                <constraints nullable="false"/>
+            </column>
+
+            <column name="body_type" type="VARCHAR">
+                <constraints unique="false" nullable="false"/>
+            </column>
+
+            <column name="year" type="BIGINT">
+                <constraints unique="false" nullable="false"/>
+            </column>
+
+            <column name="odometer" type="BIGINT">
+                <constraints unique="false" nullable="true"/>
+            </column>
+
+        </createTable>
+
+        <addForeignKeyConstraint
+                baseTableName="gearit_automobiles"
+                baseColumnNames="factory_id"
+                referencedTableName="gearit_automobile_factories"
+                referencedColumnNames="id"
+                constraintName="fk_gearit_automobiles_factories"/>
+
+        <addForeignKeyConstraint
+                baseTableName="gearit_automobiles"
+                baseColumnNames="factory_id"
+                referencedTableName="gearit_automobile_models"
+                referencedColumnNames="id"
+                constraintName="fk_gearit_automobiles_models"/>
+
+        <insert tableName="gearit_endpoints">
+            <column name="id" value="8"/>
+            <column name="method" value="POST"/>
+            <column name="path" value="/api/v1/automobile/factories-models"/>
+            <column name="description" value="Получение списка автомобильных производителей и их модели"/>
+            <column name="resource" value="automobile/factories-models/block:get"/>
+        </insert>
+
+        <insert tableName="gearit_endpoints">
+            <column name="id" value="9"/>
+            <column name="method" value="POST"/>
+            <column name="path" value="/api/v1/automobile/my"/>
+            <column name="description" value="Получение всех автомобилей текущего авторизованного пользователя"/>
+            <column name="resource" value="automobile/block:get"/>
+        </insert>
+
+        <insert tableName="gearit_endpoints">
+            <column name="id" value="10"/>
+            <column name="method" value="POST"/>
+            <column name="path" value="/api/v1/automobile"/>
+            <column name="description" value="Добавление автомобиля текущего авторизованного пользователя"/>
+            <column name="resource" value="automobile/block:add"/>
+        </insert>
+
+        <insert tableName="gearit_endpoints">
+            <column name="id" value="11"/>
+            <column name="method" value="POST"/>
+            <column name="path" value="/api/v1/automobile/delete"/>
+            <column name="description" value="Удаление автомобилей текущего авторизованного пользователя"/>
+            <column name="resource" value="automobile/block:delete"/>
+        </insert>
+
+        <insert tableName="gearit_endpoints">
+            <column name="id" value="12"/>
+            <column name="method" value="POST"/>
+            <column name="path" value="/api/v1/automobile/\d+"/>
+            <column name="description" value="Обновление авто по ID текущего авторизованного пользователя"/>
+            <column name="resource" value="automobile/block:update"/>
+        </insert>
+
+        <!-- MANAGER -->
+        <insert tableName="gearit_access_policies_endpoints">
+            <column name="access_policy_id" value="1"/>
+            <column name="endpoint_id" value="8"/>
+        </insert>
+
+        <!-- MANAGER -->
+        <insert tableName="gearit_access_policies_endpoints">
+            <column name="access_policy_id" value="1"/>
+            <column name="endpoint_id" value="9"/>
+        </insert>
+
+        <!-- MANAGER -->
+        <insert tableName="gearit_access_policies_endpoints">
+            <column name="access_policy_id" value="1"/>
+            <column name="endpoint_id" value="10"/>
+        </insert>
+
+        <!-- MANAGER -->
+        <insert tableName="gearit_access_policies_endpoints">
+            <column name="access_policy_id" value="1"/>
+            <column name="endpoint_id" value="11"/>
+        </insert>
+
+        <!-- MANAGER -->
+        <insert tableName="gearit_access_policies_endpoints">
+            <column name="access_policy_id" value="1"/>
+            <column name="endpoint_id" value="12"/>
+        </insert>
+
+        <!-- CLIENT -->
+        <insert tableName="gearit_access_policies_endpoints">
+            <column name="access_policy_id" value="2"/>
+            <column name="endpoint_id" value="8"/>
+        </insert>
+
+        <!-- CLIENT -->
+        <insert tableName="gearit_access_policies_endpoints">
+            <column name="access_policy_id" value="2"/>
+            <column name="endpoint_id" value="9"/>
+        </insert>
+
+        <!-- CLIENT -->
+        <insert tableName="gearit_access_policies_endpoints">
+            <column name="access_policy_id" value="2"/>
+            <column name="endpoint_id" value="10"/>
+        </insert>
+
+        <!-- CLIENT -->
+        <insert tableName="gearit_access_policies_endpoints">
+            <column name="access_policy_id" value="2"/>
+            <column name="endpoint_id" value="11"/>
+        </insert>
+
+        <!-- CLIENT -->
+        <insert tableName="gearit_access_policies_endpoints">
+            <column name="access_policy_id" value="2"/>
+            <column name="endpoint_id" value="12"/>
+        </insert>
+
+        <!-- Загрузка данных о всех марках автомобилей -->
+        <loadData tableName="gearit_automobile_factories"
+                  file="data/2025-11-06_15-30_factories.csv"
+                  relativeToChangelogFile="true"
+                  schemaName="public"
+                  separator=";">
+            <column name="id" type="BIGSERIAL"/>
+            <column name="name" type="VARCHAR"/>
+            <column name="year_from" type="BIGINT"/>
+            <column name="year_to" type="BIGINT"/>
+            <column name="country" type="VARCHAR"/>
+        </loadData>
+
+        <loadData tableName="gearit_automobile_models"
+                  file="data/2025-11-06_15-30_models.csv"
+                  relativeToChangelogFile="true"
+                  schemaName="public"
+                  separator=";">
+            <column name="id" type="BIGSERIAL"/>
+            <column name="name" type="VARCHAR"/>
+            <column name="year_from" type="BIGINT"/>
+            <column name="year_to" type="BIGINT"/>
+        </loadData>
+
+        <loadData tableName="gearit_automobile_factories_models"
+                  file="data/2025-11-06_15-30_factories_models.csv"
+                  relativeToChangelogFile="true"
+                  schemaName="public"
+                  separator=";">
+            <column name="automobile_factory_id" type="BIGSERIAL"/>
+            <column name="automobile_model_id" type="BIGSERIAL"/>
+        </loadData>
+
+    </changeSet>
+
+</databaseChangeLog>
