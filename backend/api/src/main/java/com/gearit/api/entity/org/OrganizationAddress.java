@@ -39,7 +39,6 @@ public class OrganizationAddress {
 
     public OrganizationAddress(
             Long index,
-            String country,
             String region,
             String street,
             String city,
@@ -53,10 +52,13 @@ public class OrganizationAddress {
         this.placement = placement;
     }
 
+    public OrganizationAddress() {
+
+    }
+
     public static OrganizationAddress fromDto(OrganizationAddressDto dto) {
         return new OrganizationAddress(
                 dto.index(),
-                dto.country(),
                 dto.region(),
                 dto.street(),
                 dto.city(),
