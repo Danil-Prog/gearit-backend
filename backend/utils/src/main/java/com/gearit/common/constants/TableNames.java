@@ -16,4 +16,8 @@ public class TableNames {
     public static final String AUTOMOBILE_FACTORIES_MODELS = PREFIX + "automobile_factories_models";
     public static final String AUTOMOBILES = PREFIX + "automobiles";
     public static final String ORGANIZATIONS = PREFIX + "organizations";
+    public static final String ORGANIZATION_REQUESTS = PREFIX + "organization_requests";
+    public static final String COMMENTS = PREFIX + "comments";
+    public static final String ORGANIZATION_REQUESTS_COMMENTS = PREFIX + "organization_requests_comments";
+    public static final String ORGANIZATION_ADDRESSES = PREFIX + "organization_addresses";
 }

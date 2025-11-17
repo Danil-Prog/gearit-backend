@@ -15,6 +15,7 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 import lombok.Data;
+import lombok.experimental.FieldNameConstants;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
@@ -23,6 +24,7 @@ import java.util.Collection;
 import java.util.List;
 
 @Data
+@FieldNameConstants
 @Entity
 @Table(name = TableNames.USER_PROVIDER)
 public class UserProvider implements UserDetails {
