@@ -10,7 +10,7 @@ import com.gearit.api.service.accesspolicy.AccessPolicyService;
 import com.gearit.api.service.profile.AccountInfoService;
 import com.gearit.api.utils.validator.UserProviderValidator;
 import com.gearit.common.exception.WebClientException;
-import com.gearit.common.http.filter.PageableRequest;
+import com.gearit.common.http.pageable.PageableRequest;
 import com.gearit.common.http.request.BlockUserProvidersRequest;
 import com.gearit.common.http.request.UpdateAccessPolicyUserProviderRequest;
 import org.springframework.beans.factory.annotation.Autowired;

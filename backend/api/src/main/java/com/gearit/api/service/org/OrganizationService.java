@@ -5,7 +5,7 @@ import com.gearit.api.entity.user.UserProvider;
 import com.gearit.api.repository.OrganizationRepository;
 import com.gearit.api.utils.validator.OrganizationValidator;
 import com.gearit.common.exception.WebClientException;
-import com.gearit.common.http.filter.PageableRequest;
+import com.gearit.common.http.pageable.PageableRequest;
 import com.gearit.common.http.request.RegisterOrganizationRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;

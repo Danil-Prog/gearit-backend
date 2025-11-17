@@ -3,7 +3,7 @@ package com.gearit.api.controller.org;
 import com.gearit.api.entity.org.Organization;
 import com.gearit.api.entity.user.UserProvider;
 import com.gearit.api.service.org.OrganizationService;
-import com.gearit.common.http.filter.PageableRequest;
+import com.gearit.common.http.pageable.PageableRequest;
 import com.gearit.common.http.request.RegisterOrganizationRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;

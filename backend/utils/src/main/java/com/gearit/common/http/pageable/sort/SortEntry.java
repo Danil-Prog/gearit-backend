@@ -1,4 +1,4 @@
-package com.gearit.common.http.filter;
+package com.gearit.common.http.pageable.sort;
 
 import lombok.Getter;
 import lombok.Setter;

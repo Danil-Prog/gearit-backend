@@ -1,6 +1,9 @@
-package com.gearit.common.http.filter;
+package com.gearit.common.http.pageable;
 
 import com.gearit.common.exception.WebClientException;
+import com.gearit.common.http.pageable.filter.Filter;
+import com.gearit.common.http.pageable.filter.FilterContainer;
+import com.gearit.common.http.pageable.sort.SortEntry;
 import jakarta.persistence.criteria.CriteriaBuilder;
 import jakarta.persistence.criteria.Path;
 import jakarta.persistence.criteria.Predicate;

@@ -4,7 +4,7 @@ import com.gearit.api.entity.accesspolicy.AccessPolicy;
 import com.gearit.api.entity.endpoint.Endpoint;
 import com.gearit.api.repository.AccessPolicyRepository;
 import com.gearit.common.exception.WebClientException;
-import com.gearit.common.http.filter.PageableRequest;
+import com.gearit.common.http.pageable.PageableRequest;
 import jakarta.annotation.PostConstruct;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

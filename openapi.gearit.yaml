@@ -546,7 +546,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/PageableResponse'
+                $ref: "#/components/schemas/AccessPolicy"
         400:
           description: Если были переданы некорректные данные.
           content:
@@ -854,7 +854,10 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/PageableResponse'
+                type:
+                  - array
+                items:
+                  $ref: '#/components/schemas/AutomobileFactory'
         400:
           description: Если были переданы некорректные данные.
           content:
@@ -1103,3 +1106,34 @@ components:
           type: string
         resource:
           type: string
+
+    AutomobileModel:
+      type:
+        - object
+      properties:
+        id:
+          type: integer
+        name:
+          type: string
+        yearFrom:
+          type: integer
+        yearTo:
+          type: integer
+
+    AutomobileFactory:
+      type: object
+      properties:
+        id:
+          type: integer
+        name:
+          type: string
+        models:
+          type: array
+          items:
+            $ref: "#/components/schemas/AutomobileModel"
+        country:
+          type: string
+        yearFrom:
+          type: integer
+        yearTo:
+          type: integer

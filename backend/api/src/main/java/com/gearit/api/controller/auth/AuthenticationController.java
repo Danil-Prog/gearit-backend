@@ -1,13 +1,13 @@
 package com.gearit.api.controller.auth;
 
-import com.gearit.common.cookie.CookieObjects.RefreshCookie;
+import com.gearit.common.http.cookie.CookieObjects.RefreshCookie;
 import com.gearit.common.http.request.LoginRequest;
 import com.gearit.common.http.request.RegisterRequest;
 import com.gearit.common.http.response.LoginResponse;
 import com.gearit.common.http.response.RefreshResponse;
 import com.gearit.common.http.response.RegisterResponse;
 import com.gearit.api.service.auth.AuthService;
-import com.gearit.common.cookie.HttpCookieUtils;
+import com.gearit.common.http.cookie.HttpCookieUtils;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;

@@ -1,4 +1,4 @@
-package com.gearit.common.http.filter;
+package com.gearit.common.http.pageable.filter;
 
 public enum FilterCondition {
     EQUALS,
