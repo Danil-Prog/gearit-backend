@@ -1,6 +1,5 @@
 package com.gearit.api.entity.org;
 
-import com.gearit.common.constants.TableNames;
 import com.gearit.common.dto.OrganizationAddressDto;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -9,6 +8,7 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 import lombok.Data;
+import org.gearit.common.constants.TableNames;
 
 @Data
 @Entity

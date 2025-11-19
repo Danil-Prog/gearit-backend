@@ -7,7 +7,7 @@ import com.gearit.common.exception.WebClientException;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import static com.gearit.common.utils.StringUtils.stringNullOrBlank;
+import static org.gearit.common.extension.StringExtensionKt.isNullOrBlank;
 
 public class AccountInfoValidator {
 
@@ -20,21 +20,21 @@ public class AccountInfoValidator {
     }
 
     private static void isValidaFullName(String firstName, String middleName, String lastName) {
-        if (stringNullOrBlank(firstName)) {
+        if (isNullOrBlank(firstName)) {
             throw asWebClientException("Firstname cannot be empty");
         }
 
-        if (stringNullOrBlank(middleName)) {
+        if (isNullOrBlank(middleName)) {
             throw asWebClientException("Middle name cannot be empty");
         }
 
-        if (stringNullOrBlank(lastName)) {
+        if (isNullOrBlank(lastName)) {
             throw asWebClientException("Last name cannot be empty");
         }
     }
 
     private static void isValidPhoneNumber(String phoneNumber) {
-        if (stringNullOrBlank(phoneNumber)) {
+        if (isNullOrBlank(phoneNumber)) {
             throw asWebClientException("Phone number cannot be empty");
         }
 

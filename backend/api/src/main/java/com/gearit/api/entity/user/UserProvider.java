@@ -2,7 +2,6 @@ package com.gearit.api.entity.user;
 
 import com.gearit.api.entity.accesspolicy.AccessPolicy;
 import com.gearit.api.entity.account.AccountInfo;
-import com.gearit.common.constants.TableNames;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
@@ -16,6 +15,7 @@ import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 import lombok.Data;
 import lombok.experimental.FieldNameConstants;
+import org.gearit.common.constants.TableNames;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
