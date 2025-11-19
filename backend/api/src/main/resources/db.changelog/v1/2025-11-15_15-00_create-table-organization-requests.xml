@@ -25,11 +25,11 @@
                 <constraints nullable="false"/>
             </column>
 
-            <column name="register_address" type="BIGINT">
+            <column name="register_address_id" type="BIGINT">
                 <constraints nullable="false"/>
             </column>
 
-            <column name="current_address" type="BIGINT">
+            <column name="current_address_id" type="BIGINT">
                 <constraints nullable="false"/>
             </column>
 
@@ -105,6 +105,10 @@
                 <constraints nullable="false"/>
             </column>
 
+            <column name="created_at" type="JAVA.SQL.TYPES.TIMESTAMP_WITH_TIMEZONE">
+                <constraints nullable="false"/>
+            </column>
+
             <column name="text" type="VARCHAR(1000)">
                 <constraints nullable="false" unique="false"/>
             </column>
@@ -124,13 +128,13 @@
         </createTable>
 
         <addForeignKeyConstraint baseTableName="gearit_organization_requests"
-                                 baseColumnNames="register_address"
+                                 baseColumnNames="register_address_id"
                                  constraintName="gearit_organization_requests_register_address_id_fk"
                                  referencedTableName="gearit_organization_addresses"
                                  referencedColumnNames="id"/>
 
         <addForeignKeyConstraint baseTableName="gearit_organization_requests"
-                                 baseColumnNames="current_address"
+                                 baseColumnNames="current_address_id"
                                  constraintName="gearit_organization_requests_current_address_id_fk"
                                  referencedTableName="gearit_organization_addresses"
                                  referencedColumnNames="id"/>

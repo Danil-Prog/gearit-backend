@@ -37,23 +37,24 @@ public class OrganizationAddress {
     @Column(name = "placement")
     private String placement;
 
+    public OrganizationAddress() {
+
+    }
+
     public OrganizationAddress(
             Long index,
             String region,
-            String street,
             String city,
+            String street,
             String building,
-            String placement) {
+            String placement
+    ) {
         this.index = index;
         this.region = region;
-        this.street = street;
         this.city = city;
+        this.street = street;
         this.building = building;
         this.placement = placement;
-    }
-
-    public OrganizationAddress() {
-
     }
 
     public static OrganizationAddress fromDto(OrganizationAddressDto dto) {

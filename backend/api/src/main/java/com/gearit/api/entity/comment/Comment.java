@@ -10,6 +10,7 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
+import java.time.Instant;
 import lombok.Data;
 
 @Data
@@ -25,6 +26,9 @@ public class Comment {
     @JoinColumn(name = "user_provider_id", referencedColumnName = "id")
     private UserProvider userProvider;
 
-    @Column(nullable = false)
+    @Column(name = "created_at")
+    private Instant createdAt;
+
+    @Column(name = "text", nullable = false)
     private String text;
 }

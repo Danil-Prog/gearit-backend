@@ -42,11 +42,11 @@ public class OrganizationRequest {
     private String description;
 
     @OneToOne
-    @JoinColumn(name = "register_address", referencedColumnName = "id")
+    @JoinColumn(name = "register_address_id", referencedColumnName = "id")
     private OrganizationAddress registerAddress;
 
     @OneToOne
-    @JoinColumn(name = "current_address", referencedColumnName = "id")
+    @JoinColumn(name = "current_address_id", referencedColumnName = "id")
     private OrganizationAddress currentAddress;
 
     @Column(name = "phone_number")
