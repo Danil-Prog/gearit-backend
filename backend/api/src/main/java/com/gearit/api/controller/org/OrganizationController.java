@@ -1,5 +1,6 @@
 package com.gearit.api.controller.org;
 
+import com.gearit.api.entity.comment.Comment;
 import com.gearit.api.entity.org.Organization;
 import com.gearit.api.entity.org.OrganizationRequest;
 import com.gearit.api.entity.user.UserProvider;
@@ -71,7 +72,7 @@ public class OrganizationController {
     public ResponseEntity<?> updateOrganizationRequestStatus(
             @PathVariable("id") Long id,
             @RequestBody UpdateOrganizationRequestStatusRequest request
-            ) {
+    ) {
         organizationService.updateOrganizationStatus(id, request);
         return ResponseEntity.ok().build();
     }
@@ -79,9 +80,10 @@ public class OrganizationController {
     @PostMapping("/requests/{id}/comments")
     public ResponseEntity<?> getOrganizationRequestComments(
             @PathVariable("id") Long id,
-            @RequestBody PageableRequest request
+            @RequestBody PageableRequest<Comment> request
     ) {
-        return ResponseEntity.ok().build();
+        var organizationRequestComments = organizationService.getOrganizationRequestComments(id, request);
+        return PageableResponse.toResponseEntity(organizationRequestComments, request);
     }
 
     @PostMapping("/requests/{id}/comments/new")

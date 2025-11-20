@@ -1,5 +1,6 @@
 package com.gearit.api.service.org;
 
+import com.gearit.api.entity.comment.Comment;
 import com.gearit.api.entity.org.Organization;
 import com.gearit.api.entity.org.OrganizationRequest;
 import com.gearit.api.entity.org.OrganizationRequestStatus;
@@ -92,6 +93,13 @@ public class OrganizationService {
         organizationRepository.save(organization);
     }
 
+    public Page<Comment> getOrganizationRequestComments(Long id, PageableRequest<Comment> request) {
+        var organizationRequest = getOrganizationRequestByIdOrThrow(id);
+        var comments = organizationRequest.getComments();
+
+        return Page.empty();
+    }
+
     private Organization getOrganizationByIdOrThrow(Long id) {
         return organizationRepository.findById(id).orElseThrow(() ->
                 new WebClientException(
@@ -107,6 +115,4 @@ public class OrganizationService {
                         String.format("Organization request with ID: %s not found", id)
                 ));
     }
-
-
 }
