@@ -21,3 +21,5 @@ databaseChangeLog:
       file: db.changelog/v1/2025-11-06_15-30_create-table-automobile.xml
   - include:
       file: db.changelog/v1/2025-11-09_14-00_create-table-organization.xml
+  - include:
+      file: db.changelog/v1/2025-11-15_15-00_create-table-organization-requests.xml

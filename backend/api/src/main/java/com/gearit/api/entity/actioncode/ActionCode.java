@@ -1,14 +1,15 @@
 package com.gearit.api.entity.actioncode;
 
-import com.gearit.common.constants.TableNames;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
-import java.time.Instant;
 import lombok.Data;
+import org.gearit.common.constants.TableNames;
+
+import java.time.Instant;
 
 @Data
 @Entity
