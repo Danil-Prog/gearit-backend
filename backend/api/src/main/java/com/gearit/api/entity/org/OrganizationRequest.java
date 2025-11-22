@@ -1,8 +1,6 @@
 package com.gearit.api.entity.org;
 
-import com.gearit.api.entity.comment.Comment;
 import com.gearit.api.entity.user.UserProvider;
-import org.gearit.common.constants.TableNames;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -18,6 +16,7 @@ import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 import lombok.Data;
 import lombok.experimental.FieldNameConstants;
+import org.gearit.common.constants.TableNames;
 
 import java.time.Instant;
 import java.util.Set;
@@ -74,9 +73,9 @@ public class OrganizationRequest {
 
     @OneToMany(cascade = CascadeType.ALL)
     @JoinTable(
-            name = TableNames.ORGANIZATION_REQUESTS_COMMENTS,
+            name = TableNames.ORGANIZATION_REQUESTS_FEEDBACKS,
             joinColumns = @JoinColumn(name = "organization_request_id"),
-            inverseJoinColumns = @JoinColumn(name = "comment_id")
+            inverseJoinColumns = @JoinColumn(name = "feedback_id")
     )
-    private Set<Comment> comments;
+    private Set<OrganizationFeedback> feedbacks;
 }

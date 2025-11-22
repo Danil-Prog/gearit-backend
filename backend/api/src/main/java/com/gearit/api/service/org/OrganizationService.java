@@ -1,10 +1,11 @@
 package com.gearit.api.service.org;
 
-import com.gearit.api.entity.comment.Comment;
 import com.gearit.api.entity.org.Organization;
+import com.gearit.api.entity.org.OrganizationFeedback;
 import com.gearit.api.entity.org.OrganizationRequest;
 import com.gearit.api.entity.org.OrganizationRequestStatus;
 import com.gearit.api.entity.user.UserProvider;
+import com.gearit.api.repository.OrganizationFeedbackRepository;
 import com.gearit.api.repository.OrganizationRepository;
 import com.gearit.api.repository.OrganizationRequestRepository;
 import com.gearit.api.utils.validator.OrganizationRequestValidator;
@@ -12,6 +13,7 @@ import com.gearit.common.exception.WebClientException;
 import com.gearit.common.http.pageable.PageableRequest;
 import com.gearit.common.http.pageable.filter.Filter;
 import com.gearit.common.http.pageable.filter.FilterCondition;
+import com.gearit.common.http.request.NewFeedbackRequest;
 import com.gearit.common.http.request.NewOrganizationRequest;
 import com.gearit.common.http.request.UpdateOrganizationRequestStatusRequest;
 import com.gearit.common.utils.EnumConverter;
@@ -29,14 +31,17 @@ public class OrganizationService {
 
     private final OrganizationRepository organizationRepository;
     private final OrganizationRequestRepository organizationRequestRepository;
+    private final OrganizationFeedbackRepository organizationFeedbackRepository;
 
     @Autowired
     public OrganizationService(
             OrganizationRepository organizationRepository,
-            OrganizationRequestRepository organizationRequestRepository
+            OrganizationRequestRepository organizationRequestRepository,
+            OrganizationFeedbackRepository organizationFeedbackRepository
     ) {
         this.organizationRepository = organizationRepository;
         this.organizationRequestRepository = organizationRequestRepository;
+        this.organizationFeedbackRepository = organizationFeedbackRepository;
     }
 
     public void newOrganizationRequest(NewOrganizationRequest request, UserProvider userProvider) {
@@ -59,10 +64,7 @@ public class OrganizationService {
         organizationRequestRepository.save(organizationRequest);
     }
 
-    public void updateOrganizationStatus(
-            Long id,
-            UpdateOrganizationRequestStatusRequest request
-    ) {
+    public void updateOrganizationStatus(Long id, UpdateOrganizationRequestStatusRequest request) {
         var organizationRequest = getOrganizationRequestByIdOrThrow(id);
         organizationRequest.setStatus(EnumConverter.toEnum(OrganizationRequestStatus.class, request.status()));
 
@@ -93,11 +95,29 @@ public class OrganizationService {
         organizationRepository.save(organization);
     }
 
-    public Page<Comment> getOrganizationRequestComments(Long id, PageableRequest<Comment> request) {
+    public Page<OrganizationFeedback> getOrganizationRequestFeedbacks(
+            Long id,
+            PageableRequest<OrganizationFeedback> request
+    ) {
         var organizationRequest = getOrganizationRequestByIdOrThrow(id);
-        var comments = organizationRequest.getComments();
 
-        return Page.empty();
+        request.addFilter(new Filter(
+                "request.id",
+                FilterCondition.EQUALS,
+                id
+        ));
+
+        var specification = request.getSpecification();
+
+        return organizationFeedbackRepository.findAll(specification, request.getPageRequest());
+    }
+
+    public void newFeedbackOrganizationRequest(
+            Long id,
+            NewFeedbackRequest request,
+            UserProvider userProvider
+    ) {
+
     }
 
     private Organization getOrganizationByIdOrThrow(Long id) {

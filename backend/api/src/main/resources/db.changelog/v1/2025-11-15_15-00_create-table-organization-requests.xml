@@ -95,7 +95,7 @@
 
         </createTable>
 
-        <createTable tableName="gearit_comments">
+        <createTable tableName="gearit_feedbacks">
 
             <column name="id" type="BIGSERIAL">
                 <constraints primaryKey="true"/>
@@ -115,13 +115,13 @@
 
         </createTable>
 
-        <createTable tableName="gearit_organization_requests_comments">
+        <createTable tableName="gearit_organization_requests_feedbacks">
 
             <column name="organization_request_id" type="BIGINT">
                 <constraints primaryKey="true" nullable="false"/>
             </column>
 
-            <column name="comment_id" type="BIGINT">
+            <column name="feedback_id" type="BIGINT">
                 <constraints primaryKey="true" nullable="false"/>
             </column>
 
@@ -145,22 +145,22 @@
                                  referencedTableName="gearit_user_provider"
                                  referencedColumnNames="id"/>
 
-        <addForeignKeyConstraint baseTableName="gearit_comments"
+        <addForeignKeyConstraint baseTableName="gearit_feedbacks"
                                  baseColumnNames="user_provider_id"
-                                 constraintName="gearit_comments_user_provider_id_fk"
+                                 constraintName="gearit_feedbacks_user_provider_id_fk"
                                  referencedTableName="gearit_user_provider"
                                  referencedColumnNames="id"/>
 
-        <addForeignKeyConstraint baseTableName="gearit_organization_requests_comments"
+        <addForeignKeyConstraint baseTableName="gearit_organization_requests_feedbacks"
                                  baseColumnNames="organization_request_id"
-                                 constraintName="gearit_organization_requests_comments_org_req_id_fk"
+                                 constraintName="gearit_organization_requests_feedbacks_org_req_id_fk"
                                  referencedTableName="gearit_organization_requests"
                                  referencedColumnNames="id"/>
 
-        <addForeignKeyConstraint baseTableName="gearit_organization_requests_comments"
-                                 baseColumnNames="comment_id"
-                                 constraintName="gearit_organization_requests_comments_comment_id_fk"
-                                 referencedTableName="gearit_comments"
+        <addForeignKeyConstraint baseTableName="gearit_organization_requests_feedbacks"
+                                 baseColumnNames="feedback_id"
+                                 constraintName="gearit_organization_requests_feedbacks_feedback_id_fk"
+                                 referencedTableName="gearit_feedbacks"
                                  referencedColumnNames="id"/>
 
     </changeSet>

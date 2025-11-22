@@ -1,18 +1,19 @@
 package com.gearit.api.controller.org;
 
-import com.gearit.api.entity.comment.Comment;
 import com.gearit.api.entity.org.Organization;
+import com.gearit.api.entity.org.OrganizationFeedback;
 import com.gearit.api.entity.org.OrganizationRequest;
 import com.gearit.api.entity.user.UserProvider;
 import com.gearit.api.service.org.OrganizationService;
 import com.gearit.common.http.pageable.PageableRequest;
 import com.gearit.common.http.pageable.PageableResponse;
-import com.gearit.common.http.request.AddCommentToOrganizationRequest;
+import com.gearit.common.http.request.NewFeedbackRequest;
 import com.gearit.common.http.request.NewOrganizationRequest;
 import com.gearit.common.http.request.UpdateOrganizationRequestStatusRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -61,9 +62,8 @@ public class OrganizationController {
     @PostMapping("/requests/new")
     public ResponseEntity<Void> newOrganizationRequest(
             @RequestBody NewOrganizationRequest request,
-            Authentication authentication
+            @AuthenticationPrincipal UserProvider userProvider
     ) {
-        UserProvider userProvider = (UserProvider) authentication.getPrincipal();
         organizationService.newOrganizationRequest(request, userProvider);
         return ResponseEntity.ok().build();
     }
@@ -77,20 +77,22 @@ public class OrganizationController {
         return ResponseEntity.ok().build();
     }
 
-    @PostMapping("/requests/{id}/comments")
-    public ResponseEntity<?> getOrganizationRequestComments(
+    @PostMapping("/requests/{id}/feedbacks")
+    public ResponseEntity<?> getOrganizationRequestFeedbacks(
             @PathVariable("id") Long id,
-            @RequestBody PageableRequest<Comment> request
+            @RequestBody PageableRequest<OrganizationFeedback> request
     ) {
-        var organizationRequestComments = organizationService.getOrganizationRequestComments(id, request);
-        return PageableResponse.toResponseEntity(organizationRequestComments, request);
+        var organizationRequestFeedbacks = organizationService.getOrganizationRequestFeedbacks(id, request);
+        return PageableResponse.toResponseEntity(organizationRequestFeedbacks, request);
     }
 
-    @PostMapping("/requests/{id}/comments/new")
-    public ResponseEntity<?> addCommentToOrganizationRequest(
+    @PostMapping("/requests/{id}/feedbacks/new")
+    public ResponseEntity<?> newFeedbackToOrganizationRequest(
             @PathVariable("id") Long id,
-            @RequestBody AddCommentToOrganizationRequest request
+            @RequestBody NewFeedbackRequest request,
+            @AuthenticationPrincipal UserProvider userProvider
     ) {
+        organizationService.newFeedbackOrganizationRequest(id, request, userProvider);
         return ResponseEntity.ok().build();
     }
 

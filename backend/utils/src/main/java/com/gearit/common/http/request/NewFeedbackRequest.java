@@ -1,6 +1,6 @@
 package com.gearit.common.http.request;
 
-public record AddCommentToOrganizationRequest(
+public record NewFeedbackRequest(
         String text
 ) {
 }
